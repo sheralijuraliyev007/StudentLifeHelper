@@ -1,7 +1,7 @@
 create table info.info_currency_type(
 	id				serial not null primary key,
 	code integer not null unique CHECK (code > 0),
-	symbol			varchar(10) not null unique,
+	symbol			varchar(10) null unique,
 	short_name		varchar(15) not null,
 	full_name		varchar(200) not null,
 	state_id		integer not null references info.info_state(id),

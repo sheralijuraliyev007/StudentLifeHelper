@@ -9,12 +9,19 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
-    [Table("info.info_role")]
-    public class Role : BaseInfoEntity
+
+    [Table("info.info_currency_type")]
+    public class CurrencyType : BaseInfoEntity
     {
         [Required]
         [Column("info_table_id")]
         public int InfoTableId { get; set; }
+
+
+        [Column("symbol")]
+        [MaxLength(10)]
+        public string? Symbol { get; set; }
+
 
 
         [ForeignKey(nameof(InfoTableId))]
