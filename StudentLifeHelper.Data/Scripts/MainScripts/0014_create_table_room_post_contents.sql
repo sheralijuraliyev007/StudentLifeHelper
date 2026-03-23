@@ -22,9 +22,13 @@ on room_post_contents(content_id);
 create index ix_room_post_contents_room_post_id
 on room_post_contents(room_post_id);
 
-create unique index ux_room_post_contents_room_post_content
-on room_post_contents(room_post_id, content_id);
+CREATE UNIQUE INDEX ux_room_post_contents_room_post_content_active
+ON room_post_contents(room_post_id, content_id)
+WHERE status_id = 1;
 
-create unique index ux_room_post_contents_one_cover_per_post
-on room_post_contents(room_post_id)
-where is_cover = true;
+CREATE UNIQUE INDEX ux_room_post_contents_one_cover_per_post
+ON room_post_contents(room_post_id)
+WHERE is_cover = true AND status_id = 1;
+
+-- optional constraint
+CHECK (is_cover IN (true, false))

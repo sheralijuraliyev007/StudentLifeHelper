@@ -20,3 +20,5 @@ create index ix_info_gender_info_table_id
 on info.info_gender(info_table_id);
 
 
+CREATE UNIQUE INDEX ui_info_gender_full_name
+ON info.info_gender(full_name);

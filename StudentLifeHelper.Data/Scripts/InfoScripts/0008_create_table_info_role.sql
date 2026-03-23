@@ -21,3 +21,5 @@ create index ix_info_role_info_table_id
 on info.info_role(info_table_id);
 
 
+CREATE UNIQUE INDEX ui_info_role_full_name
+ON info.info_role(full_name);

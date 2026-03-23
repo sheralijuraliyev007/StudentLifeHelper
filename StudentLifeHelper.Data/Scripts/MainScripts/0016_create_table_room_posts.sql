@@ -6,7 +6,7 @@ create table room_posts(
 	title					varchar(200) not null,
 	description				varchar(4000) not null,
 	for_gender_id			integer not null references info.info_gender(id),
-	motnthly_rent_fee		numeric(18,2) not null,
+	monthly_rent_fee		numeric(18,2) not null,
 	currency_id				integer not null references info.info_currency_type(id),
 	deposit_amount			numeric(18,2) not null,
 	deposit_exists			boolean not null,
@@ -19,10 +19,27 @@ create table room_posts(
 	created_user_id   uuid not null,
 	created_date_time TIMESTAMPTZ not null default now(), 
 	modified_user_id   uuid null,
-	modified_date_time TIMESTAMPTZ  null
+	modified_date_time TIMESTAMPTZ  null,
+
+	CHECK (monthly_rent_fee > 0),
+CHECK (deposit_amount >= 0),
+CHECK (room_capacity_count > 0),
+
+CHECK (
+    (deposit_exists = true AND deposit_amount > 0)
+    OR
+    (deposit_exists = false AND deposit_amount = 0)
+)
 
 );
 
+
+CREATE INDEX ix_room_posts_active_feed
+ON room_posts(created_date_time DESC)
+WHERE status_id = 1;
+
+CREATE INDEX ix_room_posts_search
+ON room_posts(status_id, region_id, room_type_id);
 create index ix_room_posts_status_id
 on room_posts(status_id);
 
@@ -35,6 +52,9 @@ on room_posts(user_id);
 create index ix_room_posts_for_gender_id
 on room_posts(for_gender_id);
 
+
+CREATE INDEX ix_room_posts_region_id
+ON room_posts(region_id);
 
 create index ix_room_posts_room_post_type_id
 on room_posts(room_post_type_id);

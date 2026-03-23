@@ -12,3 +12,5 @@ create table chats(
 
 create index ix_chats_status_id
 on chats(status_id);
+
+

@@ -1,6 +1,6 @@
 create table info.info_status(
 	id				serial not null primary key,
-	code integer not null unique CHECK (code > 0),
+	code integer not null  CHECK (code > 0),
 	short_name		varchar(15) not null,
 	full_name		varchar(200) not null,
 	info_table_id	integer not null references info.info_table(id),
@@ -20,3 +20,9 @@ on info.info_status(state_id);
 create index ix_info_status_table_info_table_id 
 on info.info_status(info_table_id);
 
+
+CREATE UNIQUE INDEX ui_info_status_table_code
+ON info.info_status(info_table_id, code);
+
+CREATE UNIQUE INDEX ui_info_status_table_short_name
+ON info.info_status(info_table_id, short_name);

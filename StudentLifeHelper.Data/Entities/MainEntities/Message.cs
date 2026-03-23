@@ -45,10 +45,10 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public virtual Status? Status { get; set; }
 
 
-        [Column("text")]
+        [Column("message_text")]
         [MaxLength(4000)]
         [Required]
-        public string Text { get; set; } = string.Empty!;
+        public string MessageText { get; set; } = string.Empty!;
 
 
         [Column("reply_to_message_id")]

@@ -20,3 +20,5 @@ on info.info_country(state_id);
 create index ix_info_country_info_table_id
 on info.info_country(info_table_id);
 
+CREATE UNIQUE INDEX ui_info_country_full_name
+ON info.info_country(full_name);

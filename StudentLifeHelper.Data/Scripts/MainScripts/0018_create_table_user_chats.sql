@@ -20,8 +20,9 @@ on user_chats(user_id);
 create index ix_user_chats_chat_id
 on user_chats(chat_id);
 
-create unique index ux_user_chats_user_chat
-on user_chats(user_id, chat_id);
+CREATE UNIQUE INDEX ux_user_chats_user_chat_active
+ON user_chats(user_id, chat_id)
+WHERE status_id = 1;
 
 create index ix_user_chats_user_status
 on user_chats(user_id, status_id);

@@ -22,3 +22,10 @@ on contents(content_type_id);
 create index ix_contents_state_content_type
 on contents(state_id,content_type_id);
 
+CREATE UNIQUE INDEX ui_contents_folder_name
+ON contents(folder, name)
+WHERE state_id = 1;
+
+CREATE UNIQUE INDEX ui_contents_folder_name_active_ci
+ON contents(folder, lower(name))
+WHERE state_id = 1;

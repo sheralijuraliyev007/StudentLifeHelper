@@ -20,3 +20,7 @@ on info.info_content_type(state_id);
 
 create index ix_info_content_type_table_id
 on info.info_content_type(info_table_id);
+
+
+CREATE UNIQUE INDEX ui_info_content_type_full_name
+ON info.info_content_type(full_name);

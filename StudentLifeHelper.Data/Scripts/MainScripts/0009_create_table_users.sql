@@ -6,7 +6,7 @@ create table users(
 	country_id						integer not null references info.info_country(id),
 	birth_date						date null,
 	password_hash					varchar(255) not null,
-	username						varchar(50) not null unique,
+	username						varchar(50) not null,
 	state_id						integer not null references info.info_state(id),
 	role_id							integer not null references info.info_role(id),
 	refresh_token					text null,
@@ -35,4 +35,13 @@ on users(img_id);
 
 create index ix_users_gender_id
 on users(gender_id);
+
+
+CREATE UNIQUE INDEX ui_users_username_active_ci
+ON users(lower(username))
+WHERE state_id = 1;
+
+CREATE UNIQUE INDEX ui_users_refresh_token
+ON users(refresh_token)
+WHERE refresh_token IS NOT NULL;
 
