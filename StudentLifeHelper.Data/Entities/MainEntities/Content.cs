@@ -1,4 +1,5 @@
-﻿using StudentLifeHelper.Data.Entities.InfoEntities;
+﻿using StudentLifeHelper.Data.Entities.BaseEntities;
+using StudentLifeHelper.Data.Entities.InfoEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("contents")]
-    public class Content
+    public class Content : BaseCommonEntity
     {
         [Required]
         [Key]
