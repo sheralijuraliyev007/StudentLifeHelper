@@ -7,8 +7,8 @@ create table info.info_state(
 	full_name			varchar(200) not null,
 
 	created_user_id		uuid not null,
-	created_date_time	TIMESTAMPZ not null default now(),
+	created_date_time	TIMESTAMPTZ not null default now(),
 	modified_user_id	uuid null,
-	modified_date_time	TIMESTAMPZ null,
+	modified_date_time	TIMESTAMPTZ null,
 
 );
