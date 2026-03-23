@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Data.Entities.BaseEntities
 {
-    internal class BaseInfoEntity : BaseCommonEntity, IHasState
+    public class BaseInfoEntity : BaseCommonEntity, IHasState
     {
         [Required]
         [Column("id")]
