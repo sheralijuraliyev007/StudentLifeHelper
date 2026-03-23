@@ -2,25 +2,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
-
-    [Table("info.info_currency_type")]
-    public class CurrencyType : BaseInfoEntity
+    [Table("info.info_room_post_type")]
+    public class RoomPostType : BaseInfoEntity
     {
         [Required]
         [Column("info_table_id")]
         public int InfoTableId { get; set; }
 
-
-        [Column("symbol")]
-        [MaxLength(10)]
-        public string? Symbol { get; set; }
-
-
-
-        [ForeignKey(nameof(InfoTableId))]
         public virtual InfoTable? InfoTable { get; set; }
-
     }
 }
