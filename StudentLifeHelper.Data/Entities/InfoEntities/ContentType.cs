@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
-    [Table("info.info_country")]
-    public class Country : BaseInfoEntity
+    [Table("info.info_content_type")]
+    public class ContentType : BaseInfoEntity
     {
         [Required]
         [Column("info_table_id")]
