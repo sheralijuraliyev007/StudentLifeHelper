@@ -1,16 +1,18 @@
-﻿using StudentLifeHelper.Data.Entities.BaseEntities;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
 
     [Table("info.info_gender")]
+    [Index(nameof(StateId),Name = "ix_info_gender_state_id")]
+    [Index(nameof(InfoTableId),Name = "ix_info_gender_info_table_id")]
+    [Index(nameof(FullName),Name = "ui_info_gender_full_name", IsUnique =true)]
+    [Index(nameof(ShortName),Name = "ui_info_gender_short_name", IsUnique =true)]
+    [Index(nameof(Code),Name = "ui_info_gender_code", IsUnique =true)]
+
     public class Gender: BaseInfoEntity
     {
 

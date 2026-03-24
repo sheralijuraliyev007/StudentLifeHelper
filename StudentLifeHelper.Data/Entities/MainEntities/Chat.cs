@@ -1,4 +1,5 @@
-﻿using StudentLifeHelper.Data.Entities.BaseEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("chats")]
+    [Index(nameof(StatusId), Name = "ix_chats_status_id")]
     public class Chat : BaseCommonEntity
     {
         [Key]

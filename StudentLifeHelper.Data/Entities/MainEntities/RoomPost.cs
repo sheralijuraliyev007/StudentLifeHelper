@@ -1,4 +1,5 @@
-﻿using StudentLifeHelper.Data.Entities.BaseEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("room_posts")]
+    [Index(nameof(CreatedDateTime),Name = "ix_room_posts_active_feed")]
+    [Index(nameof(StatusId),nameof(RoomTypeId),nameof(RegionId),Name = "ix_room_posts_search")]
+    [Index(nameof(RoomTypeId),Name = "ix_room_posts_room_type_id")]
+    [Index(nameof(StatusId),Name = "ix_room_posts_status_id")]
+    [Index(nameof(UserId),Name = "ix_room_posts_user_id")]
+    [Index(nameof(ForGenderId),Name = "ix_room_posts_for_gender_id")]
+    [Index(nameof(RegionId),Name = "ix_room_posts_region_id")]
+    [Index(nameof(RoomPostTypeId),Name = "ix_room_posts_room_post_type_id")]
+    [Index(nameof(CurrencyId),Name = "ix_room_posts_currency_id")]
+    [Index(nameof(RoomTypeId),nameof(ForGenderId),Name = "ix_room_posts_type_gender")]
+    [Index(nameof(StatusId),nameof(RoomTypeId),Name = "ix_room_posts_status_type")]
+    [Index(nameof(CreatedDateTime),Name = "ix_room_posts_created_date_time")]
+
+
+
     public class RoomPost : BaseCommonEntity
     {
         [Required]

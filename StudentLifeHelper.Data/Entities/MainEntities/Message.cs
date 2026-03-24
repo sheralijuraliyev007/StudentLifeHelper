@@ -1,17 +1,19 @@
-﻿using StudentLifeHelper.Data.Entities.BaseEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("messages")]
+    [Index(nameof(StatusId), Name = "ix_messages_status_id")]
+    [Index(nameof(ChatId), Name = "ix_messages_chat_id")]
+    [Index(nameof(FromUserId), Name = "ix_messages_from_user_id")]
+    [Index(nameof(ReplyToMessageId), Name = "ix_messages_reply_to_message_id")]
+    [Index(nameof(ChatId), nameof(StatusId), Name = "ix_messages_chat_status")]
+    [Index(nameof(ChatId), nameof(CreatedDateTime), Name = "ix_messages_chat_id_created_date_time")]
+
     public class Message : BaseCommonEntity
     {
         [Key]

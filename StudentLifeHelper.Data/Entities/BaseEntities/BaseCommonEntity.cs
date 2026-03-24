@@ -18,7 +18,7 @@ namespace StudentLifeHelper.Data.Entities.BaseEntities
 
         [Required]
         [Column("created_date_time")]
-        public DateTime CreatedDateTime { get; set; }
+        public DateTime CreatedDateTime { get; set; } = DateTime.UtcNow;
 
 
         [Required]

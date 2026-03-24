@@ -1,4 +1,5 @@
-﻿using StudentLifeHelper.Data.Entities.BaseEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,12 @@ using System.Threading.Tasks;
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("users")]
+    [Index(nameof(CountryId), Name = "ix_users_country_id")]
+    [Index(nameof(StateId), Name = "ix_users_state_id")]
+    [Index(nameof(RoleId), Name = "ix_users_role_id")]
+    [Index(nameof(ImgId), Name = "ix_users_img_id")]
+    [Index(nameof(GenderId), Name = "ix_users_gender_id")]
+    
     public class User : BaseCommonEntity
     {
         [Key]

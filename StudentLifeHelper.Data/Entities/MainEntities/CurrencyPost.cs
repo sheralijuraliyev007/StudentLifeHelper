@@ -1,14 +1,22 @@
-﻿using StudentLifeHelper.Data.Entities.BaseEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Linq;
 
 
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("currency_posts")]
+    [Index(nameof(UserId), Name = "ix_currency_posts_user_id")]
+    [Index(nameof(StatusId), Name = "ix_currency_posts_status_id")]
+    [Index(nameof(ToCurrencyId), Name = "ix_currency_posts_to_currency_id")]
+    [Index(nameof(FromCurrencyId), Name = "ix_currency_posts_from_currency_id")]
+    [Index(nameof(FromCurrencyId), nameof(ToCurrencyId), Name = "ix_currency_posts_from_to_currency_id")]
+    [Index(nameof(CreatedDateTime), Name = "ix_currency_posts_created_date_time")]
     public class CurrencyPost : BaseCommonEntity
     {
         [Key]
@@ -53,10 +61,6 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         [Required]
         [Column("amount")]
         public decimal Amount { get; set; }
-
-        [Required]
-        [Column("rate")]
-        public decimal Rate { get; set; }
 
 
         [Required]

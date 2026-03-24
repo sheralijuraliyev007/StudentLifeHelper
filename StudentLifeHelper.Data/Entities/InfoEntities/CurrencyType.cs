@@ -1,4 +1,5 @@
-﻿using StudentLifeHelper.Data.Entities.BaseEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +7,9 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
 
     [Table("info.info_currency_type")]
+    [Index(nameof(StateId), Name = "ix_info_currency_type_state_id")]
+    [Index(nameof(InfoTableId), Name = "ix_info_currency_type_info_table_id")]
+    [Index(nameof(ShortName), Name = "ui_info_currency_type_short_name", IsUnique = true)]
     public class CurrencyType : BaseInfoEntity
     {
         [Required]

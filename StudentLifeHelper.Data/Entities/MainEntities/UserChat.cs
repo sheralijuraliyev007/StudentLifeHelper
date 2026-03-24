@@ -1,4 +1,5 @@
-﻿using StudentLifeHelper.Data.Entities.InfoEntities;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentLifeHelper.Data.Entities.InfoEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,6 +12,11 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("user_chats")]
+    [Index(nameof(StatusId),Name = "ix_user_chats_status_id")]
+    [Index(nameof(UserId),Name = "ix_user_chats_user_id")]
+    [Index(nameof(ChatId),Name = "ix_user_chats_chat_id")]
+    [Index(nameof(UserId),nameof(StatusId),Name = "ix_user_chats_user_status")]
+
     public class UserChat
     {
         [Key]

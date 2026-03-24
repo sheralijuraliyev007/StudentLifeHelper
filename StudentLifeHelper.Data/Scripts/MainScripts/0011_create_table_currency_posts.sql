@@ -6,7 +6,6 @@ create table currency_posts(
 	from_currency_id	integer not null references info.info_currency_type(id),
 	to_currency_id		integer not null references info.info_currency_type(id),
 	amount				numeric(18,2) not null,
-	rate				numeric(18,6)	not null,
 	status_id			integer not null references info.info_status(id),
 
 
@@ -18,8 +17,7 @@ create table currency_posts(
 
 
 	check (from_currency_id <> to_currency_id),
-	check (amount >0),
-	check(rate >0)
+	check (amount >0)
 );
 
 
