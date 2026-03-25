@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentLifeHelper.Data.Entities.BaseEntities;
+using StudentLifeHelper.Data.Entities.MainEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,5 +20,8 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
         public int InfoTableId { get; set; }
 
         public virtual InfoTable? InfoTable { get; set; }
+
+        [InverseProperty(nameof(RoomPost.RoomPostType))]
+        public virtual List<RoomPost>? RoomPosts { get; set; }
     }
 }

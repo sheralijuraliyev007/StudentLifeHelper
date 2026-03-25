@@ -47,7 +47,7 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
         [ForeignKey("ContentTypeId")]
 
-        public virtual ContentType? CoontentType { get; set; }
+        public virtual ContentType? ContentType { get; set; }
 
 
         [Required]

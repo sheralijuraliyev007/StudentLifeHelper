@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentLifeHelper.Data.Entities.BaseEntities;
-using System;
-using System.Collections.Generic;
+using StudentLifeHelper.Data.Entities.MainEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
@@ -25,6 +21,12 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 
 
         [ForeignKey(nameof(InfoTableId))]
-        public virtual InfoTable? InfoTable { get; set; } 
+        public virtual InfoTable? InfoTable { get; set; }
+
+        [InverseProperty(nameof(User.Region))]
+        public virtual List<User>? Users  { get; set; }
+
+        [InverseProperty(nameof(RoomPost.Region))]
+        public virtual List<RoomPost>? RoomPosts { get; set; }
     }
 }

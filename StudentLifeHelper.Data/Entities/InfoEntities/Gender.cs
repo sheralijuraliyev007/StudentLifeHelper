@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentLifeHelper.Data.Entities.BaseEntities;
+using StudentLifeHelper.Data.Entities.MainEntities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,6 +24,13 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 
         [ForeignKey(nameof(InfoTableId))]
         public virtual InfoTable? InfoTable { get; set; }
+
+
+        [InverseProperty(nameof(User.Gender))]
+        public virtual List<User>? Users { get; set; }
+
+        [InverseProperty(nameof(RoomPost.ForGenderId))]
+        public virtual List<RoomPost>? ForGenderRoomPosts { get; set; }
 
     }
 }

@@ -3,7 +3,9 @@ create table users(
 	first_name						varchar(50) not null,
 	last_name						varchar(50) not null,
 	middle_name						varchar(50) null,
-	country_id						integer not null references info.info_country(id),
+	birth_country_id				integer not null references info.info_country(id),
+					integer not null references info.info_country(id),
+
 	birth_date						date null,
 	password_hash					varchar(255) not null,
 	username						varchar(50) not null,
@@ -21,8 +23,10 @@ create table users(
 	modified_date_time TIMESTAMPTZ  null
 );
 
-create index ix_users_country_id
-on users(country_id);
+create index ix_users_birth_country_id
+on users(birth_country_id);
+create index ix_users_residence_country_id
+on users(residence_country_id);
 
 create index ix_users_state_id
 on users(state_id);

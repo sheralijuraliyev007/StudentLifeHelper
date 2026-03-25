@@ -49,12 +49,16 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         [Column("from_currency_id")]
         public int FromCurrencyId { get; set; }
 
+
+        [ForeignKey(nameof(FromCurrencyId))]
         public virtual CurrencyType? FromCurrencyType { get; set; }
 
         [Required]
         [Column("to_currency_id")]
+
         public int ToCurrencyId { get; set; }
 
+        [ForeignKey(nameof(ToCurrencyId))]
         public virtual CurrencyType? ToCurrencyType { get; set; }
 
 

@@ -13,7 +13,8 @@ using System.Threading.Tasks;
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("users")]
-    [Index(nameof(CountryId), Name = "ix_users_country_id")]
+    [Index(nameof(BirthCountryId), Name = "ix_users_birth_country_id")]
+    [Index(nameof(ResidenceCountryId), Name = "ix_users_residence_country_id")]
     [Index(nameof(StateId), Name = "ix_users_state_id")]
     [Index(nameof(RoleId), Name = "ix_users_role_id")]
     [Index(nameof(ImgId), Name = "ix_users_img_id")]
@@ -45,11 +46,19 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("country_id")]
-        public int CountryId { get; set; }
+        [Column("birth_country_id")]
+        public int BirthCountryId { get; set; }
 
-        [ForeignKey(nameof(CountryId))]
-        public virtual Country? Country { get; set; }
+        [ForeignKey(nameof(BirthCountryId))]
+        public virtual Country? BirthCountry { get; set; }
+
+
+        [Required]
+        [Column("residence_country_id")]
+        public int ResidenceCountryId { get; set; }
+
+        [ForeignKey(nameof(ResidenceCountryId))]
+        public virtual Country? ResidenceCountry { get; set; }
 
         [Column("birth_date")]
         public DateTime? BirthDate { get; set; }
