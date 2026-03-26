@@ -26,9 +26,8 @@ namespace StudentLifeHelper.Data.Context
         public DbSet<Message> Messages{ get; set; } 
         public DbSet<RoomPost> RoomPosts{ get; set; } 
         public DbSet<RoomPostContent> RoomPostContents{ get; set; } 
-        public DbSet<User> Users{ get; set; } 
-
-       public DbSet<UserChat> UserChats{ get; set; }
+        public DbSet<User> Users{ get; set; }
+        public DbSet<UserChat> UserChats{ get; set; }
 
     }
 }
