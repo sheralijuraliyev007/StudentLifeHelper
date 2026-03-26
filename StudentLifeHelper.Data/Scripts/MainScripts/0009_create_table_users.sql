@@ -4,7 +4,7 @@ create table users(
 	last_name						varchar(50) not null,
 	middle_name						varchar(50) null,
 	birth_country_id				integer not null references info.info_country(id),
-					integer not null references info.info_country(id),
+	residence_country_id			integer not null references info.info_country(id),
 
 	birth_date						date null,
 	password_hash					varchar(255) not null,
@@ -12,7 +12,7 @@ create table users(
 	state_id						integer not null references info.info_state(id),
 	role_id							integer not null references info.info_role(id),
 	refresh_token					text null,
-	refresh_token_expire_time		TIMESTAMPZ,
+	refresh_token_expire_time		TIMESTAMPTZ,
 	img_id							bigint null references contents(id),
 	gender_id						integer not null references info.info_gender(id),
 	region_id						integer not null references info.info_region(id),
@@ -27,6 +27,9 @@ create index ix_users_birth_country_id
 on users(birth_country_id);
 create index ix_users_residence_country_id
 on users(residence_country_id);
+
+create index ix_users_birth_residence_country_id
+on users(birth_country_id, residence_country_id);
 
 create index ix_users_state_id
 on users(state_id);

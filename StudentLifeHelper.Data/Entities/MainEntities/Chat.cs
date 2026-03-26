@@ -1,14 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
@@ -29,6 +23,13 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
         [ForeignKey(nameof(StatusId))]
         public virtual Status? Status { get; set; }
+
+        [InverseProperty(nameof(UserChat.Chat))]
+        public virtual List<UserChat>? UserChats { get; set; }
+
+        [InverseProperty(nameof(Message.Chat))]
+        public virtual List<Message>? Messages { get; set; }
+
 
     }
 }

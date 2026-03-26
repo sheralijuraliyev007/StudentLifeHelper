@@ -111,5 +111,9 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         [Required]
         [Column("address_link")]
         public string AddressLink { get; set; } = string.Empty!;
+
+
+        [InverseProperty(nameof(RoomPostContent.RoomPost))]
+        public virtual List<RoomPostContent> RoomPostContents { get; set}
     }
 }

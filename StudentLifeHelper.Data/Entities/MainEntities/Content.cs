@@ -57,5 +57,9 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         [ForeignKey(nameof(StateId))]
         public virtual State? State { get; set; }
 
+
+        [InverseProperty(nameof(RoomPostContent.Content))]
+        public virtual List<RoomPostContent>? RoomPostContents { get; set; }
+
     }
 }

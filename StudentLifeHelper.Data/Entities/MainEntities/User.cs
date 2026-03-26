@@ -1,20 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("users")]
     [Index(nameof(BirthCountryId), Name = "ix_users_birth_country_id")]
     [Index(nameof(ResidenceCountryId), Name = "ix_users_residence_country_id")]
+    [Index(nameof(BirthCountryId),nameof(ResidenceCountryId), Name = "ix_users_birth_residence_country_id")]
     [Index(nameof(StateId), Name = "ix_users_state_id")]
     [Index(nameof(RoleId), Name = "ix_users_role_id")]
     [Index(nameof(ImgId), Name = "ix_users_img_id")]
@@ -121,6 +116,19 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
         [ForeignKey(nameof(RegionId))]
         public virtual Region? Region { get; set; }
+
+
+        [InverseProperty(nameof(UserChat.User))]
+        public virtual List<UserChat>? UserChats { get; set; }
+
+        [InverseProperty(nameof(RoomPost.User))]
+        public virtual List<RoomPost>? RoomPosts { get; set; }
+
+        [InverseProperty(nameof(CurrencyPost.User))]
+        public virtual List<CurrencyPost>? CurrencyPosts { get; set; }
+
+        [InverseProperty(nameof(Message.FromUser))]
+        public virtual List<Message>? Messages { get; set; }
 
     }
 }

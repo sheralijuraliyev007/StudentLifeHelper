@@ -61,6 +61,8 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public virtual Message? ReplyToMessage { get; set; }
 
 
+        [InverseProperty(nameof(Message.ReplyToMessage))]
+        public virtual List<Message> Replies { get; set; } = new();
 
     }
 }
