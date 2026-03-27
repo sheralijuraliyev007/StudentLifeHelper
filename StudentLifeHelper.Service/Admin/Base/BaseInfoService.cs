@@ -1,4 +1,5 @@
 ﻿using StatusGeneric;
+using StudentLifeHelper.Common.Extensions;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 using StudentLifeHelper.Data.Repositories.Interfaces;
 using System.Collections.Generic;
@@ -11,9 +12,15 @@ namespace StudentLifeHelper.Service.Admin.Base
     public class BaseInfoService<TEntity>(IBaseRepository<TEntity> baseRepository) : StatusGenericHandler, IBaseInfoService<TEntity>
         where TEntity : class, IHasState
     {
-        public Task<string> Create<TModel>(TModel model)
+        public async Task<string> Create<TModel>(TModel model)
         {
-            var entity = model.MapToEntity
+            var entity = model.MapToEntity<TEntity,TModel>();
+
+            await baseRepository.Add(entity);
+
+            await baseRepository.SaveChanges();
+
+            return "Added successfully";
         }
 
         public Task<string?> DeleteById<TId>(TId id)
@@ -31,9 +38,23 @@ namespace StudentLifeHelper.Service.Admin.Base
             throw new NotImplementedException();
         }
 
-        public Task<string?> Update<TId, TModel>(TId id, TModel model)
+        public async Task<string?> Update<TId, TModel>(TId id, TModel model)
         {
-            throw new NotImplementedException();
+            var (check, entity) = await GetEnt
         }
-    }
+
+
+
+
+
+
+        private async Task<Tuple<bool, TEntity?>> GetEntityIfExists<TId>(TId id)
+        {
+            var entity = await baseRepository.GetById(id);
+            if (entity is null  || entity.StateId != State)
+            {
+                return new Tuple<bool, TEntity?>(false, null);
+            }
+            return new Tuple<bool, TEntity?>(true, entity);
+        }
 }

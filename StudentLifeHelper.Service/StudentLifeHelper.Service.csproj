@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StudentLifeHelper.Common\StudentLifeHelper.Common.csproj" />
     <ProjectReference Include="..\StudentLifeHelper.Data\StudentLifeHelper.Data.csproj" />
   </ItemGroup>
 
