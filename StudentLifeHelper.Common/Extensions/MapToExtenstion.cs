@@ -48,5 +48,17 @@ namespace StudentLifeHelper.Common.Extensions
 
             return entity;
         }
+
+
+        public static TDto MapToDto<TEntity, TDto>(
+            this TEntity source,
+            TypeAdapterConfig? config = null)
+        {
+            return config == null
+                ? source.Adapt<TDto>()                 // use default global config
+                : source.Adapt<TDto>(config);          // use custom config
+        }
+
+
     }
 }

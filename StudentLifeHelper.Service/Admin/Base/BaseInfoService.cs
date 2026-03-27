@@ -34,9 +34,15 @@ namespace StudentLifeHelper.Service.Admin.Base
             throw new NotImplementedException();
         }
 
-        public Task<TDto?> GetById<TDto, TId>(TId id)
+        public async Task<TDto?> GetById<TDto, TId>(TId id)
         {
-            throw new NotImplementedException();
+            var(check, entity) = await GetEntityIfExists(id);
+            if (!check)
+                return default;
+
+            return entity!.MapToDto<TDto, TEntity>();
+
+
         }
 
         public async Task<string?> Update<TId, TModel>(TId id, TModel model)
@@ -45,7 +51,12 @@ namespace StudentLifeHelper.Service.Admin.Base
             if (!check)
                 return null;
 
-            entity = model.MapFor(entity);
+            entity = model.MapForUpdate(entity);
+
+
+            await baseRepository.Update(entity!);
+            await baseRepository.SaveChanges();
+            return "Updated successfully";
         }
 
 
