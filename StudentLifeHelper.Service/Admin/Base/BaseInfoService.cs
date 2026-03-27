@@ -15,7 +15,7 @@ namespace StudentLifeHelper.Service.Admin.Base
     {
         public async Task<string> Create<TModel>(TModel model)
         {
-            var entity = model.MapToEntity<TEntity,TModel>();
+            var entity = model.MapToEntity<TEntity, TModel>();
 
             await baseRepository.Add(entity);
 
@@ -29,14 +29,16 @@ namespace StudentLifeHelper.Service.Admin.Base
             throw new NotImplementedException();
         }
 
-        public Task<List<TDto>> GetAll<TDto>()
+        public async Task<List<TDto>> GetAll<TDto>()
         {
-            throw new NotImplementedException();
+            var entities = baseRepository.GetAll().Where(e => e.StateId == StateIdConstants.Active).ToList();
+            return entities.MapToDtos<TEntity, TDto>();
         }
+
 
         public async Task<TDto?> GetById<TDto, TId>(TId id)
         {
-            var(check, entity) = await GetEntityIfExists(id);
+            var (check, entity) = await GetEntityIfExists(id);
             if (!check)
                 return default;
 
@@ -61,16 +63,13 @@ namespace StudentLifeHelper.Service.Admin.Base
         }
 
 
-
-
-
-
         private async Task<Tuple<bool, TEntity?>> GetEntityIfExists<TId>(TId id)
         {
             var entity = await baseRepository.GetById(id);
-            if (entity is null  || entity.StateId != StateIdConstants.Active)
+            if (entity is null || entity.StateId != StateIdConstants.Active)
                 return new(false, null);
-            
+
             return new(true, entity);
         }
+    }
 }
