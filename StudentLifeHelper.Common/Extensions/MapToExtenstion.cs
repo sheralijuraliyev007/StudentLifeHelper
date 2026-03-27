@@ -59,6 +59,12 @@ namespace StudentLifeHelper.Common.Extensions
                 : source.Adapt<TDto>(config);          // use custom config
         }
 
+        public static List<TDto> MapToDtos<TEntity, TDto>(this List<TEntity>? entities)
+        {
+            if (entities is null)
+                return new();
 
+            return entities.Select(e => e.MapToDto<TEntity, TDto>()).ToList();
+        }
     }
 }

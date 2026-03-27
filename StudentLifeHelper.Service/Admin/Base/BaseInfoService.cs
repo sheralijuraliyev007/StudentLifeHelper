@@ -40,7 +40,8 @@ namespace StudentLifeHelper.Service.Admin.Base
             if (!check)
                 return default;
 
-            return entity!.MapToDto<TDto, TEntity>();
+            return entity!.MapToDto<TEntity, TDto>();
+
 
 
         }
