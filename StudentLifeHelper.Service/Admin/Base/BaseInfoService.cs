@@ -1,4 +1,5 @@
 ﻿using StatusGeneric;
+using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.Extensions;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 using StudentLifeHelper.Data.Repositories.Interfaces;
@@ -40,7 +41,11 @@ namespace StudentLifeHelper.Service.Admin.Base
 
         public async Task<string?> Update<TId, TModel>(TId id, TModel model)
         {
-            var (check, entity) = await GetEnt
+            var (check, entity) = await GetEntityIfExists(id);
+            if (!check)
+                return null;
+
+            entity = model.MapFor(entity);
         }
 
 
@@ -51,10 +56,9 @@ namespace StudentLifeHelper.Service.Admin.Base
         private async Task<Tuple<bool, TEntity?>> GetEntityIfExists<TId>(TId id)
         {
             var entity = await baseRepository.GetById(id);
-            if (entity is null  || entity.StateId != State)
-            {
-                return new Tuple<bool, TEntity?>(false, null);
-            }
-            return new Tuple<bool, TEntity?>(true, entity);
+            if (entity is null  || entity.StateId != StateIdConstants.Active)
+                return new(false, null);
+            
+            return new(true, entity);
         }
 }

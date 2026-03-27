@@ -16,5 +16,37 @@ namespace StudentLifeHelper.Common.Extensions
                 : model.Adapt<TEntity>(config);
             return entity;
         }
+
+
+        public static TEntity MapForUpdate<TEntity,TModel>(this TModel model, TEntity entity)
+        {
+            var entityProperties = typeof(TEntity).GetProperties();
+            var modelProperties = typeof(TModel).GetProperties();
+
+            foreach(var modelProperty in modelProperties)
+            {
+                var entityProperty = entityProperties.FirstOrDefault( p=> p.Name == modelProperty.Name );
+
+                if (entityProperty is null)
+                    continue;
+
+                if (typeof(System.Collections.IEnumerable).IsAssignableFrom(entityProperty.PropertyType)
+                    && entityProperty.PropertyType != typeof(string))   
+                        continue;
+                if (entityProperty.PropertyType.IsClass && entityProperty.PropertyType != typeof(string))
+                    continue;
+
+                var newValue = modelProperty.GetValue(model);
+                var oldValue = entityProperty.GetValue(entity);
+
+                if(newValue is not null && !Equals(newValue, oldValue))
+                {
+                    entityProperty.SetValue(entity, newValue);
+                }
+
+            }
+
+            return entity;
+        }
     }
 }
