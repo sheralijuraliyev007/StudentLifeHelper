@@ -3,10 +3,6 @@ using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.Extensions;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 using StudentLifeHelper.Data.Repositories.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Service.Admin.Base
 {
@@ -24,9 +20,18 @@ namespace StudentLifeHelper.Service.Admin.Base
             return "Added successfully";
         }
 
-        public Task<string?> DeleteById<TId>(TId id)
+        public async Task<string?> DeleteById<TId>(TId id)
         {
-            throw new NotImplementedException();
+            var (check, entity) = await GetEntityIfExists(id);
+            if (!check) { 
+                return null;
+            }
+            entity!.StateId = StateIdConstants.Passive;
+
+            await baseRepository.Update(entity);
+            await baseRepository.SaveChanges();
+            return "Deleted successfully";
+
         }
 
         public async Task<List<TDto>> GetAll<TDto>()
