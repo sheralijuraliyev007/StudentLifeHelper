@@ -1,14 +1,16 @@
-﻿using StudentLifeHelper.Common.Dtos.Auth;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+
+using StatusGeneric;
+using StudentLifeHelper.Common.Dtos.Auth;
+using StudentLifeHelper.Common.Models.Auth;
 
 namespace StudentLifeHelper.Service.Auth.Interfaces
 {
-    public interface IAuthService
+    public interface IAuthService : IStatusGeneric
     {
-        Task<TokenDto?> LoginAsync(Login)
+        Task<TokenDto?> RegisterAsync(RegisterModel registerModel); 
+        Task<TokenDto?> LoginAsy(LoginModel loginModel); 
+        Task<?> GetProfile(); 
     }
 }

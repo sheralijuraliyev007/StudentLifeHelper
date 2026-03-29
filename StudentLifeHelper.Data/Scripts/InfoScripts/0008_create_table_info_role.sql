@@ -23,3 +23,16 @@ on info.info_role(info_table_id);
 
 CREATE UNIQUE INDEX ui_info_role_full_name
 ON info.info_role(full_name);
+
+
+INSERT INTO info.info_role (
+    code,
+    short_name,
+    full_name,
+    info_table_id,
+    state_id,
+    created_user_id
+)
+VALUES
+    (1, 'A', 'Administrator', 5, 1, '00000000-0000-0000-0000-000000000001'),
+    (2, 'U', 'User', 5, 1, '00000000-0000-0000-0000-000000000001');

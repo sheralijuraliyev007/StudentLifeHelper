@@ -114,6 +114,6 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [InverseProperty(nameof(RoomPostContent.RoomPost))]
-        public virtual List<RoomPostContent> RoomPostContents { get; set}
+        public virtual List<RoomPostContent> RoomPostContents { get; set; }
     }
 }

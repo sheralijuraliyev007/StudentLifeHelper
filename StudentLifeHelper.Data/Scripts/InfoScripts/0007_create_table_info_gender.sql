@@ -22,3 +22,15 @@ on info.info_gender(info_table_id);
 
 CREATE UNIQUE INDEX ui_info_gender_full_name
 ON info.info_gender(full_name);
+
+INSERT INTO info.info_gender (
+    code,
+    short_name,
+    full_name,
+    info_table_id,
+    state_id,
+    created_user_id
+)
+VALUES
+    (1, 'M', 'Male', 4, 1, '00000000-0000-0000-0000-000000000001'),
+    (2, 'F', 'Female', 4, 1, '00000000-0000-0000-0000-000000000001');
