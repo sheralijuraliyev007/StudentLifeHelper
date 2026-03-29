@@ -1,20 +1,34 @@
-create table info.info_table(
-	id				serial not null primary key,
-	code integer not null unique CHECK (code > 0),
-	short_name		varchar(15) not null unique,
-	full_name		varchar(200) not null,
-	state_id		integer not null references info.info_state(id),
+CREATE TABLE info.info_table(
+                                id                  SERIAL NOT NULL PRIMARY KEY,
+                                code                INTEGER NOT NULL UNIQUE CHECK (code > 0),
+                                short_name          VARCHAR(15) NOT NULL UNIQUE,
+                                full_name           VARCHAR(200) NOT NULL,
+                                state_id            INTEGER NOT NULL REFERENCES info.info_state(id),
 
-
-	created_user_id   uuid not null,
-	created_date_time TIMESTAMPTZ not null default now(), 
-	modified_user_id   uuid null,
-	modified_date_time TIMESTAMPTZ  null,
-
-
-
+                                created_user_id     UUID NOT NULL,
+                                created_date_time   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+                                modified_user_id    UUID NULL,
+                                modified_date_time  TIMESTAMPTZ NULL
 );
 
+CREATE INDEX ix_info_table_state_id
+    ON info.info_table(state_id);
 
-	create index ix_info_table_state_id 
-	on info.info_table(state_id);
+
+INSERT INTO info.info_table (
+    code,
+    short_name,
+    full_name,
+    state_id,
+    created_user_id
+)
+VALUES
+    (1, 'STATUS', 'Status', 1, '00000000-0000-0000-0000-000000000001'),
+    (2, 'COUNTRY', 'Country', 1, '00000000-0000-0000-0000-000000000001'),
+    (3, 'CONTENT_TYPE', 'Content Type', 1, '00000000-0000-0000-0000-000000000001'),
+    (4, 'GENDER', 'Gender', 1, '00000000-0000-0000-0000-000000000001'),
+    (5, 'ROLE', 'Role', 1, '00000000-0000-0000-0000-000000000001'),
+    (6, 'CURRENCY_TYPE', 'Currency Type', 1, '00000000-0000-0000-0000-000000000001'),
+    (7, 'ROOM_POST_TYPE', 'Room Post Type', 1, '00000000-0000-0000-0000-000000000001'),
+    (8, 'ROOM_TYPE', 'Room Type', 1, '00000000-0000-0000-0000-000000000001'),
+    (9, 'REGION', 'Region', 1, '00000000-0000-0000-0000-000000000001');
