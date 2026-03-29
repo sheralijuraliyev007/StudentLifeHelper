@@ -13,7 +13,7 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("contents")]
     [Index(nameof(StateId), Name = "ix_contents_state_id")]
-    [Index(nameof(ContentTypeId), Name = " ix_contents_content_type_id")]
+    [Index(nameof(ContentTypeId), Name = "ix_contents_content_type_id")]
     [Index(nameof(StateId), nameof(ContentTypeId), Name = "ix_contents_state_content_type")]
     // Unique filtered index: folder + name where state_id = 1
     [Index(nameof(Folder), nameof(Name), Name = "ui_contents_folder_name", IsUnique = true)]
