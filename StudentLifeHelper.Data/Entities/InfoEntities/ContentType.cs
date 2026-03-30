@@ -28,6 +28,11 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
         [ForeignKey(nameof(InfoTableId))]
         public virtual InfoTable? InfoTable { get; set; }
 
+        [Required]
+        [Column("type_name")]
+        [MaxLength(100)]
+        public string TypeName { get; set; } = null!;
+
 
         [InverseProperty(nameof(Content.ContentType))]
         public virtual List<Content>? Contents{ get; set; }

@@ -15,6 +15,7 @@ create table info.info_content_type(
 );
 
 
+
 create index ix_info_content_type_state_id
 on info.info_content_type(state_id);
 
@@ -24,3 +25,6 @@ on info.info_content_type(info_table_id);
 
 CREATE UNIQUE INDEX ui_info_content_type_full_name
 ON info.info_content_type(full_name);
+
+ALTER TABLE info.info_content_type
+ADD COLUMN type_name VARCHAR(100) NOT NULL UNIQUE;
