@@ -55,6 +55,12 @@ namespace StudentLifeHelper.Service.Infrastructure
                 Message = $"File '{fileName}' retrieved successfully";
                 return new UploadFileModel(fileName, contentType, memoryStream.Length, memoryStream);
             }
+            catch (ObjectNotFoundException)
+            {
+                AddError($"File not found. FileId : {fileName}");
+                return null;
+            }
+
             catch (MinioException ex) {
                 throw new MinioException($"[MinIO Error]: {ex.Message}");
             }
@@ -82,10 +88,11 @@ namespace StudentLifeHelper.Service.Infrastructure
 
                 Message = $"File '{fileName}' removed successfully";
             }
-            catch (ObjectNotFoundException) {
-
+            catch (ObjectNotFoundException){
             }
+            
             catch (Exception e) {
+
                 throw new Exception($"[MinIO Remove Error for {fileName}]: {e.Message}");
             } 
         }
@@ -117,7 +124,7 @@ namespace StudentLifeHelper.Service.Infrastructure
             }
             catch (MinioException e)
             {
-                throw new Exception($"[MinIO Upload Error]: {e.Message}");
+                AddError($"[MinIO Upload Error]: {e.Message}");
             }
         }
 

@@ -10,8 +10,10 @@ namespace StudentLifeHelper.Service.Auth.Interfaces
 {
     public interface IAuthService : IStatusGeneric
     {
-        Task<TokenDto?> RegisterAsync(RegisterModel registerModel); 
-        Task<TokenDto?> LoginAsy(LoginModel loginModel); 
-        Task<UserDto?> GetProfile(); 
+        Task<UserDto?> RegisterAsync(RegisterModel registerModel); 
+        Task<TokenDto?> LoginAsync(LoginModel loginModel); 
+        Task<UserDto?> GetProfile();
+
+        Task<TokenDto?> RefreshTokenAsync(TokenDto tokenDto);
     }
 }

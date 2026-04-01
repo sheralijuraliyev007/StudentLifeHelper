@@ -18,9 +18,10 @@ namespace StudentLifeHelper.Service.Public.Content
         private readonly string[] _permittedMimeTypes = ["image/jpeg", "image/png"];
         public async Task<long?> CreateContentForImage(IFormFile? file, string folderName)
         {
-            var(isValid, message) = ValidateFile(file);
-            if(!isValid)
-                throw new InvalidOperationException(message);
+            bool isValid= ValidateFile(file);
+            if (!isValid)
+                return null;
+                
 
             var result = await ProcessFileAsync(file, folderName);
 
@@ -54,12 +55,16 @@ namespace StudentLifeHelper.Service.Public.Content
         {
             try
             {
-                var (isValid, message) = ValidateFile(file);
-                if (!isValid) throw new InvalidOperationException(message);
+                bool isValid = ValidateFile(file);
+                if (!isValid) return null;
 
                 var content = await unitOfWork.ContentRepository().GetById(id);
 
-                if (content == null) throw new Exception($"Image not found with the id:{id}");
+                if (content == null)
+                {
+                    AddError($"Image not found with id :{id}");
+                    return null;
+                }
 
                 await minioService.RemoveFileAsync(content.Folder, content.FileName);
 
@@ -75,19 +80,21 @@ namespace StudentLifeHelper.Service.Public.Content
                 return content.Id;
             }
             catch (Exception ex) {
+                AddError(ex.Message);
                 return null;
-                throw new Exception(ex.Message);
+                
             }
 
         }
 
 
 
-        private Tuple<bool,string> ValidateFile(IFormFile? file)
+        private bool ValidateFile(IFormFile? file)
         {
             if(file == null || file.Length == 0)
             {
-                return new(false, "File is null");
+                AddError("File is null");
+                return false;
             }
             const long maxFileSizeInMb = 5;
 
@@ -95,31 +102,36 @@ namespace StudentLifeHelper.Service.Public.Content
 
             if(file.Length > maxSize)
             {
-                return new(false,"The max size of image should be 5MB");
+                AddError("The max size of image should be 5MB");
+                return false;
             }
 
             if (!_permittedMimeTypes.Contains(file.ContentType.ToLower()))
-                return new(false,"Only jpg and png types are allowed");
+            {
+                AddError("Only jpg and png types are allowed");
+                return false;
+            }
+                
 
 
             var ext = Path.GetExtension(file.FileName).ToLowerInvariant();
             if(string.IsNullOrEmpty(ext) || !_permittedExtensions.Contains(ext))
             {
-                return new(false, "Only jpg and png types are allowed");
+                AddError("Only jpg and png types are allowed");
+                return false;
             }
 
-            return new(true,"Valid");
+            return true;
         }
 
         private async Task<(UploadFileModel uploadFileModel, int contentTypeId)?> ProcessFileAsync(IFormFile? file, string folderName, bool forImg = true)
         {
             if (forImg)
             {
-                var (isValid, message) = ValidateFile(file);
+                bool isValid = ValidateFile(file);
                 if (!isValid)
-                {
-                    throw new InvalidOperationException(message);
-                }
+                    return null;
+                
             }
             var uploadModel = await GetFileDetails(file);
             await minioService.UploadFileAsync(folderName, uploadModel);
@@ -147,6 +159,39 @@ namespace StudentLifeHelper.Service.Public.Content
 
             return new UploadFileModel(fileName,contentType,size,data);
             
-        } 
+        }
+
+        public async Task<(Stream? data, string? type, string? name)?> DownloadFile(Guid fileId)
+        {
+            var (isExist, content) = await GetContent(fileId);
+            if (!isExist)
+                return new(null, null, null);
+            var fileType = content!.ContentType!.TypeName;
+
+            var model = await minioService.GetFileAsync(content.Folder, content.FileName);
+            CombineStatuses(minioService);
+
+            if(HasErrors) return null;
+
+            Console.WriteLine($"[DownloadFile] File from Minio -> Length : {model?.Data.Length}, Name:{content.Name}");
+
+            model!.Data.Position = 0;
+            return new(model.Data, fileType, content.Name);
+            }
+
+        private async Task<Tuple<bool,StudentLifeHelper.Data.Entities.MainEntities.Content?>> GetContent(Guid fileId)
+        {
+            var content = await (unitOfWork.ContentRepository().GetAll(c => c.ContentType!))
+                .Where(c => c.FileName == fileId).FirstOrDefaultAsync();
+
+            if(content == null)
+            {
+                AddError("File not found");
+                return new(false, null);
+            }
+
+            return new(true, content);
+
+        }
     }
 }
