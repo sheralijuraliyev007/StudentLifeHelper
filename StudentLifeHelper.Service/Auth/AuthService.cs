@@ -16,7 +16,8 @@ using StudentLifeHelper.Service.Public.Content.Interfaces;
 
 namespace StudentLifeHelper.Service.Auth
 {
-    public class AuthService(IUnitOfWork unitOfWork, IContentService contentService, JwtService jwtService, IUserHelper userHelper) : StatusGenericHandler, IAuthService
+    public class AuthService(IUnitOfWork unitOfWork, IContentService contentService, JwtService jwtService, IUserHelper userHelper) :
+        StatusGenericHandler, IAuthService
     {
 
 
