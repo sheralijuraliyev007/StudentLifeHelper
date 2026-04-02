@@ -1,7 +1,7 @@
 create table contents(
 	id					bigserial not null primary key,
 	name				varchar(200) not null,
-	file_name			uuid not null unique,
+	file_id			uuid not null unique,
 	folder				varchar(200) not null,
 	content_type_id		integer not null references info.info_content_type(id),
 	state_id			integer not null references info.info_state(id),

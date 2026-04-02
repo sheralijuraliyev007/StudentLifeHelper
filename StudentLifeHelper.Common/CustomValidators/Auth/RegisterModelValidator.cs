@@ -48,9 +48,6 @@ namespace StudentLifeHelper.Common.CustomValidators.Auth
             RuleFor(m => m.ResidenceCountryId)
                 .GreaterThan(0).WithMessage("Please select residence country");
 
-            RuleFor(m => m.StateId)
-                .GreaterThan(0).WithMessage("Please select state");
-
             RuleFor(m => m.GenderId)
                 .GreaterThan(0).WithMessage("Please select gender");
 

@@ -19,7 +19,6 @@ namespace StudentLifeHelper.Common.Models.Auth
 
         public int BirthCountryId { get; set; }
         public int ResidenceCountryId { get; set; }
-        public int StateId { get; set; }
         public int GenderId { get; set; }
         public int RegionId { get; set; }
     }

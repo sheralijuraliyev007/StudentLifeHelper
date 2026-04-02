@@ -1,20 +1,18 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StatusGeneric;
 using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.Dtos.Auth;
 using StudentLifeHelper.Common.Dtos.User;
+using StudentLifeHelper.Common.Extensions;
 using StudentLifeHelper.Common.Models.Auth;
 using StudentLifeHelper.Data.Entities.MainEntities;
 using StudentLifeHelper.Data.Repositories.Interfaces;
 using StudentLifeHelper.Service.Auth.Interfaces;
 using StudentLifeHelper.Service.Common.Interfaces;
 using StudentLifeHelper.Service.Public.Content.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace StudentLifeHelper.Service.Auth
 {
@@ -62,11 +60,33 @@ namespace StudentLifeHelper.Service.Auth
 
         #endregion
 
-        public Task<UserDto?> GetProfile()
+        public async Task<UserDto?> GetProfile()
         {
+            var userId = Guid.Parse(userHelper.GetUserId());
 
+            var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img!))
+                .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if(user is null)
+            {
+                AddError("User not found.");
+                return null;
+            }
+
+            var config = new TypeAdapterConfig();
+            config.NewConfig<User, UserDto>()
+                .Map(dest => dest.Role, src => src.Role!.FullName)
+                .Map(dest => dest.Region, src => src.Region!.FullName)
+                .Map(dest => dest.Gender, src => src.Gender!.FullName)
+                .Map(dest => dest.BirthCountry, src => src.BirthCountry!.FullName)
+                .Map(dest => dest.ResidenceCountry, src => src.ResidenceCountry!.FullName)
+                .Map(dest => dest.ImgUrl, src => src.ImgId != null && src.Img != null
+                    ? src.Img.FileId.GetFileUrl() : null);
+
+            var userDto = user.Adapt<User, UserDto>(config);
+
+            return userDto;
         }
-
 
         public async Task<TokenDto?> RefreshTokenAsync(TokenDto tokenDto)
         {
@@ -97,11 +117,51 @@ namespace StudentLifeHelper.Service.Auth
             using var transaction = unitOfWork.BeginTransaction();
             try
             {
+                var existingUser = await GetUserByUsername(registerModel.Username);
+                if (existingUser != null) { 
+                    AddError("Username is already taken.");
+                    return null;
+                }
+
+                var newUser = new User
+                {
+                    FirstName = registerModel.FirstName,
+                    LastName = registerModel.LastName,
+                    MiddleName = registerModel.MiddleName,
+                    BirthDate = registerModel.BirthDate,
+                    Username = registerModel.Username,
+                    BirthCountryId = registerModel.BirthCountryId,
+                    ResidenceCountryId = registerModel.ResidenceCountryId,
+                    StateId = StateIdConstants.Active,
+                    GenderId = registerModel.GenderId,
+                    RegionId = registerModel.RegionId,
+                    RoleId = RoleConstants.UserRoleId,
+                };
+                newUser.PasswordHash = HashPasword(newUser, registerModel.Password);
+
+                await unitOfWork.UserRepository().Add(newUser);
+                await unitOfWork.SaveChanges();
+
+
+                await transaction.CommitAsync();
+
+                var config = new TypeAdapterConfig();
+                config.NewConfig<User, UserDto>()
+                    .Map(dest => dest.Role, src => src.Role!.FullName)
+                    .Map(dest => dest.Region, src => src.Region!.FullName)
+                    .Map(dest => dest.Gender, src => src.Gender!.FullName)
+                    .Map(dest=> dest.BirthCountry, src => src.BirthCountry!.FullName)
+                    .Map(dest => dest.ResidenceCountry, src => src.ResidenceCountry!.FullName)
+                    .Map(dest => dest.ImgUrl, src => src.ImgId != null && src.Img != null 
+                       ? src.Img.FileId.GetFileUrl() : null);
+
+                return newUser.MapToDto<User, UserDto>();
 
             }
             catch (Exception ex) { 
-
-            
+                await transaction.RollbackAsync();
+                AddError(ex.Message);
+                return null;
             }
         }
 

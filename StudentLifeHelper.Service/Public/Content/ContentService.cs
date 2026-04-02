@@ -32,7 +32,7 @@ namespace StudentLifeHelper.Service.Public.Content
             var content = new StudentLifeHelper.Data.Entities.MainEntities.Content
             {
                 Name = file!.FileName,
-                FileName = uploadFileModel.FileName,
+                FileId = uploadFileModel.FileName,
                 ContentTypeId = contentTypeId,
                 Folder = folderName
             };
@@ -66,14 +66,14 @@ namespace StudentLifeHelper.Service.Public.Content
                     return null;
                 }
 
-                await minioService.RemoveFileAsync(content.Folder, content.FileName);
+                await minioService.RemoveFileAsync(content.Folder, content.FileId);
 
                 var result = await ProcessFileAsync(file, content.Folder);
                 if (result is null) return null;
 
                 var (uploadFileModel, contentTypeId) = result.Value;
                 content.Name = file!.FileName;
-                content.FileName = uploadFileModel.FileName;
+                content.FileId = uploadFileModel.FileName;
                 content.ContentTypeId = contentTypeId;
                 await unitOfWork.ContentRepository().Update(content);
                 await unitOfWork.SaveChanges();
@@ -168,7 +168,7 @@ namespace StudentLifeHelper.Service.Public.Content
                 return new(null, null, null);
             var fileType = content!.ContentType!.TypeName;
 
-            var model = await minioService.GetFileAsync(content.Folder, content.FileName);
+            var model = await minioService.GetFileAsync(content.Folder, content.FileId);
             CombineStatuses(minioService);
 
             if(HasErrors) return null;
@@ -182,7 +182,7 @@ namespace StudentLifeHelper.Service.Public.Content
         private async Task<Tuple<bool,StudentLifeHelper.Data.Entities.MainEntities.Content?>> GetContent(Guid fileId)
         {
             var content = await (unitOfWork.ContentRepository().GetAll(c => c.ContentType!))
-                .Where(c => c.FileName == fileId).FirstOrDefaultAsync();
+                .Where(c => c.FileId == fileId).FirstOrDefaultAsync();
 
             if(content == null)
             {

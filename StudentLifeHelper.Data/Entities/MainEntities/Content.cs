@@ -32,8 +32,8 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public string Name { get; set; } = string.Empty!;
 
         [Required]
-        [Column("file_name")]
-        public Guid FileName { get; set; }
+        [Column("file_id")]
+        public Guid FileId { get; set; }
 
         [Required]
         [Column("folder")]
