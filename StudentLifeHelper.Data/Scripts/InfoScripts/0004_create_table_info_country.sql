@@ -22,3 +22,8 @@ on info.info_country(info_table_id);
 
 CREATE UNIQUE INDEX ui_info_country_full_name
 ON info.info_country(full_name);
+
+INSERT INTO info.info_country
+(code, short_name, full_name, info_table_id, state_id, created_user_id)
+VALUES
+    (1,'UZ','Uzbekistan',2,1,'00000000-0000-0000-0000-000000000001');

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using StatusGeneric;
+using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.MinIO;
 
 using StudentLifeHelper.Data.Repositories.Interfaces;
@@ -34,7 +35,9 @@ namespace StudentLifeHelper.Service.Public.Content
                 Name = file!.FileName,
                 FileId = uploadFileModel.FileName,
                 ContentTypeId = contentTypeId,
-                Folder = folderName
+                Folder = folderName,
+                StateId = StateIdConstants.Active,
+                CreatedUserId = Guid.Parse("00000000-0000-0000-0000-000000000001")
             };
 
             await unitOfWork.ContentRepository().Add(content);

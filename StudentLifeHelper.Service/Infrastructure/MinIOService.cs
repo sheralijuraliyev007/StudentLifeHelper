@@ -6,7 +6,6 @@ using StatusGeneric;
 using StudentLifeHelper.Common.MinIO;
 using StudentLifeHelper.Common.Settings.MioIO;
 using StudentLifeHelper.Service.Infrastructure.Interfaces;
-using System.Diagnostics;
 
 
 namespace StudentLifeHelper.Service.Infrastructure

@@ -27,3 +27,8 @@ ON info.info_region(info_table_id, short_name);
 
 CREATE UNIQUE INDEX ui_info_region_full_name
 ON info.info_region(info_table_id, full_name);
+
+INSERT INTO info.info_region
+(code, short_name, full_name, state_id, info_table_id, created_user_id)
+VALUES
+    (1, 'SEO', 'Seoul', 1, 1, '00000000-0000-0000-0000-000000000001');Q

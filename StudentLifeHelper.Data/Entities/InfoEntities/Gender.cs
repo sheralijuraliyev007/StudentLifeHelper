@@ -29,7 +29,7 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
         [InverseProperty(nameof(User.Gender))]
         public virtual List<User>? Users { get; set; }
 
-        [InverseProperty(nameof(RoomPost.ForGenderId))]
+        [InverseProperty(nameof(RoomPost.Gender))]
         public virtual List<RoomPost>? ForGenderRoomPosts { get; set; }
 
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentLifeHelper.Api.Controllers.Public.Base;
+using StudentLifeHelper.Common.Dtos.User;
 using StudentLifeHelper.Common.Models.Auth;
 using StudentLifeHelper.Service.Auth.Interfaces;
 
@@ -11,7 +12,7 @@ namespace StudentLifeHelper.Api.Controllers.Public
         [HttpPost]
         public async Task<ActionResult<string>> Register([FromForm] RegisterModel registerModel)
         {
-            var result =await  service.RegisterAsync(registerModel);
+            var result = await service.RegisterAsync(registerModel);
             if (service.IsValid)
             {
                 return Ok(result);

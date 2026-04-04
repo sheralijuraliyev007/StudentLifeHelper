@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Minio.Helper;
 using StatusGeneric;
 using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.Dtos.Auth;
@@ -118,11 +119,20 @@ namespace StudentLifeHelper.Service.Auth
             using var transaction = unitOfWork.BeginTransaction();
             try
             {
-                var existingUser = await GetUserByUsername(registerModel.Username);
-                if (existingUser != null) { 
+                //var existingUser = await GetUserByUsername(registerModel.Username);
+                //if (existingUser != null) { 
+                //    AddError("Username is already taken.");
+                //    return null;
+                //}
+
+                var existingUser = await UserNameExists(registerModel.Username);
+                if (existingUser)
+                {
                     AddError("Username is already taken.");
                     return null;
                 }
+
+                var contentId = await contentService.CreateContentForImage(registerModel.ImageFile, "profile");
 
                 var newUser = new User
                 {
@@ -133,6 +143,7 @@ namespace StudentLifeHelper.Service.Auth
                     Username = registerModel.Username,
                     BirthCountryId = registerModel.BirthCountryId,
                     ResidenceCountryId = registerModel.ResidenceCountryId,
+                    ImgId = contentId,  
                     StateId = StateIdConstants.Active,
                     GenderId = registerModel.GenderId,
                     RegionId = registerModel.RegionId,
@@ -166,13 +177,19 @@ namespace StudentLifeHelper.Service.Auth
             }
         }
 
-
+            
         private async Task<User?> GetUserByUsername(string username)
         {
             var user = await unitOfWork.UserRepository().GetAll(u => u.Role!)
                 .Where(x => x.Username.Equals(username) && x.StateId == StateIdConstants.Active).FirstOrDefaultAsync();
 
             return user;
+        }
+
+        private async Task<bool> UserNameExists(string username)
+        {
+                       return await unitOfWork.UserRepository().GetAll()
+                .AnyAsync(u => u.Username.Equals(username));
         }
 
 

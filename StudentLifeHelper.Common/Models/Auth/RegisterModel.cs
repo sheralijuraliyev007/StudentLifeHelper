@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace StudentLifeHelper.Common.Models.Auth
 {
@@ -13,6 +14,7 @@ namespace StudentLifeHelper.Common.Models.Auth
         public string? MiddleName { get; set; }
         public DateTime? BirthDate { get; set; }
 
+        public IFormFile? ImageFile { get; set; }
 
         public string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
