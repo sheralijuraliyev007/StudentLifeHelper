@@ -22,28 +22,35 @@ namespace StudentLifeHelper.Service.Public.Content
             bool isValid= ValidateFile(file);
             if (!isValid)
                 return null;
-                
+
 
             var result = await ProcessFileAsync(file, folderName);
-
             if (result is null) return null;
 
             var (uploadFileModel, contentTypeId) = result.Value;
 
-            var content = new StudentLifeHelper.Data.Entities.MainEntities.Content
+            try
             {
-                Name = file!.FileName,
-                FileId = uploadFileModel.FileName,
-                ContentTypeId = contentTypeId,
-                Folder = folderName,
-                StateId = StateIdConstants.Active,
-                CreatedUserId = Guid.Parse("00000000-0000-0000-0000-000000000001")
-            };
+                var content = new StudentLifeHelper.Data.Entities.MainEntities.Content
+                {
+                    Name = $"{uploadFileModel.FileName}{Path.GetExtension(file.FileName)}",
+                    FileId = uploadFileModel.FileName,
 
-            await unitOfWork.ContentRepository().Add(content);
-            await unitOfWork.SaveChanges();
-            return content.Id;
+                    ContentTypeId = contentTypeId,
+                    Folder = folderName,
+                    StateId = StateIdConstants.Active,
+                    CreatedUserId = Guid.Parse("00000000-0000-0000-0000-000000000001")
+                };
 
+                await unitOfWork.ContentRepository().Add(content);
+                await unitOfWork.SaveChanges();
+                return content.Id;
+            }
+            catch (Exception ex)
+            {
+                AddError(ex.ToString());
+                throw;
+            }
 
 
 
@@ -146,9 +153,14 @@ namespace StudentLifeHelper.Service.Public.Content
             var contentTypeId = await (unitOfWork.ContentTypeRepository().GetAll())
                 .Where(c => c.TypeName == uploadModel.ContentType)
                 .Select(c => c.Id)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
 
-            return (uploadModel, contentTypeId);
+            if (contentTypeId == 0)
+            {
+                AddError($"Content type not found: {uploadModel.ContentType}");
+                return null;
+            }
+            return new(uploadModel, contentTypeId);
         }
 
         private async Task<UploadFileModel> GetFileDetails(IFormFile? file) {

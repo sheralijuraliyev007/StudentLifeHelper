@@ -21,11 +21,11 @@ namespace StudentLifeHelper.Data.Entities.BaseEntities
         public DateTime CreatedDateTime { get; set; } = DateTime.UtcNow;
 
 
-        [Required]
+        
         [Column("modified_user_id")]
         public Guid? ModifiedUserId{ get; set; }
 
-        [Required]
+        
         [Column("modified_date_time")]
         public DateTime? ModifiedDateTime { get; set; }
 

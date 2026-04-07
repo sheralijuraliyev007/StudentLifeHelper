@@ -89,9 +89,9 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public string? RefreshToken { get; set; }
 
 
-        [Column("refresh_token_expiry_time")]
+        [Column("refresh_token_expire_time")]
         [Required]
-        public DateTimeOffset RefreshTokenExpireTime { get; set; }
+        public DateTimeOffset RefreshTokenExpireTime { get; set; }   
 
 
 

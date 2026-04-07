@@ -26,11 +26,8 @@ namespace StudentLifeHelper.Service.Infrastructure
             {
                 client = client.WithSSL();
             }
-            _minioClient = (MinioClient)new MinioClient()
-                .WithEndpoint(settings.Endpoint)
-                .WithCredentials(settings.AccessKey, settings.SecretKey)
-                .Build();
-                ;
+            _minioClient = (MinioClient)client.Build();
+                
         }
 
         public async Task<UploadFileModel?> GetFileAsync(string folderName, Guid fileName)

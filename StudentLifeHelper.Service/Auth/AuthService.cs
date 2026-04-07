@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Minio.Helper;
 using StatusGeneric;
 using StudentLifeHelper.Common.Constants;
@@ -66,7 +67,7 @@ namespace StudentLifeHelper.Service.Auth
         {
             var userId = Guid.Parse(userHelper.GetUserId());
 
-            var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img!))
+            var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img, u => u.BirthCountry!, u => u.ResidenceCountry!, u => u.Gender!, u => u.Region!, u=>u.State))
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if(user is null)
@@ -85,7 +86,7 @@ namespace StudentLifeHelper.Service.Auth
                 .Map(dest => dest.ImgUrl, src => src.ImgId != null && src.Img != null
                     ? src.Img.FileId.GetFileUrl() : null);
 
-            var userDto = user.Adapt<User, UserDto>(config);
+            var userDto = user.MapToDto<User, UserDto>(config);
 
             return userDto;
         }
@@ -133,9 +134,11 @@ namespace StudentLifeHelper.Service.Auth
                 }
 
                 var contentId = await contentService.CreateContentForImage(registerModel.ImageFile, "profile");
+                var userId = Guid.NewGuid();
 
                 var newUser = new User
                 {
+                    Id = userId,
                     FirstName = registerModel.FirstName,
                     LastName = registerModel.LastName,
                     MiddleName = registerModel.MiddleName,
@@ -143,44 +146,80 @@ namespace StudentLifeHelper.Service.Auth
                     Username = registerModel.Username,
                     BirthCountryId = registerModel.BirthCountryId,
                     ResidenceCountryId = registerModel.ResidenceCountryId,
-                    ImgId = contentId,  
+                    ImgId = contentId,
                     StateId = StateIdConstants.Active,
                     GenderId = registerModel.GenderId,
                     RegionId = registerModel.RegionId,
                     RoleId = RoleConstants.UserRoleId,
+                    RefreshTokenExpireTime = DateTime.UtcNow.AddHours(1),
+                    CreatedUserId = userId
                 };
                 newUser.PasswordHash = HashPasword(newUser, registerModel.Password);
+
 
                 await unitOfWork.UserRepository().Add(newUser);
                 await unitOfWork.SaveChanges();
 
+                var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img!, u => u.ResidenceCountry!, u => u
+                .Gender!, u => u.Region!, u => u.BirthCountry!, u=>u.State!)).FirstOrDefaultAsync(u => u.Id == newUser.Id);
+
 
                 await transaction.CommitAsync();
+
+                if(user is null)
+                {
+                    AddError("User created but not loaded.");
+                    return null;
+                }
+
 
                 var config = new TypeAdapterConfig();
                 config.NewConfig<User, UserDto>()
                     .Map(dest => dest.Role, src => src.Role!.FullName)
                     .Map(dest => dest.Region, src => src.Region!.FullName)
                     .Map(dest => dest.Gender, src => src.Gender!.FullName)
-                    .Map(dest=> dest.BirthCountry, src => src.BirthCountry!.FullName)
+                    .Map(dest => dest.BirthCountry, src => src.BirthCountry!.FullName)
                     .Map(dest => dest.ResidenceCountry, src => src.ResidenceCountry!.FullName)
+                    .Map(dest => dest.State, src => src.State!.FullName)
                     .Map(dest => dest.ImgUrl, src => src.ImgId != null && src.Img != null 
                        ? src.Img.FileId.GetFileUrl() : null);
 
-                return newUser.MapToDto<User, UserDto>();
+                //        var dto = new UserDto
+                //        {
+                //            Id = user.Id,
+                //            FirstName = user.FirstName,
+                //            LastName = user.LastName,
+                //            MiddleName = user.MiddleName,
+                //            Username = user.Username,
+                //            BirthDate = user.BirthDate,
+                //            Role = user.Role?.FullName,
+                //            State = user.State?.FullName,
+                //            Gender = user.Gender?.FullName,
+                //            BirthCountry = user.BirthCountry?.FullName,
+                //            ResidenceCountry = user.ResidenceCountry?.FullName,
+                //            Region = user.Region?.FullName,
+                //            ImgUrl = user.ImgId != null && user.Img != null
+                //? user.Img.FileId.GetFileUrl()
+                //: null
+                //        };
+
+                //return user.Adapt<UserDto>(config);
+                return user.MapToDto<User, UserDto>(config);
 
             }
-            catch (Exception ex) { 
-                await transaction.RollbackAsync();
+            catch (Exception ex) {
+                if (transaction.GetDbTransaction().Connection != null)
+                    await transaction.RollbackAsync();
+
                 AddError(ex.Message);
-                return null;
+                throw;
             }
         }
 
             
         private async Task<User?> GetUserByUsername(string username)
         {
-            var user = await unitOfWork.UserRepository().GetAll(u => u.Role!)
+            var user = await unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img, u => u.ResidenceCountry!, u => u.ResidenceCountry!, u=> u.Gender!,u => u.Region!, u=>u.State!)
                 .Where(x => x.Username.Equals(username) && x.StateId == StateIdConstants.Active).FirstOrDefaultAsync();
 
             return user;

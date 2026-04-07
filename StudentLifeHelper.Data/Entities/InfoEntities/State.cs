@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
-    [Table("info.info_state")]
+    [Table("info_state",Schema =  "info")]
     [Index(nameof(Code), IsUnique =true)]
     public class State : BaseCommonEntity
     {

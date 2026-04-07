@@ -23,7 +23,7 @@ namespace StudentLifeHelper.Service.Auth
 
         public TokenDto GenerateToken(User user, bool populateExp)
         {
-            var key = Encoding.UTF8.GetBytes(_jwtSetting.Key);
+            var key = Encoding.UTF32.GetBytes(_jwtSetting.Key);
             var signingKey = new SigningCredentials(new SymmetricSecurityKey(key), "HS256");
 
             var claims = new List<Claim>()
@@ -38,7 +38,7 @@ namespace StudentLifeHelper.Service.Auth
                 audience: _jwtSetting.Audience,
                 signingCredentials: signingKey,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(12));
+                expires: DateTime.UtcNow.AddHours(1));
 
             var accessToken = new JwtSecurityTokenHandler().WriteToken(security);
 
@@ -79,8 +79,8 @@ namespace StudentLifeHelper.Service.Auth
             var tokenHandler = new JwtSecurityTokenHandler();
             var principal = tokenHandler.ValidateToken(accessToken, options, out var securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-
-            if (jwtSecurityToken != null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (jwtSecurityToken == null ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 return new(false, null);
             }

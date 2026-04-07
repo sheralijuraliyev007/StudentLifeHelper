@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
-    [Table("info.info_table")]
+    [Table("info_table",Schema =  "info")]
     [Index(nameof(StateId), Name = "ix_info_table_state_id")]
     public class InfoTable :BaseInfoEntity
     {

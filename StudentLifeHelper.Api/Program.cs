@@ -1,4 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using StudentLifeHelper.Common.Settings.Jwt;
 using StudentLifeHelper.Common.Settings.MioIO;
 using StudentLifeHelper.Data.Context;
 using StudentLifeHelper.Data.Repositories;
@@ -13,14 +17,85 @@ using StudentLifeHelper.Service.Infrastructure;
 using StudentLifeHelper.Service.Infrastructure.Interfaces;
 using StudentLifeHelper.Service.Public.Content;
 using StudentLifeHelper.Service.Public.Content.Interfaces;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Description = "JWT Bearer. : \"Authorization: Bearer { token } \"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
+
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    var jwtParam = builder.Configuration.GetSection("JwtSettings").Get<JwtSetting>();
+
+
+    var key = System.Text.Encoding.UTF32.GetBytes(jwtParam.Key);
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidIssuer = jwtParam.Issuer,
+        ValidateIssuer = true,
+        ValidAudience = jwtParam.Audience,
+        ValidateAudience = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuerSigningKey = true
+    };
+
+
+
+    options.Events = new JwtBearerEvents()
+    {
+        OnMessageReceived = context =>
+        {
+            var token = context.Token;
+
+            if (string.IsNullOrEmpty(token))
+            {
+                token = context.Request.Query["token"];
+
+                if (!string.IsNullOrEmpty(token))
+                {
+                    context.Token = token;
+                }
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+
+
+});
+
+
+
 
 
 
@@ -52,7 +127,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 
+
 var app = builder.Build();
+
 
 
 
@@ -66,8 +143,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
-//app.UseAuthorization();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 
 

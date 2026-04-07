@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
 
-    [Table("info.info_gender")]
+    [Table("info_gender",Schema =  "info")]
     [Index(nameof(StateId),Name = "ix_info_gender_state_id")]
     [Index(nameof(InfoTableId),Name = "ix_info_gender_info_table_id")]
     [Index(nameof(FullName),Name = "ui_info_gender_full_name", IsUnique =true)]

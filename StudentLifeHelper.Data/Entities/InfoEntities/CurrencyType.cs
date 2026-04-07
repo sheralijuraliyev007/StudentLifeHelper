@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
 
-    [Table("info.info_currency_type")]
+    [Table("info_currency_type",Schema =  "info")]
     [Index(nameof(StateId), Name = "ix_info_currency_type_state_id")]
     [Index(nameof(InfoTableId), Name = "ix_info_currency_type_info_table_id")]
     [Index(nameof(ShortName), Name = "ui_info_currency_type_short_name", IsUnique = true)]

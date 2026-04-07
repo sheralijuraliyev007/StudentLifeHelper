@@ -12,7 +12,7 @@ create table users(
 	state_id						integer not null references info.info_state(id),
 	role_id							integer not null references info.info_role(id),
 	refresh_token					text null,
-	refresh_token_expire_time		TIMESTAMPTZ,
+    refresh_token_expiry_time		TIMESTAMPTZ,
 	img_id							bigint null references contents(id),
 	gender_id						integer not null references info.info_gender(id),
 	region_id						integer not null references info.info_region(id),
@@ -22,6 +22,8 @@ create table users(
 	modified_user_id   uuid null,
 	modified_date_time TIMESTAMPTZ  null
 );
+
+
 
 create index ix_users_birth_country_id
 on users(birth_country_id);
