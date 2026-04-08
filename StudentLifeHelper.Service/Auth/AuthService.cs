@@ -67,7 +67,7 @@ namespace StudentLifeHelper.Service.Auth
         {
             var userId = Guid.Parse(userHelper.GetUserId());
 
-            var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img, u => u.BirthCountry!, u => u.ResidenceCountry!, u => u.Gender!, u => u.Region!, u=>u.State))
+            var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img, u => u.BirthCountry!, u => u.ResidenceCountry!, u => u.Gender!, u => u.Region!, u=>u.State!))
                 .FirstOrDefaultAsync(u => u.Id == userId);
 
             if(user is null)
@@ -82,6 +82,7 @@ namespace StudentLifeHelper.Service.Auth
                 .Map(dest => dest.Region, src => src.Region!.FullName)
                 .Map(dest => dest.Gender, src => src.Gender!.FullName)
                 .Map(dest => dest.BirthCountry, src => src.BirthCountry!.FullName)
+                .Map(dest => dest.State, src => src.State!.FullName)
                 .Map(dest => dest.ResidenceCountry, src => src.ResidenceCountry!.FullName)
                 .Map(dest => dest.ImgUrl, src => src.ImgId != null && src.Img != null
                     ? src.Img.FileId.GetFileUrl() : null);
@@ -135,7 +136,7 @@ namespace StudentLifeHelper.Service.Auth
 
                 var contentId = await contentService.CreateContentForImage(registerModel.ImageFile, "profile");
                 var userId = Guid.NewGuid();
-
+                await unitOfWork.ContentRepository().GetAll().Where(c => c.Id == contentId).ExecuteUpdateAsync(c => c.SetProperty(x => x.CreatedUserId, userId));
                 var newUser = new User
                 {
                     Id = userId,

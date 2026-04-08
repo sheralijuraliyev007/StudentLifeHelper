@@ -30,7 +30,7 @@ namespace StudentLifeHelper.Service.Auth
             {
                 new(ClaimTypes.Name, user.Username),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new(ClaimTypes.Role, user.Role?.ShortName!),
+                new(ClaimTypes.Role, user.Role?.FullName!),
                 new Claim("role_id", user.RoleId.ToString())
             };
 

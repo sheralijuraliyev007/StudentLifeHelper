@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_4.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_5.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_6.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_7.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0001_create_table_info_state.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0004_create_table_info_country.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0005_create_table_info_content_type.sql" dialect="GenericSQL" />
