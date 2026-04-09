@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StudentLifeHelper.Common.Models.Info
+namespace StudentLifeHelper.Common.Models.Info.ContentType
 {
     public class InfoContentTypeCreateModel : BaseInfoCreateModelWithTableId
     {
