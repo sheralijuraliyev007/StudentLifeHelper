@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
+
 using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Base
@@ -9,7 +10,7 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
         where TEntity : class
     {
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public async Task<IActionResult> GetAll()
         {
             var result = await service.GetAll<TDto>();
@@ -21,7 +22,7 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public async Task<IActionResult> GetById(TId id)
         {
             var result = await service.GetById<TDto, TId>(id);
@@ -33,7 +34,7 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public async Task<IActionResult> Create(TCreateModel model)
         {
             var result = await service.Create(model);
@@ -45,7 +46,7 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public async Task<IActionResult> Update(TId id, TUpdateModel model)
         {
             var result = await service.Update(id, model);
@@ -58,7 +59,7 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Administrator")]
+        [Authorize]
         public async Task<IActionResult> Delete(TId id)
         {
             var result = await service.DeleteById(id);
@@ -68,6 +69,30 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             }
             return BadRequest();
 
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> MakePassive(TId id)
+        {
+            var result = await service.MakePassiveById(id);
+            if (service.IsValid)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> MakeActive(TId id)
+        {
+            var result = await service.MakeActiveById(id);
+            if (service.IsValid)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
         }
     }
 }

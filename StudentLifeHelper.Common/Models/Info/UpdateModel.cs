@@ -19,5 +19,6 @@ namespace StudentLifeHelper.Common.Models.Info
         [Required]
         [MaxLength(200)]
         public string FullName { get; set; } = string.Empty;
+
     }
 }

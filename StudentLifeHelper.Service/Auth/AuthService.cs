@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using Minio.Helper;
 using StatusGeneric;
 using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.Dtos.Auth;

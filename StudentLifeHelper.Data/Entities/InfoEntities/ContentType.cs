@@ -21,12 +21,6 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 
     public class ContentType : BaseInfoEntity
     {
-        [Required]
-        [Column("info_table_id")]
-        public int InfoTableId { get; set; }
-
-        [ForeignKey(nameof(InfoTableId))]
-        public virtual InfoTable? InfoTable { get; set; }
 
         [Required]
         [Column("type_name")]

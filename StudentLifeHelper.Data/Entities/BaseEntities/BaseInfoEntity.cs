@@ -1,15 +1,11 @@
 ﻿using StudentLifeHelper.Data.Entities.InfoEntities;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace StudentLifeHelper.Data.Entities.BaseEntities
 {
-    public class BaseInfoEntity : BaseCommonEntity, IHasState
+    public class BaseInfoEntity : BaseCommonEntity, IHasState, IHasCommonAttributes, IHasInfoTable
     {
         [Required]
         [Column("id")]
@@ -18,7 +14,7 @@ namespace StudentLifeHelper.Data.Entities.BaseEntities
 
         [Required]
         [Column("code")]
-        [Range(1,int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int Code { get; set; }
 
 
@@ -39,9 +35,13 @@ namespace StudentLifeHelper.Data.Entities.BaseEntities
 
 
         [ForeignKey(nameof(StateId))]
-        public virtual State? State { get; set; } 
+        public virtual State? State { get; set; }
 
+        [Required]
+        [Column("info_table_id")]
+        public int InfoTableId { get; set; }
 
-
-    }
+        [ForeignKey(nameof(InfoTableId))]
+        public virtual InfoTable? InfoTable { get; set; }
+    } 
 }

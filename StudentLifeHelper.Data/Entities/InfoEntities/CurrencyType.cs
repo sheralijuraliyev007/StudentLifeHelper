@@ -13,20 +13,11 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
     [Index(nameof(ShortName), Name = "ui_info_currency_type_short_name", IsUnique = true)]
     public class CurrencyType : BaseInfoEntity
     {
-        [Required]
-        [Column("info_table_id")]
-        public int InfoTableId { get; set; }
 
 
         [Column("symbol")]
         [MaxLength(10)]
         public string? Symbol { get; set; }
-
-
-
-        [ForeignKey(nameof(InfoTableId))]
-        public virtual InfoTable? InfoTable { get; set; }
-
 
 
         [InverseProperty(nameof(CurrencyPost.FromCurrencyType))]

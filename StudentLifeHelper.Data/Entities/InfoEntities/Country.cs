@@ -14,12 +14,6 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
     [Index(nameof(Code),Name = "ui_info_country_code", IsUnique =true)]
     public class Country : BaseInfoEntity
     {
-        [Required]
-        [Column("info_table_id")]
-        public int InfoTableId { get; set; }
-
-        [ForeignKey(nameof(InfoTableId))]
-        public virtual InfoTable? InfoTable { get; set; }
 
         [InverseProperty(nameof(User.BirthCountry))]
         public virtual List<User>? BirthUsers{ get; set; }

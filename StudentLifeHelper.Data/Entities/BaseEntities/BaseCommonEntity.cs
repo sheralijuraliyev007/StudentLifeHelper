@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace StudentLifeHelper.Data.Entities.BaseEntities
 {
 
-    public abstract class BaseCommonEntity
+    public abstract class BaseCommonEntity 
     {
 
         [Required]

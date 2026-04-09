@@ -15,11 +15,6 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 
     public class RoomPostType : BaseInfoEntity
     {
-        [Required]
-        [Column("info_table_id")]
-        public int InfoTableId { get; set; }
-
-        public virtual InfoTable? InfoTable { get; set; }
 
         [InverseProperty(nameof(RoomPost.RoomPostType))]
         public virtual List<RoomPost>? RoomPosts { get; set; }

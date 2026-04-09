@@ -15,13 +15,6 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
     
     public class Region : BaseInfoEntity
     {
-        [Required]
-        [Column("info_table_id")]
-        public int InfoTableId { get; set; }
-
-
-        [ForeignKey(nameof(InfoTableId))]
-        public virtual InfoTable? InfoTable { get; set; }
 
         [InverseProperty(nameof(User.Region))]
         public virtual List<User>? Users  { get; set; }

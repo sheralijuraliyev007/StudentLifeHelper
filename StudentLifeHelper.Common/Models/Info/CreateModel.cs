@@ -21,5 +21,8 @@ namespace StudentLifeHelper.Common.Models.Info
         [Required]
         [MaxLength(200)]
         public string FullName { get; set; } = null!;
+
+        [Required]
+        public int InfoTableId { get; set; }
     }
 }
