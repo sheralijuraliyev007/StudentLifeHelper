@@ -31,6 +31,7 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
             }
             entity!.StateId = StateIdConstants.Passive;
+            entity.ModifiedUserId = Guid.Parse(userHelper.GetUserId());
 
             await baseRepository.Update(entity);
             await baseRepository.SaveChanges();
@@ -47,6 +48,7 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
             }
             entity!.StateId = StateIdConstants.Active;
+            entity.ModifiedUserId = Guid.Parse(userHelper.GetUserId());
             await baseRepository.Update(entity);
             await baseRepository.SaveChanges();
             return "Activated successfully";
@@ -104,6 +106,8 @@ namespace StudentLifeHelper.Service.Admin.Base
         private async Task<Tuple<bool, TEntity?>> GetEntityIfExists<TId>(TId id)
         {
             var entity = await baseRepository.GetById(id);
+
+            
             if (entity is null /*|| entity.StateId != StateIdConstants.Active*/)
                 return new(false, null);
 
