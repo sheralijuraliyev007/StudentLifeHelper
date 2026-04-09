@@ -8,7 +8,7 @@ using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Info
 {
-    public class RoleController(IBaseInfoService<Role> service) : BaseInfoController<Role, CreateModel, UpdateModel,InfoDto, int>(service)
+    public class RoleController(IBaseInfoService<Role> service) : BaseInfoController<Role, BaseInfoCreateModelWithTableId, BaseInfoUpdateModel,InfoDto, int>(service)
     {
 
     }

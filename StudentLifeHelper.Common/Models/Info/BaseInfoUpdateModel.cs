@@ -7,18 +7,15 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Common.Models.Info
 {
-    public class UpdateModel
+    public class BaseInfoUpdateModel
     {
         [Required]
         public int Code { get; set; }
 
-        [Required]
         [MaxLength(15)]
-        public string ShortName { get; set; } = string.Empty;
+        public string? ShortName { get; set; }
 
-        [Required]
         [MaxLength(200)]
-        public string FullName { get; set; } = string.Empty;
-
+        public string? FullName { get; set; }
     }
 }

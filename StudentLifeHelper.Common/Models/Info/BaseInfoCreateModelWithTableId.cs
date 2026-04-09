@@ -7,21 +7,8 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Common.Models.Info
 {
-    public class CreateModel
+    public class BaseInfoCreateModelWithTableId : BaseInfoCreateModel
     {
-        [Required]
-        public int Code { get; set; }
-
-
-        [Required]
-        [MaxLength(15)]
-        public string ShortName { get; set; } = null!;
-
-
-        [Required]
-        [MaxLength(200)]
-        public string FullName { get; set; } = null!;
-
         [Required]
         public int InfoTableId { get; set; }
     }

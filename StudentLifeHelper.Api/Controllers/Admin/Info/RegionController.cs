@@ -8,7 +8,7 @@ using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Info
 {
-    public class RegionController(IBaseInfoService<Region> service) : BaseInfoController<Region,CreateModel,UpdateModel,InfoDto,int>(service)
+    public class RegionController(IBaseInfoService<Region> service) : BaseInfoController<Region,BaseInfoCreateModelWithTableId, BaseInfoUpdateModel,InfoDto,int>(service)
     {
 
     }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentLifeHelper.Data.Entities.BaseEntities
 {
-    public class BaseInfoEntity : BaseCommonEntity, IHasState, IHasCommonAttributes, IHasInfoTable
+    public class BaseInfoEntity : BaseCommonEntity, IHasState, IHasCommonAttributes ,IHasInfoTable
     {
         [Required]
         [Column("id")]

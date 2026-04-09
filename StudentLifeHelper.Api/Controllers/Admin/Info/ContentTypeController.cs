@@ -9,7 +9,7 @@ using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Info
 {
-    public class ContentTypeController(IBaseInfoService<ContentType> service) : BaseInfoController<ContentType, CreateModel, UpdateModel,ContentTypeDto, int>(service)
+    public class ContentTypeController(IBaseInfoService<ContentType> service) : BaseInfoController<ContentType, InfoContentTypeCreateModel, InfoContentTypeUpdateModel,ContentTypeDto, int>(service)
     {
     }
 }
