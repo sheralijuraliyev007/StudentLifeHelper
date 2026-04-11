@@ -1,10 +1,9 @@
 create table info.info_room_type(
 	id				serial not null primary key,
-	code			integer not null CHECK (code > 0),
-	short_name		varchar(15) not null,
+	code			integer not null unique CHECK (code > 0),
+	short_name		varchar(15) not null unique ,
 	full_name		varchar(200) not null,
-	state_id		integer not null references info.info_state(id),
-	info_table_id	integer not null references info.info_table(id),
+	state_code		integer not null references info.info_state(code),
 
 
 	created_user_id   uuid not null,
@@ -13,16 +12,8 @@ create table info.info_room_type(
 	modified_date_time TIMESTAMPTZ  null
 );
 
-create index ix_info_room_type_state_id
-on info.info_room_type(state_id);
+create index ix_info_room_type_state_code
+on info.info_room_type(state_code);
 
-create index ix_info_room_type_info_table_id
-on info.info_room_type(info_table_id);
-
-CREATE UNIQUE INDEX ui_info_room_type_code
-ON info.info_room_type(info_table_id, code);
-
-CREATE UNIQUE INDEX ui_info_room_type_short_name
-ON info.info_room_type(info_table_id, short_name);
 
 

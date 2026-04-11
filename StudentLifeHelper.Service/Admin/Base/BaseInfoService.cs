@@ -3,7 +3,6 @@ using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.Extensions;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Common;
 using StudentLifeHelper.Service.Common.Interfaces;
 
 namespace StudentLifeHelper.Service.Admin.Base

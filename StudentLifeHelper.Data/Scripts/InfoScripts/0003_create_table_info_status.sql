@@ -3,8 +3,8 @@ create table info.info_status(
 	code integer not null  CHECK (code > 0),
 	short_name		varchar(15) not null,
 	full_name		varchar(200) not null,
-	info_table_id	integer not null references info.info_table(id),
-	state_id		integer not null references info.info_state(id),
+	info_table_code	integer not null references info.info_table(code),
+	state_code		integer not null references info.info_state(code),
 
 
 	created_user_id   uuid not null,
@@ -14,15 +14,15 @@ create table info.info_status(
 );
 
 
-create index ix_info_status_table_state_id 
-on info.info_status(state_id);
+create index ix_info_status_state_code
+on info.info_status(state_code);
 
-create index ix_info_status_table_info_table_id 
-on info.info_status(info_table_id);
+create index ix_info_status_table_info_table_code
+on info.info_status(info_table_code);
 
 
 CREATE UNIQUE INDEX ui_info_status_table_code
-ON info.info_status(info_table_id, code);
+ON info.info_status(info_table_code, code);
 
 CREATE UNIQUE INDEX ui_info_status_table_short_name
-ON info.info_status(info_table_id, short_name);
+ON info.info_status(info_table_code, short_name);
