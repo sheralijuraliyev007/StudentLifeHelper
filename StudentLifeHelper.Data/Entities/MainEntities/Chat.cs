@@ -7,7 +7,7 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("chats")]
-    [Index(nameof(StatusId), Name = "ix_chats_status_id")]
+    [Index(nameof(StatusCode), Name = "ix_chats_status_code")]
     public class Chat : BaseCommonEntity
     {
         [Key]
@@ -17,11 +17,11 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("status_id")]
-        public int StatusId { get; set; }
+        [Column("status_code")]
+        public int StatusCode { get; set; }
 
 
-        [ForeignKey(nameof(StatusId))]
+        [ForeignKey(nameof(StatusCode))]
         public virtual Status? Status { get; set; }
 
         [InverseProperty(nameof(UserChat.Chat))]

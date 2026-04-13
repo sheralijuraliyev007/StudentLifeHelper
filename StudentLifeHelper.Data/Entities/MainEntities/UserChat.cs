@@ -12,10 +12,10 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("user_chats")]
-    [Index(nameof(StatusId),Name = "ix_user_chats_status_id")]
+    [Index(nameof(StatusCode),Name = "ix_user_chats_status_id")]
     [Index(nameof(UserId),Name = "ix_user_chats_user_id")]
     [Index(nameof(ChatId),Name = "ix_user_chats_chat_id")]
-    [Index(nameof(UserId),nameof(StatusId),Name = "ix_user_chats_user_status")]
+    [Index(nameof(UserId),nameof(StatusCode),Name = "ix_user_chats_user_status")]
 
     public class UserChat
     {
@@ -42,10 +42,10 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("status_id")]
-        public int StatusId { get; set; }
+        [Column("status_code")]
+        public int StatusCode { get; set; }
 
-        [ForeignKey(nameof(StatusId))]
+        [ForeignKey(nameof(StatusCode))]
         public virtual Status? Status { get; set; }
 
 

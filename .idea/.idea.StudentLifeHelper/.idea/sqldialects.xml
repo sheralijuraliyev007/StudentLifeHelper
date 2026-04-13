@@ -22,6 +22,8 @@
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/MainScripts/0006_create_table_contents.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/MainScripts/0009_create_table_users.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/MainScripts/0014_create_table_room_post_contents.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/MainScripts/0016_create_table_room_posts.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/MainScripts/0017_create_table_messages.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/MainScripts/0018_create_table_user_chats.sql" dialect="GenericSQL" />
   </component>
 </project>

@@ -7,11 +7,11 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("messages")]
-    [Index(nameof(StatusId), Name = "ix_messages_status_id")]
+    [Index(nameof(StatusCode), Name = "ix_messages_status_code")]
     [Index(nameof(ChatId), Name = "ix_messages_chat_id")]
     [Index(nameof(FromUserId), Name = "ix_messages_from_user_id")]
     [Index(nameof(ReplyToMessageId), Name = "ix_messages_reply_to_message_id")]
-    [Index(nameof(ChatId), nameof(StatusId), Name = "ix_messages_chat_status")]
+    [Index(nameof(ChatId), nameof(StatusCode), Name = "ix_messages_chat_status")]
     [Index(nameof(ChatId), nameof(CreatedDateTime), Name = "ix_messages_chat_id_created_date_time")]
 
     public class Message : BaseCommonEntity
@@ -39,11 +39,11 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("status_id")]
-        public int StatusId { get; set; }
+        [Column("status_code")]
+        public int StatusCode { get; set; }
 
 
-        [ForeignKey(nameof(StatusId))]
+        [ForeignKey(nameof(StatusCode))]
         public virtual Status? Status { get; set; }
 
 

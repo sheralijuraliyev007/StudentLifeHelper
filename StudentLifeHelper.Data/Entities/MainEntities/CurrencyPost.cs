@@ -12,10 +12,10 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
     [Table("currency_posts")]
     [Index(nameof(UserId), Name = "ix_currency_posts_user_id")]
-    [Index(nameof(StatusId), Name = "ix_currency_posts_status_id")]
-    [Index(nameof(ToCurrencyId), Name = "ix_currency_posts_to_currency_id")]
-    [Index(nameof(FromCurrencyId), Name = "ix_currency_posts_from_currency_id")]
-    [Index(nameof(FromCurrencyId), nameof(ToCurrencyId), Name = "ix_currency_posts_from_to_currency_id")]
+    [Index(nameof(StatusCode), Name = "ix_currency_posts_status_code")]
+    [Index(nameof(ToCurrencyCode), Name = "ix_currency_posts_to_currency_code")]
+    [Index(nameof(FromCurrencyCode), Name = "ix_currency_posts_from_currency_code")]
+    [Index(nameof(FromCurrencyCode), nameof(ToCurrencyCode), Name = "ix_currency_posts_from_to_currency_code")]
     [Index(nameof(CreatedDateTime), Name = "ix_currency_posts_created_date_time")]
     public class CurrencyPost : BaseCommonEntity
     {
@@ -46,19 +46,19 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("from_currency_id")]
-        public int FromCurrencyId { get; set; }
+        [Column("from_currency_code")]
+        public int FromCurrencyCode { get; set; }
 
 
-        [ForeignKey(nameof(FromCurrencyId))]
+        [ForeignKey(nameof(FromCurrencyCode))]
         public virtual CurrencyType? FromCurrencyType { get; set; }
 
         [Required]
-        [Column("to_currency_id")]
+        [Column("to_currency_code")]
 
-        public int ToCurrencyId { get; set; }
+        public int ToCurrencyCode { get; set; }
 
-        [ForeignKey(nameof(ToCurrencyId))]
+        [ForeignKey(nameof(ToCurrencyCode))]
         public virtual CurrencyType? ToCurrencyType { get; set; }
 
 
@@ -68,10 +68,10 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("status_id")]
-        public int StatusId { get; set; }
+        [Column("status_code")]
+        public int StatusCode { get; set; }
 
-        [ForeignKey(nameof(StatusId))]
+        [ForeignKey(nameof(StatusCode))]
         public virtual Status? Status { get; set; }
 
 

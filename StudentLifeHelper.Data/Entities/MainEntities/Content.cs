@@ -12,13 +12,9 @@ using System.Threading.Tasks;
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("contents")]
-    [Index(nameof(StateId), Name = "ix_contents_state_id")]
-    [Index(nameof(ContentTypeId), Name = "ix_contents_content_type_id")]
-    [Index(nameof(StateId), nameof(ContentTypeId), Name = "ix_contents_state_content_type")]
-    // Unique filtered index: folder + name where state_id = 1
-    [Index(nameof(Folder), nameof(Name), Name = "ui_contents_folder_name", IsUnique = true)]
-    // Case-insensitive unique index: folder + lower(name) where state_id = 1
-    [Index(nameof(Folder), Name = "ui_contents_folder_name_active_ci", IsUnique = true)]
+    [Index(nameof(StateCode), Name = "ix_contents_state_code")]
+    [Index(nameof(ContentTypeCode), Name = "ix_contents_content_type_code")]
+    [Index(nameof(StateCode),nameof(ContentTypeCode), Name = "ix_contents_state_content_type")]
     public class Content : BaseCommonEntity
     {
         [Required]
@@ -41,20 +37,20 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public string Folder { get; set; } = string.Empty!;
 
         [Required]
-        [Column("content_type_id")]
-        public int ContentTypeId { get; set; }
+        [Column("content_type_code")]
+        public int ContentTypeCode { get; set; }
 
 
-        [ForeignKey("ContentTypeId")]
+        [ForeignKey(nameof(ContentTypeCode))]
 
         public virtual ContentType? ContentType { get; set; }
 
 
         [Required]
-        [Column("state_id")]
-        public int StateId { get; set; }
+        [Column("state_code")]
+        public int StateCode { get; set; }
 
-        [ForeignKey(nameof(StateId))]
+        [ForeignKey(nameof(StateCode))]
         public virtual State? State { get; set; }
 
 

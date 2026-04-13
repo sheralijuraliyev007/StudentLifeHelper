@@ -15,13 +15,9 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
     [Table("room_post_contents")]
 
-    [Index(nameof(StatusId), Name = "ix_room_post_contents_status_id")]
+    [Index(nameof(StatusCode), Name = "ix_room_post_contents_status_code")]
     [Index(nameof(ContentId), Name = "ix_room_post_contents_content_id")]
     [Index(nameof(RoomPostId), Name = "ix_room_post_contents_room_post_id")]
-    // Unique index for active content per post (filtered where StatusId = 1)
-    [Index(nameof(RoomPostId), nameof(ContentId), Name = "ux_room_post_contents_room_post_content_active", IsUnique = true)]
-    // Unique index for one cover per post (filtered where IsCover = true && StatusId = 1)
-    [Index(nameof(RoomPostId), Name = "ux_room_post_contents_one_cover_per_post", IsUnique = true)]
     public class RoomPostContent : BaseCommonEntity
     {
         [Required]
@@ -52,10 +48,10 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("status_id")]
-        public int StatusId { get; set; }
+        [Column("status_code")]
+        public int StatusCode { get; set; }
 
-        [ForeignKey(nameof(StatusId))]
+        [ForeignKey(nameof(StatusCode))]
         public virtual Status? Status { get; set; }
 
     }

@@ -9,16 +9,16 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("room_posts")]
     [Index(nameof(CreatedDateTime),Name = "ix_room_posts_active_feed")]
-    [Index(nameof(StatusId),nameof(RoomTypeId),nameof(RegionId),Name = "ix_room_posts_search")]
-    [Index(nameof(RoomTypeId),Name = "ix_room_posts_room_type_id")]
-    [Index(nameof(StatusId),Name = "ix_room_posts_status_id")]
+    [Index(nameof(StatusCode),nameof(RegionCode),nameof(RoomTypeCode),Name = "ix_room_posts_search")]
+    [Index(nameof(RoomTypeCode),Name = "ix_room_posts_room_type_code")]
+    [Index(nameof(StatusCode),Name = "ix_room_posts_status_code")]
     [Index(nameof(UserId),Name = "ix_room_posts_user_id")]
-    [Index(nameof(ForGenderId),Name = "ix_room_posts_for_gender_id")]
-    [Index(nameof(RegionId),Name = "ix_room_posts_region_id")]
-    [Index(nameof(RoomPostTypeId),Name = "ix_room_posts_room_post_type_id")]
-    [Index(nameof(CurrencyId),Name = "ix_room_posts_currency_id")]
-    [Index(nameof(RoomTypeId),nameof(ForGenderId),Name = "ix_room_posts_type_gender")]
-    [Index(nameof(StatusId),nameof(RoomTypeId),Name = "ix_room_posts_status_type")]
+    [Index(nameof(ForGenderCode),Name = "ix_room_posts_for_gender_code")]
+    [Index(nameof(RegionCode),Name = "ix_room_posts_region_code")]
+    [Index(nameof(RoomPostTypeCode),Name = "ix_room_posts_room_post_type_code")]
+    [Index(nameof(CurrencyCode),Name = "ix_room_posts_currency_code")]
+    [Index(nameof(RoomTypeCode),nameof(ForGenderCode),Name = "ix_room_posts_type_gender")]
+    [Index(nameof(StatusCode),nameof(RoomTypeCode),Name = "ix_room_posts_status_type")]
     [Index(nameof(CreatedDateTime),Name = "ix_room_posts_created_date_time")]
 
 
@@ -32,19 +32,19 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("room_post_type_id")]
-        public int RoomPostTypeId { get; set; }
+        [Column("room_post_type_code")]
+        public int RoomPostTypeCode { get; set; }
 
-        [ForeignKey(nameof(RoomPostTypeId))]
+        [ForeignKey(nameof(RoomPostTypeCode))]
         public virtual RoomPostType? RoomPostType { get; set; } 
 
 
         [Required]
-        [Column("room_type_id")]
-        public int RoomTypeId { get; set; }
+        [Column("room_type_code")]
+        public int RoomTypeCode { get; set; }
 
 
-        [ForeignKey(nameof (RoomTypeId))]
+        [ForeignKey(nameof(RoomTypeCode))]
         public virtual RoomType? RoomType { get; set; }
 
         [Required]
@@ -67,11 +67,11 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public string Description { get; set; } = string.Empty!;
 
         [Required]
-        [Column("for_gender_id")]
-        public int ForGenderId { get; set; }
+        [Column("for_gender_code")]
+        public int ForGenderCode { get; set; }
 
 
-        [ForeignKey(nameof(ForGenderId))]
+        [ForeignKey(nameof(ForGenderCode))]
         public virtual Gender? Gender { get; set; }
 
 
@@ -81,11 +81,11 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("currency_id")]
-        public int CurrencyId { get; set; }
+        [Column("currency_code")]
+        public int CurrencyCode { get; set; }
 
 
-        [ForeignKey(nameof(CurrencyId))]
+        [ForeignKey(nameof(CurrencyCode))]
         public virtual CurrencyType? CurrencyType { get; set; }
 
 
@@ -94,17 +94,17 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public decimal DepositAmount { get; set; }
 
         [Required]
-        [Column("status_id")]
-        public int StatusId { get; set; }
+        [Column("status_code")]
+        public int StatusCode { get; set; }
 
-        [ForeignKey(nameof(StatusId))]
+        [ForeignKey(nameof(StatusCode))]
         public virtual Status? Status { get; set; }
 
         [Required]
-        [Column("region_id")]
-        public int RegionId { get; set; }
+        [Column("region_code")]
+        public int RegionCode { get; set; }
 
-        [ForeignKey(nameof(RegionId))]
+        [ForeignKey(nameof(RegionCode))]
         public virtual Region? Region { get; set; }
 
 
@@ -114,6 +114,6 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [InverseProperty(nameof(RoomPostContent.RoomPost))]
-        public virtual List<RoomPostContent> RoomPostContents { get; set; }
+        public virtual List<RoomPostContent>? RoomPostContents { get; set; }
     }
 }

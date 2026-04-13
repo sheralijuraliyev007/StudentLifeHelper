@@ -7,13 +7,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("users")]
-    [Index(nameof(BirthCountryId), Name = "ix_users_birth_country_id")]
-    [Index(nameof(ResidenceCountryId), Name = "ix_users_residence_country_id")]
-    [Index(nameof(BirthCountryId),nameof(ResidenceCountryId), Name = "ix_users_birth_residence_country_id")]
-    [Index(nameof(StateId), Name = "ix_users_state_id")]
-    [Index(nameof(RoleId), Name = "ix_users_role_id")]
+    [Index(nameof(BirthCountryCode), Name = "ix_users_birth_country_code")]
+    [Index(nameof(ResidenceCountryCode), Name = "ix_users_residence_country_code")]
+    [Index(nameof(BirthCountryCode),nameof(ResidenceCountryCode), Name = "ix_users_birth_residence_country_code")]
+    [Index(nameof(StateCode), Name = "ix_users_state_code")]
+    [Index(nameof(RoleCode), Name = "ix_users_role_code")]
     [Index(nameof(ImgId), Name = "ix_users_img_id")]
-    [Index(nameof(GenderId), Name = "ix_users_gender_id")]
+    [Index(nameof(GenderCode), Name = "ix_users_gender_code")]
     
     public class User : BaseCommonEntity
     {
@@ -41,18 +41,18 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
 
         [Required]
-        [Column("birth_country_id")]
-        public int BirthCountryId { get; set; }
+        [Column("birth_country_code")]
+        public int BirthCountryCode { get; set; }
 
-        [ForeignKey(nameof(BirthCountryId))]
+        [ForeignKey(nameof(BirthCountryCode))]
         public virtual Country? BirthCountry { get; set; }
 
 
         [Required]
-        [Column("residence_country_id")]
-        public int ResidenceCountryId { get; set; }
+        [Column("residence_country_code")]
+        public int ResidenceCountryCode { get; set; }
 
-        [ForeignKey(nameof(ResidenceCountryId))]
+        [ForeignKey(nameof(ResidenceCountryCode))]
         public virtual Country? ResidenceCountry { get; set; }
 
         [Column("birth_date")]
@@ -69,19 +69,19 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         [MaxLength(50)]
         public string Username { get; set; } = string.Empty;
 
-        [Column("state_id")]
+        [Column("state_code")]
         [Required]
-        public int StateId { get; set; }
+        public int StateCode { get; set; }
 
-        [ForeignKey(nameof(StateId))]
+        [ForeignKey(nameof(StateCode))]
         public virtual State? State { get; set; }
 
 
         [Required]
-        [Column("role_id")]
-        public int RoleId { get; set; }
+        [Column("role_code")]
+        public int RoleCode { get; set; }
 
-        [ForeignKey(nameof(RoleId))]
+        [ForeignKey(nameof(RoleCode))]
         public virtual Role? Role { get; set; }
 
 
@@ -102,19 +102,19 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public virtual Content? Img { get; set; }
 
 
-        [Column("gender_id")]
+        [Column("gender_code")]
         [Required]
-        public int GenderId { get; set; }
+        public int GenderCode { get; set; }
 
-        [ForeignKey(nameof(GenderId))]
+        [ForeignKey(nameof(GenderCode))]
         public virtual Gender? Gender { get; set; }
 
 
         [Required]
-        [Column("region_id")]
-        public int RegionId { get; set; }
+        [Column("region_code")]
+        public int RegionCode { get; set; }
 
-        [ForeignKey(nameof(RegionId))]
+        [ForeignKey(nameof(RegionCode))]
         public virtual Region? Region { get; set; }
 
 
