@@ -25,6 +25,8 @@ namespace StudentLifeHelper.Data.Repositories.Interfaces
         IBaseRepository<User> UserRepository();
         IBaseRepository<UserChat> UserChatRepository();
 
+        IBaseRepository<Language> LanguageRepository();
+
         Task SaveChanges();
         IDbContextTransaction BeginTransaction();
         IDbContextTransaction? CurrentTransaction();
