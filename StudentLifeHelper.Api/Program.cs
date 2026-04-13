@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Minio.Helper;
 using StudentLifeHelper.Common.Settings.Jwt;
 using StudentLifeHelper.Common.Settings.MioIO;
 using StudentLifeHelper.Data.Context;
@@ -9,6 +10,7 @@ using StudentLifeHelper.Data.Repositories;
 using StudentLifeHelper.Data.Repositories.Interfaces;
 using StudentLifeHelper.Service.Admin;
 using StudentLifeHelper.Service.Admin.Base;
+using StudentLifeHelper.Service.Admin.Base.Interfaces;
 using StudentLifeHelper.Service.Auth;
 using StudentLifeHelper.Service.Auth.Interfaces;
 using StudentLifeHelper.Service.Common;
@@ -108,10 +110,9 @@ builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IBaseInfoService<>), typeof(BaseInfoService<>));
 builder.Services.AddScoped<IMinioService, MinIOService>();
 builder.Services.AddScoped<IContentService, ContentService>();
-builder.Services.AddScoped<IContentService, ContentService>();
-builder.Services.AddScoped<IContentService, ContentService>();
-builder.Services.AddScoped<IContentService, ContentService>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ITranslationInfoService, TranslationInfoService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 

@@ -7,18 +7,28 @@ using StudentLifeHelper.Service.Common.Interfaces;
 
 namespace StudentLifeHelper.Service.Admin.Base
 {
-    public class BaseInfoService<TEntity>(IBaseRepository<TEntity> baseRepository, IUserHelper userHelper) : StatusGenericHandler, IBaseInfoService<TEntity>
+    public class BaseInfoService<TEntity>: StatusGenericHandler, IBaseInfoService<TEntity>
         where TEntity : class, IHasState, IHasCommonAttributes
     {
+
+        protected readonly IBaseRepository<TEntity> _baseRepository;
+        protected readonly IUserHelper _userHelper;
+
+        public BaseInfoService(IBaseRepository<TEntity> baseRepository, IUserHelper userHelper)
+        {
+            _baseRepository = baseRepository;
+            _userHelper = userHelper;
+        }
+
         public async Task<string> Create<TModel>(TModel model)
         {
             var entity = model.MapToEntity<TEntity, TModel>();
             entity.StateCode = StateConstants.Active;
-            entity.CreatedUserId = userHelper.GetUserId();
+            entity.CreatedUserId = _userHelper.GetUserId();
 
-            await baseRepository.Add(entity);
+            await _baseRepository.Add(entity);
 
-            await baseRepository.SaveChanges();
+            await _baseRepository.SaveChanges();
 
             return "Added successfully";
         }
@@ -30,10 +40,10 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
             }
             entity!.StateCode = StateConstants.Passive;
-            entity.ModifiedUserId = userHelper.GetUserId();
+            entity.ModifiedUserId = _userHelper.GetUserId();
 
-            await baseRepository.Update(entity);
-            await baseRepository.SaveChanges();
+            await _baseRepository.Update(entity);
+            await _baseRepository.SaveChanges();
             return "Passived successfully";
 
         }
@@ -47,9 +57,9 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
             }
             entity!.StateCode = StateConstants.Active;
-            entity.ModifiedUserId = userHelper.GetUserId();
-            await baseRepository.Update(entity);
-            await baseRepository.SaveChanges();
+            entity.ModifiedUserId = _userHelper.GetUserId();
+            await _baseRepository.Update(entity);
+            await _baseRepository.SaveChanges();
             return "Activated successfully";
         }
 
@@ -61,14 +71,14 @@ namespace StudentLifeHelper.Service.Admin.Base
             {
                 return null;
             }
-            await baseRepository.Delete(entity!);
-            await baseRepository.SaveChanges();
+            await _baseRepository.Delete(entity!);
+            await _baseRepository.SaveChanges();
             return "Deleted successfully";
         }
 
         public async Task<List<TDto>> GetAll<TDto>()
         {
-            var entities = baseRepository.GetAll().Where(e => e.StateCode == StateConstants.Active).ToList();
+            var entities = _baseRepository.GetAll().Where(e => e.StateCode == StateConstants.Active).ToList();
             return entities.MapToDtos<TEntity, TDto>();
         }
 
@@ -92,19 +102,19 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
 
             entity = model.MapForUpdate(entity);
-            entity!.ModifiedUserId  = userHelper.GetUserId();
+            entity!.ModifiedUserId  = _userHelper.GetUserId();
             entity.ModifiedDateTime = DateTime.UtcNow;
 
 
-            await baseRepository.Update(entity!);
-            await baseRepository.SaveChanges();
+            await _baseRepository.Update(entity!);
+            await _baseRepository.SaveChanges();
             return "Updated successfully";
         }
 
 
-        private async Task<Tuple<bool, TEntity?>> GetEntityIfExists<TId>(TId id)
+        protected async Task<Tuple<bool, TEntity?>> GetEntityIfExists<TId>(TId id)
         {
-            var entity = await baseRepository.GetById(id);
+            var entity = await _baseRepository.GetById(id);
 
             
             if (entity is null /*|| entity.StateId != StateIdConstants.Active*/)

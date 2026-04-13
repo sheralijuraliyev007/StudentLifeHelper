@@ -17,8 +17,14 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
     [Index(nameof(LanguageCode), Name = "ix_info_translation_language_code")]
     [Index(nameof(StateCode), Name = "ix_info_translation_state_code")]
     [Index(nameof(TableCode), nameof(RecordCode), nameof(ColumnName), nameof(LanguageCode), Name = "ui_info_translation_unique", IsUnique =true)]
-    public class Translation : BaseInfoEntity
+    public class Translation : BaseCommonEntity, IHasState, IHasCommonAttributes 
     {
+        
+        [Key]
+        [Required]
+        [Column("id")]
+        public long Id { get; set; }
+        
         [Required]
         [Column("table_code")]
         public int TableCode { get; set; }
@@ -40,6 +46,18 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
         [Column("translated_text")]
         public string TranslatedText { get; set; } = string.Empty!;
 
+        [Required]
+        [Column("state_code")]
+        public int StateCode { get; set; }
+        
+        [ForeignKey(nameof(TableCode))]
+        public virtual InfoTable? Table { get; set; }
+
+        [ForeignKey(nameof(LanguageCode))]
+        public virtual Language? Language { get; set; }
+
+        [ForeignKey(nameof(StateCode))]
+        public virtual State? State { get; set; }
 
     }
 }

@@ -6,9 +6,18 @@ using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Base
 {
-    public abstract class BaseInfoController<TEntity, TCreateModel, TUpdateModel, TDto, TId>(IBaseInfoService<TEntity> service) : BaseAdminController
+    public abstract class BaseInfoController<TEntity, TCreateModel, TUpdateModel, TDto, TId>  : BaseAdminController
         where TEntity : class
     {
+
+        protected readonly IBaseInfoService<TEntity> service;
+
+        protected BaseInfoController(IBaseInfoService<TEntity> service)
+        {
+            this.service = service;
+        }
+
+
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> GetAll()
