@@ -1,6 +1,6 @@
 create table room_post_contents(
 	id				bigserial not null primary key,
-	room_post_code	bigint not null references room_posts(code),
+	room_post_id	bigint not null references room_posts(id),
 	content_id		bigint not null references contents(id),
 	is_cover		boolean not null,
 	status_code		integer not null references info.info_status(code),
@@ -19,16 +19,16 @@ on room_post_contents(status_code);
 create index ix_room_post_contents_content_id
 on room_post_contents(content_id);
 
-create index ix_room_post_contents_room_post_code
-on room_post_contents(room_post_code);
+create index ix_room_post_contents_room_post_id
+on room_post_contents(room_post_id);
 
 CREATE UNIQUE INDEX ux_room_post_contents_room_post_content_active
-ON room_post_contents(room_post_code, content_id)
-WHERE status_id = 1;
+ON room_post_contents(room_post_id, content_id)
+WHERE status_code = 1;
 
 CREATE UNIQUE INDEX ux_room_post_contents_one_cover_per_post
-ON room_post_contents(room_post_code)
-WHERE is_cover = true AND status_id = 1;
+ON room_post_contents(room_post_id)
+WHERE is_cover = true AND status_code = 1;
 
 -- optional constraint
 CHECK (is_cover IN (true, false))

@@ -6,7 +6,7 @@ create table currency_posts(
                                from_currency_code	integer not null references info.info_currency_type(code),
                                to_currency_code		integer not null references info.info_currency_type(code),
                                amount				numeric(18,2) not null,
-                               status_id			integer not null references info.info_status(id),
+                               status_code			integer not null references info.info_status(code),
 
 
                                created_user_id   uuid not null,
@@ -24,8 +24,8 @@ create table currency_posts(
 create index ix_currency_posts_user_id
     on currency_posts(user_id);
 
-create index ix_currency_posts_status_id
-    on currency_posts(status_id);
+create index ix_currency_posts_status_code
+    on currency_posts(status_code);
 
 create index ix_currency_posts_to_currency_code
     on currency_posts(to_currency_code);
