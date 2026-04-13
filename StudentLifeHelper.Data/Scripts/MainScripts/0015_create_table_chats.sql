@@ -1,6 +1,6 @@
 create table chats(
 	id				uuid not null primary key,
-	status_id		integer not null references info.info_status(id),
+	status_code		integer not null references info.info_status(code),
 
 
 	created_user_id   uuid not null,
@@ -10,7 +10,7 @@ create table chats(
 );
 
 
-create index ix_chats_status_id
-on chats(status_id);
+create index ix_chats_status_code
+on chats(status_code);
 
 

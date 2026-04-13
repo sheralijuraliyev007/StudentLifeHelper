@@ -1,7 +1,7 @@
 create table info.info_role(
 	id				serial not null primary key,
-	code integer not null unique CHECK (code > 0),
-	short_name		varchar(15) not null unique,
+	code            integer not null unique CHECK (code > 0),
+	short_name		varchar(15) not null,
 	full_name		varchar(200) not null,
 	state_code		integer not null references info.info_state(code),
 
@@ -15,10 +15,6 @@ create table info.info_role(
 
 create index ix_info_role_state_code
 on info.info_role(state_code);
-
-
-CREATE UNIQUE INDEX ui_info_role_full_name
-ON info.info_role(full_name);
 
 
 INSERT INTO info.info_role (

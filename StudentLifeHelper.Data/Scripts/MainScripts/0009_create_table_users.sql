@@ -1,56 +1,60 @@
 create table users(
-	id								uuid not null primary key,
-	first_name						varchar(50) not null,
-	last_name						varchar(50) not null,
-	middle_name						varchar(50) null,
-	birth_country_id				integer not null references info.info_country(id),
-	residence_country_id			integer not null references info.info_country(id),
+                      id                              uuid not null primary key,
+                      first_name                      varchar(50) not null,
+                      last_name                       varchar(50) not null,
+                      middle_name                     varchar(50) null,
+                      birth_country_code              integer not null references info.info_country(code),
+                      residence_country_code          integer not null references info.info_country(code),
 
-	birth_date						date null,
-	password_hash					varchar(255) not null,
-	username						varchar(50) not null,
-	state_id						integer not null references info.info_state(id),
-	role_id							integer not null references info.info_role(id),
-	refresh_token					text null,
-    refresh_token_expiry_time		TIMESTAMPTZ,
-	img_id							bigint null references contents(id),
-	gender_id						integer not null references info.info_gender(id),
-	region_id						integer not null references info.info_region(id),
+                      birth_date                      date null,
+                      password_hash                   varchar(255) not null,
+                      username                        varchar(50) not null,
+                      state_code                      integer not null references info.info_state(code),
+                      role_code                       integer not null references info.info_role(code),
+                      refresh_token                   text null,
+                      refresh_token_expiry_time       timestamptz,
+                      img_id                          bigint null references contents(id),
+                      gender_code                     integer not null references info.info_gender(code),
+                      region_code                     integer not null references info.info_region(code),
 
-	created_user_id   uuid not null,
-	created_date_time TIMESTAMPTZ not null default now(), 
-	modified_user_id   uuid null,
-	modified_date_time TIMESTAMPTZ  null
+                      created_user_id                 uuid not null,
+                      created_date_time               timestamptz not null default now(),
+                      modified_user_id                uuid null,
+                      modified_date_time              timestamptz null
 );
 
+create index ix_users_birth_country_code
+    on users(birth_country_code);
 
+create index ix_users_residence_country_code
+    on users(residence_country_code);
 
-create index ix_users_birth_country_id
-on users(birth_country_id);
-create index ix_users_residence_country_id
-on users(residence_country_id);
+create index ix_users_birth_residence_country_code
+    on users(birth_country_code, residence_country_code);
 
-create index ix_users_birth_residence_country_id
-on users(birth_country_id, residence_country_id);
+create index ix_users_state_code
+    on users(state_code);
 
-create index ix_users_state_id
-on users(state_id);
-
-create index ix_users_role_id
-on users(role_id);
+create index ix_users_role_code
+    on users(role_code);
 
 create index ix_users_img_id
-on users(img_id);
+    on users(img_id);
 
-create index ix_users_gender_id
-on users(gender_id);
+create index ix_users_gender_code
+    on users(gender_code);
 
+create index ix_users_region_code
+    on users(region_code);
 
-CREATE UNIQUE INDEX ui_users_username_active_ci
-ON users(lower(username))
-WHERE state_id = 1;
+create unique index ui_users_username_active_ci
+    on users(lower(username))
+    where state_code = 1;
 
-CREATE UNIQUE INDEX ui_users_refresh_token
-ON users(refresh_token)
-WHERE refresh_token IS NOT NULL;
+create unique index ui_users_username_passive_ci
+    on users(lower(username))
+    where state_code = 2;
 
+create unique index ui_users_refresh_token
+    on users(refresh_token)
+    where refresh_token is not null;

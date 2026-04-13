@@ -3,7 +3,7 @@ CREATE SCHEMA info;
 CREATE TABLE info.info_state(
                                 id                  SERIAL NOT NULL PRIMARY KEY,
                                 code                INTEGER NOT NULL UNIQUE CHECK (code > 0),
-                                short_name          VARCHAR(15) NOT NULL UNIQUE,
+                                short_name          VARCHAR(15) NOT NULL,
                                 full_name           VARCHAR(200) NOT NULL,
 
                                 created_user_id     UUID NOT NULL,

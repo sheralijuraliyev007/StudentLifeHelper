@@ -20,10 +20,10 @@ create  unique index ui_info_translation_unique on  info.info_translation(
 
 
 create  index ix_info_translation_language_code on 
-info.info_translation(language_code)
+info.info_translation(language_code);
 
 create index ix_info_translation_language_code
-on info.info_translation(table_code)
+on info.info_translation(table_code);
 
 create index ix_info_translation_state_code
     on info.info_translation(state_code);

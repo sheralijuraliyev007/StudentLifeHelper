@@ -1,24 +1,20 @@
 create table info.info_gender(
 	id				serial not null primary key,
-	code integer not null unique CHECK (code > 0),
-	short_name		varchar(15) not null unique,
+	code            integer    not null unique CHECK (code > 0),
+	short_name		varchar(15) not null,
 	full_name		varchar(200) not null,
 	state_code		integer not null references info.info_state(code),
 	
 
 
-	created_user_id   uuid not null,
-	created_date_time TIMESTAMPTZ not null default now(), 
+	created_user_id    uuid not null,
+	created_date_time  TIMESTAMPTZ not null default now(), 
 	modified_user_id   uuid null,
 	modified_date_time TIMESTAMPTZ  null
 );
 
 create index ix_info_gender_state_code
 on info.info_gender(state_code);
-
-
-CREATE UNIQUE INDEX ui_info_gender_full_name
-ON info.info_gender(full_name);
 
 INSERT INTO info.info_gender (
     code,

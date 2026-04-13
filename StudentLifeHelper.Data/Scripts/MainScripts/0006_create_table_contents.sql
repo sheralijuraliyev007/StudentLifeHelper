@@ -3,8 +3,8 @@ create table contents(
 	name				varchar(200) not null,
 	file_id			uuid not null unique,
 	folder				varchar(200) not null,
-	content_type_id		integer not null references info.info_content_type(id),
-	state_id			integer not null references info.info_state(id),
+	content_type_code		integer not null references info.info_content_type(code),
+	state_code			integer not null references info.info_state(code),
 
 	-- static columns
 	created_user_id   uuid not null,
@@ -13,19 +13,16 @@ create table contents(
 	modified_date_time TIMESTAMPTZ  null
 );
 
-create index ix_contents_state_id
-on contents(state_id);
+create index ix_contents_state_code
+on contents(state_code);
 
-create index ix_contents_content_type_id
-on contents(content_type_id);
+create index ix_contents_content_type_code
+on contents(content_type_code);
 
 create index ix_contents_state_content_type
-on contents(state_id,content_type_id);
+on contents(state_code,content_type_code);
 
-CREATE UNIQUE INDEX ui_contents_folder_name
-ON contents(folder, name)
-WHERE state_id = 1;
 
 CREATE UNIQUE INDEX ui_contents_folder_name_active_ci
 ON contents(folder, lower(name))
-WHERE state_id = 1;
+WHERE state_code = 1;

@@ -10,9 +10,11 @@
     <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_6.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_7.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_8.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/.idea/.idea.StudentLifeHelper/.idea/queries/Query_9.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0001_create_table_info_state.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0004_create_table_info_country.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0005_create_table_info_content_type.sql" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0007_create_table_info_gender.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0013_create_table_info_room_type.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0019_create_table_info_region.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/StudentLifeHelper.Data/Scripts/InfoScripts/0020_create_table_info_language.sql" dialect="PostgreSQL" />

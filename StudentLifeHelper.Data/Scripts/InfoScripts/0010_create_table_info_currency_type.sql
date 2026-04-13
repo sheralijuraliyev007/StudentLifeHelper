@@ -16,7 +16,4 @@ create table info.info_currency_type(
 create index ix_info_currency_type_state_code
 on info.info_currency_type(state_code);
 
-CREATE UNIQUE INDEX ui_info_currency_type_short_name
-ON info.info_currency_type(short_name);
-
 

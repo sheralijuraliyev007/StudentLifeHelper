@@ -1,7 +1,7 @@
 create table info.info_content_type(
                                        id				serial not null primary key,
                                        code            integer not null unique CHECK (code > 0),
-                                       short_name		varchar(15) not null unique,
+                                       short_name		varchar(15) not null,
                                        full_name		varchar(200) not null,
                                        type_name           varchar(100)   not null unique ,
                                        state_code		integer not null references info.info_state(code),
@@ -21,8 +21,8 @@ create index ix_info_content_type_state_code
 
 
 
-CREATE UNIQUE INDEX ui_info_content_type_full_name
-    ON info.info_content_type(full_name);
+CREATE INDEX ix_info_content_type_type_name
+    ON info.info_content_type(type_name);
 
 
 INSERT INTO info.info_content_type (code,short_name, full_name, type_name,state_code,created_user_id)
