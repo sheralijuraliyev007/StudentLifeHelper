@@ -8,6 +8,6 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
     public interface IHasState
     {
-        int StateId { get; set; }
+        int StateCode { get; set; }
     }
 }

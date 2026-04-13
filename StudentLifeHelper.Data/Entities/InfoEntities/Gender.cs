@@ -8,12 +8,7 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
 
     [Table("info_gender",Schema =  "info")]
-    [Index(nameof(StateId),Name = "ix_info_gender_state_id")]
-    [Index(nameof(InfoTableId),Name = "ix_info_gender_info_table_id")]
-    [Index(nameof(FullName),Name = "ui_info_gender_full_name", IsUnique =true)]
-    [Index(nameof(ShortName),Name = "ui_info_gender_short_name", IsUnique =true)]
-    [Index(nameof(Code),Name = "ui_info_gender_code", IsUnique =true)]
-
+    [Index(nameof(StateCode),Name = "ix_info_gender_state_code")]
     public class Gender: BaseInfoEntity
     {
 

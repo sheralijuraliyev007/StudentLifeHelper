@@ -7,12 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
     [Table("info_region",Schema =  "info")]
-    [Index(nameof(StateId),Name = "ix_info_region_state_id")]
-    [Index(nameof(InfoTableId),Name = "ix_info_region_info_table_id")]
-    [Index(nameof(InfoTableId),nameof(Code),Name = "ui_info_region_code", IsUnique =true)]
-    [Index(nameof(InfoTableId),nameof(ShortName),Name = "ui_info_region_short_name", IsUnique =true)]
-    [Index(nameof(InfoTableId),nameof(FullName),Name = "ui_info_region_full_name", IsUnique =true)]
-    
+    [Index(nameof(StateCode),Name = "ix_info_region_state_code")]
     public class Region : BaseInfoEntity
     {
 
@@ -21,5 +16,12 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 
         [InverseProperty(nameof(RoomPost.Region))]
         public virtual List<RoomPost>? RoomPosts { get; set; }
+
+        [Required]
+        [Column("country_code")]
+        public int CountryCode { get; set; }
+
+        [ForeignKey(nameof(CountryCode))]
+        public virtual Country? Country { get; set; }
     }
 }

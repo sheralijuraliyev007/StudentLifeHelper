@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentLifeHelper.Data.Entities.BaseEntities
 {
-    public class BaseInfoEntity : BaseCommonEntity, IHasState, IHasCommonAttributes ,IHasInfoTable
+    public class BaseInfoEntity : BaseCommonEntity, IHasState, IHasCommonAttributes 
     {
         [Required]
         [Column("id")]
@@ -30,18 +30,12 @@ namespace StudentLifeHelper.Data.Entities.BaseEntities
         public string FullName { get; set; } = string.Empty!;
 
         [Required]
-        [Column("state_id")]
-        public int StateId { get; set; }
+        [Column("state_code")]
+        public int StateCode { get; set; }
 
 
-        [ForeignKey(nameof(StateId))]
+        [ForeignKey(nameof(StateCode))]
         public virtual State? State { get; set; }
 
-        [Required]
-        [Column("info_table_id")]
-        public int InfoTableId { get; set; }
-
-        [ForeignKey(nameof(InfoTableId))]
-        public virtual InfoTable? InfoTable { get; set; }
     } 
 }

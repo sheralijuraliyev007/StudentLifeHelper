@@ -8,13 +8,9 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
 
     [Table("info_currency_type",Schema =  "info")]
-    [Index(nameof(StateId), Name = "ix_info_currency_type_state_id")]
-    [Index(nameof(InfoTableId), Name = "ix_info_currency_type_info_table_id")]
-    [Index(nameof(ShortName), Name = "ui_info_currency_type_short_name", IsUnique = true)]
+    [Index(nameof(StateCode), Name = "ix_info_currency_type_state_code")]
     public class CurrencyType : BaseInfoEntity
     {
-
-
         [Column("symbol")]
         [MaxLength(10)]
         public string? Symbol { get; set; }

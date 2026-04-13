@@ -12,12 +12,7 @@ using System.Threading.Tasks;
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
     [Table("info_role",Schema =  "info")]
-    [Index(nameof(StateId), Name = "ix_info_role_state_id")]
-    [Index(nameof(InfoTableId), Name = "ix_info_role_info_table_id")]
-    [Index(nameof(FullName), Name = "ui_info_role_full_name", IsUnique =true)]
-    [Index(nameof(ShortName), Name = "ui_info_role_short_name", IsUnique =true)]
-    [Index(nameof(Code), Name = "ui_info_role_code", IsUnique =true)]
-
+    [Index(nameof(StateCode), Name = "ix_info_role_state_code")]
     public class Role : BaseInfoEntity
     {
         [InverseProperty(nameof(User.Role))]

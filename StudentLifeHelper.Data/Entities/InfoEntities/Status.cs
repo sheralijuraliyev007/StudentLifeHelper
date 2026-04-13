@@ -8,10 +8,7 @@ using System.Resources;
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
     [Table("info_status", Schema = "info")]
-    [Index(nameof(StateId), Name = "ix_info_status_table_state_id")]
-    [Index(nameof(InfoTableId), Name = "ix_info_status_table_info_table_id")]
-    [Index(nameof(InfoTableId), nameof(Code), Name = "ui_info_status_table_code", IsUnique = true)]
-    [Index(nameof(InfoTableId), nameof(ShortName), Name = "ui_info_status_table_short_name", IsUnique = true)]
+    [Index(nameof(StateCode), Name = "ix_info_status_state_code")]
     public class Status : BaseInfoEntity
     {
         [InverseProperty(nameof(Chat.Status))]

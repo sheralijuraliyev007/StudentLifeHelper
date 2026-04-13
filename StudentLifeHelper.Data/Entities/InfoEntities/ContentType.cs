@@ -12,13 +12,8 @@ using System.Threading.Tasks;
 namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
     [Table("info_content_type",Schema = "info")]
-    [Index(nameof(StateId),Name = "ix_info_content_type_state_id")]
-    [Index(nameof(InfoTableId),Name = "ix_info_content_type_table_id")]
-    [Index(nameof(FullName), Name = "ui_info_content_type_full_name", IsUnique = true)]
-    [Index(nameof(Code), Name = "ui_info_content_type_code", IsUnique = true)]
-    [Index(nameof(ShortName), Name = "ui_info_content_type_short_name", IsUnique = true)]
-
-
+    [Index(nameof(StateCode),Name = "ix_info_content_type_state_code")]
+    [Index(nameof(TypeName), Name = "ix_info_content_type_type_name", IsUnique =true)]
     public class ContentType : BaseInfoEntity
     {
 
