@@ -32,7 +32,8 @@ namespace StudentLifeHelper.Data.Repositories
         IBaseRepository<RoomPostContent> roomPostContentRepository,
         IBaseRepository<User> userRepository,
         IBaseRepository<UserChat> userChatRepository,
-        IBaseRepository<Language> languageRepository) 
+        IBaseRepository<Language> languageRepository,
+        IBaseRepository<Translation> translationRepository) 
         : IUnitOfWork
     {
         public IBaseRepository<ContentType> ContentTypeRepository() =>
@@ -76,6 +77,9 @@ namespace StudentLifeHelper.Data.Repositories
 
         public IBaseRepository<Language> LanguageRepository() =>
             languageRepository ?? new BaseRepository<Language>(context);
+
+        public IBaseRepository<Translation> TranslationRepository() =>
+            translationRepository ?? new BaseRepository<Translation>(context);
 
         public IBaseRepository<Country> CountryRepository()
         {

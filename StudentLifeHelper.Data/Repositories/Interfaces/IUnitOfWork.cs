@@ -27,6 +27,8 @@ namespace StudentLifeHelper.Data.Repositories.Interfaces
 
         IBaseRepository<Language> LanguageRepository();
 
+        IBaseRepository<Translation> TranslationRepository();
+
         Task SaveChanges();
         IDbContextTransaction BeginTransaction();
         IDbContextTransaction? CurrentTransaction();
