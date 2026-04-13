@@ -6,7 +6,7 @@ using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Info
 {
-    public class CountryController(IBaseInfoService<Country> service) : BaseInfoController<Country,BaseInfoCreateModelWithTableId, BaseInfoUpdateModel, InfoDto , int>(service)
+    public class CountryController(IBaseInfoService<Country> service) : BaseInfoController<Country,BaseInfoCreateModel, BaseInfoUpdateModel, InfoDto , int>(service)
     {
 
     }

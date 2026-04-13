@@ -9,9 +9,6 @@ namespace StudentLifeHelper.Common.Models.Info
 {
     public class BaseInfoUpdateModel
     {
-        [Required]
-        public int Code { get; set; }
-
         [MaxLength(15)]
         public string? ShortName { get; set; }
 

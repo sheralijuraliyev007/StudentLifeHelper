@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Common.Models.Info.ContentType
 {
-    public class InfoContentTypeCreateModel : BaseInfoCreateModelWithTableId
+    public class InfoContentTypeCreateModel : BaseInfoCreateModel
     {
         [Required]
         public string TypeName { get; set; } = string.Empty!;

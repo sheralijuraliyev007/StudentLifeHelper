@@ -6,7 +6,7 @@ using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Info
 {
-    public class RoomTypeController(IBaseInfoService<RoomType> service) : BaseInfoController<RoomType, BaseInfoCreateModelWithTableId, BaseInfoUpdateModel, InfoDto, int>(service)
+    public class RoomTypeController(IBaseInfoService<RoomType> service) : BaseInfoController<RoomType, BaseInfoCreateModel, BaseInfoUpdateModel, InfoDto, int>(service)
     {
     }
 }

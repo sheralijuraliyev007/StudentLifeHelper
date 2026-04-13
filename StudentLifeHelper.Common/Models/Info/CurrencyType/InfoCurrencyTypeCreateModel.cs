@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Common.Models.Info.CurrencyType
 {
-    public class InfoCurrencyTypeCreateModel : BaseInfoCreateModelWithTableId
+    public class InfoCurrencyTypeCreateModel : BaseInfoCreateModel
     {
         [Required]
         [MaxLength(10)]

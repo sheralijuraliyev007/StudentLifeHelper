@@ -8,7 +8,7 @@ using StudentLifeHelper.Service.Admin;
 
 namespace StudentLifeHelper.Api.Controllers.Admin.Info
 {
-    public class GenderController(IBaseInfoService<Gender> service) :  BaseInfoController<Gender, BaseInfoCreateModelWithTableId, BaseInfoUpdateModel, InfoDto, int>(service)
+    public class GenderController(IBaseInfoService<Gender> service) :  BaseInfoController<Gender, BaseInfoCreateModel, BaseInfoUpdateModel, InfoDto, int>(service)
     {
     }
 }

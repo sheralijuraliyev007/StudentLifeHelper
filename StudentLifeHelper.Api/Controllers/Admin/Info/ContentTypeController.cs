@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using StudentLifeHelper.Api.Controllers.Admin.Base;
+﻿using StudentLifeHelper.Api.Controllers.Admin.Base;
 using StudentLifeHelper.Common.Dtos.Info;
 using StudentLifeHelper.Common.Models.Info.ContentType;
 using StudentLifeHelper.Data.Entities.InfoEntities;
