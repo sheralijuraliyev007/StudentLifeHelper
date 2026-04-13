@@ -8,7 +8,7 @@ namespace StudentLifeHelper.Service.Common.Interfaces
 {
     public interface IUserHelper
     {
-        string GetUserId();
+        Guid GetUserId();
 
         string GetUsername();
 

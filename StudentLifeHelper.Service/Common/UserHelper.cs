@@ -8,7 +8,7 @@ namespace StudentLifeHelper.Service.Common
 
     public class UserHelper(IHttpContextAccessor httpContextAccessor) : IUserHelper
     {
-        public string GetUserId() => httpContextAccessor.HttpContext!.User.FindFirst(ClaimTypes.NameIdentifier)!.Value;
+        public Guid GetUserId() => Guid.Parse((httpContextAccessor.HttpContext!.User.FindFirst(ClaimTypes.NameIdentifier)!.Value) );
 
         public string GetUsername() => httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
 

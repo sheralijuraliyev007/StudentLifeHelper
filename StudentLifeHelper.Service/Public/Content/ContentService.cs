@@ -27,7 +27,7 @@ namespace StudentLifeHelper.Service.Public.Content
             var result = await ProcessFileAsync(file, folderName);
             if (result is null) return null;
 
-            var (uploadFileModel, contentTypeId) = result.Value;
+            var (uploadFileModel, contentTypeCode) = result.Value;
 
             try
             {
@@ -36,9 +36,9 @@ namespace StudentLifeHelper.Service.Public.Content
                     Name = $"{uploadFileModel.FileName}{Path.GetExtension(file.FileName)}",
                     FileId = uploadFileModel.FileName,
 
-                    ContentTypeId = contentTypeId,
+                    ContentTypeCode = contentTypeCode,
                     Folder = folderName,
-                    StateId = StateIdConstants.Active,
+                    StateCode = StateConstants.Active,
                     CreatedUserId = Guid.Parse("00000000-0000-0000-0000-000000000001")
                 };
 
@@ -81,10 +81,10 @@ namespace StudentLifeHelper.Service.Public.Content
                 var result = await ProcessFileAsync(file, content.Folder);
                 if (result is null) return null;
 
-                var (uploadFileModel, contentTypeId) = result.Value;
+                var (uploadFileModel, contentTypeCode) = result.Value;
                 content.Name = file!.FileName;
                 content.FileId = uploadFileModel.FileName;
-                content.ContentTypeId = contentTypeId;
+                content.ContentTypeCode = contentTypeCode;
                 await unitOfWork.ContentRepository().Update(content);
                 await unitOfWork.SaveChanges();
                 return content.Id;
@@ -150,17 +150,17 @@ namespace StudentLifeHelper.Service.Public.Content
 
             if (HasErrors) return null;
 
-            var contentTypeId = await (unitOfWork.ContentTypeRepository().GetAll())
+            var contentTypeCode = await (unitOfWork.ContentTypeRepository().GetAll())
                 .Where(c => c.TypeName == uploadModel.ContentType)
-                .Select(c => c.Id)
+                .Select(c => c.Code)
                 .FirstOrDefaultAsync();
 
-            if (contentTypeId == 0)
+            if (contentTypeCode == 0)
             {
                 AddError($"Content type not found: {uploadModel.ContentType}");
                 return null;
             }
-            return new(uploadModel, contentTypeId);
+            return new(uploadModel, contentTypeCode);
         }
 
         private async Task<UploadFileModel> GetFileDetails(IFormFile? file) {

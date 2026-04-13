@@ -42,16 +42,16 @@ namespace StudentLifeHelper.Common.CustomValidators.Auth
                 .Matches(@"[0-9]").WithMessage("Password must contain at least one number")
                 .Matches(@"[\W_]").WithMessage("Password must contain at least one special character");
 
-            RuleFor(m => m.BirthCountryId)
+            RuleFor(m => m.BirthCountryCode)
                 .GreaterThan(0).WithMessage("Please select birth country");
 
-            RuleFor(m => m.ResidenceCountryId)
+            RuleFor(m => m.ResidenceCountryCode)
                 .GreaterThan(0).WithMessage("Please select residence country");
 
-            RuleFor(m => m.GenderId)
+            RuleFor(m => m.GenderCode)
                 .GreaterThan(0).WithMessage("Please select gender");
 
-            RuleFor(m => m.RegionId)
+            RuleFor(m => m.RegionCode)
                 .GreaterThan(0).WithMessage("Please select region");
         }
     }

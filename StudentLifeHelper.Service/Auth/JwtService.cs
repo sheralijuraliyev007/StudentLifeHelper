@@ -31,7 +31,7 @@ namespace StudentLifeHelper.Service.Auth
                 new(ClaimTypes.Name, user.Username),
                 new(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new(ClaimTypes.Role, user.Role?.FullName!),
-                new Claim("role_id", user.RoleId.ToString())
+                new Claim("role_code", user.RoleCode.ToString())
             };
 
             var security = new JwtSecurityToken(issuer: _jwtSetting.Issuer,

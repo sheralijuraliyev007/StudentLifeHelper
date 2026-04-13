@@ -64,7 +64,7 @@ namespace StudentLifeHelper.Service.Auth
 
         public async Task<UserDto?> GetProfile()
         {
-            var userId = Guid.Parse(userHelper.GetUserId());
+            var userId = userHelper.GetUserId();
 
             var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img, u => u.BirthCountry!, u => u.ResidenceCountry!, u => u.Gender!, u => u.Region!, u=>u.State!))
                 .FirstOrDefaultAsync(u => u.Id == userId);
@@ -144,13 +144,13 @@ namespace StudentLifeHelper.Service.Auth
                     MiddleName = registerModel.MiddleName,
                     BirthDate = registerModel.BirthDate,
                     Username = registerModel.Username,
-                    BirthCountryId = registerModel.BirthCountryId,
-                    ResidenceCountryId = registerModel.ResidenceCountryId,
+                    BirthCountryCode = registerModel.BirthCountryCode,
+                    ResidenceCountryCode = registerModel.ResidenceCountryCode,
                     ImgId = contentId,
-                    StateId = StateIdConstants.Active,
-                    GenderId = registerModel.GenderId,
-                    RegionId = registerModel.RegionId,
-                    RoleId = RoleConstants.UserRoleId,
+                    StateCode = StateConstants.Active,
+                    GenderCode = registerModel.GenderCode,
+                    RegionCode = registerModel.RegionCode,
+                    RoleCode = RoleConstants.UserRoleCode,
                     RefreshTokenExpireTime = DateTime.UtcNow.AddHours(1),
                     CreatedUserId = userId
                 };
@@ -220,7 +220,7 @@ namespace StudentLifeHelper.Service.Auth
         private async Task<User?> GetUserByUsername(string username)
         {
             var user = await unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img, u => u.ResidenceCountry!, u => u.ResidenceCountry!, u=> u.Gender!,u => u.Region!, u=>u.State!)
-                .Where(x => x.Username.Equals(username) && x.StateId == StateIdConstants.Active).FirstOrDefaultAsync();
+                .Where(x => x.Username.Equals(username) && x.StateCode == StateConstants.Active).FirstOrDefaultAsync();
 
             return user;
         }

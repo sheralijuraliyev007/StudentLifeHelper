@@ -14,7 +14,7 @@ namespace StudentLifeHelper.Service.Admin.Base
         {
             var entity = model.MapToEntity<TEntity, TModel>();
             entity.StateCode = StateConstants.Active;
-            entity.CreatedUserId = Guid.Parse(userHelper.GetUserId());
+            entity.CreatedUserId = userHelper.GetUserId();
 
             await baseRepository.Add(entity);
 
@@ -30,7 +30,7 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
             }
             entity!.StateCode = StateConstants.Passive;
-            entity.ModifiedUserId = Guid.Parse(userHelper.GetUserId());
+            entity.ModifiedUserId = userHelper.GetUserId();
 
             await baseRepository.Update(entity);
             await baseRepository.SaveChanges();
@@ -47,7 +47,7 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
             }
             entity!.StateCode = StateConstants.Active;
-            entity.ModifiedUserId = Guid.Parse(userHelper.GetUserId());
+            entity.ModifiedUserId = userHelper.GetUserId();
             await baseRepository.Update(entity);
             await baseRepository.SaveChanges();
             return "Activated successfully";
@@ -92,7 +92,7 @@ namespace StudentLifeHelper.Service.Admin.Base
                 return null;
 
             entity = model.MapForUpdate(entity);
-            entity!.ModifiedUserId  = Guid.Parse(userHelper.GetUserId());
+            entity!.ModifiedUserId  = userHelper.GetUserId();
             entity.ModifiedDateTime = DateTime.UtcNow;
 
 
