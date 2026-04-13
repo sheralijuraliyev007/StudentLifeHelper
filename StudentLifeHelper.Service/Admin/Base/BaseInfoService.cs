@@ -13,7 +13,7 @@ namespace StudentLifeHelper.Service.Admin.Base
         public async Task<string> Create<TModel>(TModel model)
         {
             var entity = model.MapToEntity<TEntity, TModel>();
-            entity.StateId = StateIdConstants.Active;
+            entity.StateCode = StateConstants.Active;
             entity.CreatedUserId = Guid.Parse(userHelper.GetUserId());
 
             await baseRepository.Add(entity);
@@ -29,7 +29,7 @@ namespace StudentLifeHelper.Service.Admin.Base
             if (!check) { 
                 return null;
             }
-            entity!.StateId = StateIdConstants.Passive;
+            entity!.StateCode = StateConstants.Passive;
             entity.ModifiedUserId = Guid.Parse(userHelper.GetUserId());
 
             await baseRepository.Update(entity);
@@ -46,7 +46,7 @@ namespace StudentLifeHelper.Service.Admin.Base
             {
                 return null;
             }
-            entity!.StateId = StateIdConstants.Active;
+            entity!.StateCode = StateConstants.Active;
             entity.ModifiedUserId = Guid.Parse(userHelper.GetUserId());
             await baseRepository.Update(entity);
             await baseRepository.SaveChanges();
@@ -68,7 +68,7 @@ namespace StudentLifeHelper.Service.Admin.Base
 
         public async Task<List<TDto>> GetAll<TDto>()
         {
-            var entities = baseRepository.GetAll().Where(e => e.StateId == StateIdConstants.Active).ToList();
+            var entities = baseRepository.GetAll().Where(e => e.StateCode == StateConstants.Active).ToList();
             return entities.MapToDtos<TEntity, TDto>();
         }
 

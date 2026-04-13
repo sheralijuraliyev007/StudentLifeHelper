@@ -101,7 +101,7 @@ namespace StudentLifeHelper.Service.Auth
             }
 
             var user = (unitOfWork.UserRepository().GetAll(u => u.Role!)
-                .FirstOrDefault(u => u.Username == username && u.StateId == StateIdConstants.Active));
+                .FirstOrDefault(u => u.Username == username && u.StateCode == StateConstants.Active));
 
             bool isValid = user is null || user.RefreshToken != tokenDto.RefreshToken
                 || user.RefreshTokenExpireTime <= DateTime.UtcNow;

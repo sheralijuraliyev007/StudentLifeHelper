@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Common.Constants
 {
-    public static class StateIdConstants 
+    public static class StateConstants 
     {
         public const int Active = 1;
         public const int Passive = 2;
