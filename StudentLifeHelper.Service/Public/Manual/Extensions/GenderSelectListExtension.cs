@@ -1,10 +1,6 @@
 ﻿using StudentLifeHelper.Common.Models.Manual;
 using StudentLifeHelper.Data.Entities.InfoEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace StudentLifeHelper.Service.Public.Manual.Extensions
 {
