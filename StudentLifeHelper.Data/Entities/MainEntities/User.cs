@@ -91,7 +91,14 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
 
         [Column("refresh_token_expiry_time")]
         [Required]
-        public DateTimeOffset RefreshTokenExpireTime { get; set; }   
+        public DateTimeOffset RefreshTokenExpireTime { get; set; }
+
+        [Column("language_code")]
+        [Required]
+        public int LanguageCode { get; set; }
+
+        [ForeignKey(nameof(LanguageCode))]
+        public virtual Language? Language { get; set; }
 
 
 

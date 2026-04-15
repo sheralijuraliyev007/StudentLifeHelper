@@ -1,13 +1,15 @@
-﻿using StudentLifeHelper.Common.Models.Manual;
+﻿using StatusGeneric;
+using StudentLifeHelper.Common.Models.Manual;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Service.Public.Manual.Interfaces
 {
-    public interface IManualService
+    public interface IManualService : IStatusGeneric
     {
         Task<SelectList<int>> GenderSelect();
 
@@ -30,6 +32,8 @@ namespace StudentLifeHelper.Service.Public.Manual.Interfaces
         Task<SelectList<int>> InfoTablesSelect();
 
         Task<SelectList<int>> ContentTypesSelect();
+
+        Task<SelectList<int>> RoomPostTypesSelect();
 
     }
 }

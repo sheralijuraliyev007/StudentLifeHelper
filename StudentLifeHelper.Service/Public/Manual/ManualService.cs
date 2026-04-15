@@ -1,125 +1,222 @@
-﻿using StatusGeneric;
+﻿using Npgsql.Replication.PgOutput.Messages;
+using StatusGeneric;
 using StudentLifeHelper.Common.Constants;
 using StudentLifeHelper.Common.Models.Manual;
+using StudentLifeHelper.Data.Entities.BaseEntities;
 using StudentLifeHelper.Data.Entities.InfoEntities;
 using StudentLifeHelper.Data.Repositories.Interfaces;
 using StudentLifeHelper.Service.Common.Interfaces;
 using StudentLifeHelper.Service.Public.Manual.Extensions;
 using StudentLifeHelper.Service.Public.Manual.Interfaces;
+using System.Collections.Generic;
 
 namespace StudentLifeHelper.Service.Public.Manual
 {
-    public class ManualService(IUserHelper userHelper, IUnitOfWork unitOfWork) : StatusGenericHandler,IManualService
+    public class ManualService(IUnitOfWork unitOfWork, IUserHelper userHelper) : StatusGenericHandler,IManualService
     {
+
+        
+
         public async Task<SelectList<int>> GenderSelect()
         {
-            IQueryable<Gender> genders = unitOfWork.GenderRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            var list = genders.AssSelectList();
+            var languageCode = await userHelper.GetUserLanguageCode();
+            var genders = unitOfWork.GenderRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            return list;
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(genders, translations, InfoTableConstants.GenderTabldeCode, languageCode);
+
+            return await Task.FromResult(list);
         }
 
         public async Task<SelectList<int>> RegionsSelect(int countryCode)
         {
-            IQueryable<Region> regions = unitOfWork.RegionRepository().GetAll().Where(
-                    r => r.CountryCode == countryCode && r.StateCode == StateConstants.Active
-                );
+            var languageCode = await userHelper.GetUserLanguageCode();
+            var regions = unitOfWork.RegionRepository().GetAll().Where(r => r.CountryCode == countryCode && r.StateCode == StateConstants.Active);
+            var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = regions.AssSelectList();
+            var list = BuildTranslatedSelectList(regions, translations, InfoTableConstants.RegionTabldeCode, languageCode);
 
-            return list;
+
+            return await Task.FromResult(list);
 
         }
 
         public async Task<SelectList<int>> CountriesSelect()
         {
-            IQueryable<Country> countries = unitOfWork.CountryRepository().
-                GetAll().Where(c => c.StateCode == StateConstants.Active);
+            
 
-            var list = countries.AssSelectList();
+            var languageCode = await userHelper.GetUserLanguageCode();
+            var countries = unitOfWork.CountryRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            return list;
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(countries, translations, InfoTableConstants.CountryTabldeCode, languageCode);
+
+
+            return await Task.FromResult(list);
+
+
         }
 
         public async Task<SelectList<int>> CurrenciesSelect()
         {
-            IQueryable<CurrencyType>  currencies = unitOfWork.CurrencyTypeRepository().
-                GetAll().Where(c => c.StateCode == StateConstants.Active);
+            var currencies = unitOfWork.CurrencyTypeRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            var list = currencies.AssSelectList();
+            var languageCode = await userHelper.GetUserLanguageCode();
 
-            return list;
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(currencies, translations, InfoTableConstants.CurrencyTypeTabldeCode, languageCode);
+
+
+            return await Task.FromResult(list);
+
         }
 
         public async Task<SelectList<int>> LanguagesSelect()
         {
-            IQueryable<Language> languages = unitOfWork.LanguageRepository().
-                GetAll().Where(l => l.StateCode == StateConstants.Active);
 
-            var list = languages.AssSelectList();
-            return list;
+            var languages = unitOfWork.LanguageRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
+
+            var languageCode = await userHelper.GetUserLanguageCode();
+
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(languages, translations, InfoTableConstants.LanguageTableCode, languageCode);
+
+
+            return await Task.FromResult(list);
+
         }
 
         public async Task<SelectList<int>> RoomTypesSelect()
         {
-            IQueryable<RoomType> roomTypes = unitOfWork.RoomTypeRepository().
-                GetAll().Where(rt => rt.StateCode == StateConstants.Active);
+            var roomTypes = unitOfWork.RoomTypeRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            var list = roomTypes.AssSelectList();
+            var languageCode = await userHelper.GetUserLanguageCode();
 
-            return list;
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(roomTypes, translations, InfoTableConstants.RoomTypeTabldeCode, languageCode);
+
+
+            return await Task.FromResult(list);
         }
 
         public async Task<SelectList<int>> RolesSelect()
         {
-            IQueryable<Role> roles = unitOfWork.RoleRepository()
-                .GetAll().Where(r => r.StateCode == StateConstants.Active);
+            var roles = unitOfWork.RoleRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            var list = roles.AssSelectList();
+            var languageCode = await userHelper.GetUserLanguageCode();
 
-            return list;
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(roles, translations, InfoTableConstants.RoleTabldeCode, languageCode);
+
+
+            return await Task.FromResult(list);
         }
 
         public async Task<SelectList<int>> StatusSelect()
         {
-            IQueryable<Status> statuses = unitOfWork.StatusRepository()
-                .GetAll(s => s.StateCode == StateConstants.Active);
+            var statuses = unitOfWork.StatusRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            var list = statuses.AssSelectList();
+            var languageCode = await userHelper.GetUserLanguageCode();
 
-            return list;
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(statuses, translations, InfoTableConstants.StatusTableCode, languageCode);
+
+
+            return await Task.FromResult(list);
         }
 
         public async Task<SelectList<int>> StatesSelect()
         {
-            IQueryable<State> states = unitOfWork.StateRepository().
-                GetAll();
+            var states = unitOfWork.StateRepository().GetAll();
+
+
             var list = states.AsSelectList();
 
-            return list;
+            return await Task.FromResult(list);
         }
 
         public async Task<SelectList<int>> InfoTablesSelect()
         {
-            IQueryable<InfoTable> infoTables = unitOfWork.InfoTableRepository()
-                .GetAll().Where(inf => inf.StateCode == StateConstants.Active);
 
+            var infoTables = unitOfWork.InfoTableRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
+            
             var list = infoTables.AssSelectList();
 
             return list;
+
         }
 
         public async Task<SelectList<int>> ContentTypesSelect()
         {
-            IQueryable<ContentType> contentTypes = unitOfWork.ContentTypeRepository()
-                .GetAll().Where(ct=> ct.StateCode == StateConstants.Active);
+            
+            var contentTypes = unitOfWork.ContentTypeRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
-            var list = contentTypes.AssSelectList();
+            var languageCode = await userHelper.GetUserLanguageCode();
+            
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(contentTypes, translations, InfoTableConstants.ContentTypeTabldeCode, languageCode);
+
 
             return list;
+
         }
 
-        
+        public async Task<SelectList<int>> RoomPostTypesSelect()
+        {
+
+            var roomPostTypes = unitOfWork.RoomPostTypeRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
+
+            var languageCode = await userHelper.GetUserLanguageCode();
+
+            var translations = unitOfWork.TranslationRepository().GetAll();
+
+            var list = BuildTranslatedSelectList(roomPostTypes, translations, InfoTableConstants.RoomPostTypeTabldeCode, languageCode);
+
+
+            return list;
+
+        }
+
+
+
+        private SelectList<int> BuildTranslatedSelectList<TEntity>(
+            IQueryable<TEntity> source,
+            IQueryable<Translation> translations,
+            int tableCode,
+            int languageCode,
+            string columnName = "full_name"
+            ) where TEntity : BaseInfoEntity
+        {
+            var query = from e in source
+                        join t in translations
+                        on e.Code equals t.RecordCode
+                        into tr
+                        from t in tr
+                        .Where(x => x.TableCode == tableCode
+                        && x.ColumnName == columnName && x.LanguageCode == languageCode
+                        && x.StateCode == StateConstants.Active
+                        ).DefaultIfEmpty()
+
+                        where e.StateCode == StateConstants.Active
+                        select new SelectListItem<int>
+                        {
+                            Value = e.Id,
+                            OrderCode = e.Code,
+                            Text = t != null ? t.TranslatedText : e.FullName
+                        };
+
+            return new SelectList<int>(query);
+
+        }
+
     }
 }

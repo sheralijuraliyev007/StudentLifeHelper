@@ -81,10 +81,10 @@ namespace StudentLifeHelper.Data.Repositories
         public IBaseRepository<Translation> TranslationRepository() =>
             translationRepository ?? new BaseRepository<Translation>(context);
 
-        public IBaseRepository<Country> CountryRepository()
-        {
-            throw new NotImplementedException();
-        }
+        public IBaseRepository<Country> CountryRepository() =>
+        
+            countryRepository ?? new BaseRepository<Country>(context);
+        
 
         public async Task SaveChanges() => await context.SaveChangesAsync();
 

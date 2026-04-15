@@ -18,4 +18,8 @@
     <ProjectReference Include="..\StudentLifeHelper.Service\StudentLifeHelper.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\User\" />
+  </ItemGroup>
+
 </Project>

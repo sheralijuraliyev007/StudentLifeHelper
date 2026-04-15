@@ -19,6 +19,8 @@ using StudentLifeHelper.Service.Infrastructure;
 using StudentLifeHelper.Service.Infrastructure.Interfaces;
 using StudentLifeHelper.Service.Public.Content;
 using StudentLifeHelper.Service.Public.Content.Interfaces;
+using StudentLifeHelper.Service.Public.Manual;
+using StudentLifeHelper.Service.Public.Manual.Interfaces;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -115,6 +117,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITranslationInfoService, TranslationInfoService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IManualService, ManualService>();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();

@@ -14,5 +14,7 @@ namespace StudentLifeHelper.Service.Common.Interfaces
 
         string GetUserRole();
         int GetUserRoleId();
+
+        Task<int> GetUserLanguageCode();
     }
 }
