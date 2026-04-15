@@ -11,7 +11,7 @@ namespace StudentLifeHelper.Service.Public.Manual.Interfaces
     {
         Task<SelectList<int>> GenderSelect();
 
-        Task<SelectList<int>> RegionsSelect();
+        Task<SelectList<int>> RegionsSelect(int countryCode);
 
         Task<SelectList<int>> CountriesSelect();
 
@@ -22,9 +22,13 @@ namespace StudentLifeHelper.Service.Public.Manual.Interfaces
         Task<SelectList<int>> RoomTypesSelect();
 
         Task<SelectList<int>> RolesSelect();
+        
         Task<SelectList<int>> StatusSelect();
+
         Task<SelectList<int>> StatesSelect();
+
         Task<SelectList<int>> InfoTablesSelect();
+
         Task<SelectList<int>> ContentTypesSelect();
 
     }

@@ -27,6 +27,8 @@ namespace StudentLifeHelper.Data.Repositories.Interfaces
 
         IBaseRepository<Language> LanguageRepository();
 
+        IBaseRepository<State> StateRepository();
+
         IBaseRepository<Translation> TranslationRepository();
 
         Task SaveChanges();
