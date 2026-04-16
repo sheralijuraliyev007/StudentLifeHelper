@@ -9,6 +9,7 @@ using StudentLifeHelper.Service.Common.Interfaces;
 using StudentLifeHelper.Service.Public.Manual.Extensions;
 using StudentLifeHelper.Service.Public.Manual.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StudentLifeHelper.Service.Public.Manual
 {
@@ -25,9 +26,9 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(genders, translations, InfoTableConstants.GenderTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(genders, translations, InfoTableConstants.GenderTabldeCode);
 
-            return await Task.FromResult(list);
+            return list;
         }
 
         public async Task<SelectList<int>> RegionsSelect(int countryCode)
@@ -36,10 +37,10 @@ namespace StudentLifeHelper.Service.Public.Manual
             var regions = unitOfWork.RegionRepository().GetAll().Where(r => r.CountryCode == countryCode && r.StateCode == StateConstants.Active);
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(regions, translations, InfoTableConstants.RegionTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(regions, translations, InfoTableConstants.RegionTabldeCode);
 
 
-            return await Task.FromResult(list);
+            return list;
 
         }
 
@@ -52,10 +53,10 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(countries, translations, InfoTableConstants.CountryTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(countries, translations, InfoTableConstants.CountryTabldeCode);
 
 
-            return await Task.FromResult(list);
+            return list;
 
 
         }
@@ -68,10 +69,10 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(currencies, translations, InfoTableConstants.CurrencyTypeTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(currencies, translations, InfoTableConstants.CurrencyTypeTabldeCode);
 
 
-            return await Task.FromResult(list);
+            return list;
 
         }
 
@@ -84,10 +85,10 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(languages, translations, InfoTableConstants.LanguageTableCode, languageCode);
+            var list = await BuildTranslatedSelectList(languages, translations, InfoTableConstants.LanguageTableCode);
 
 
-            return await Task.FromResult(list);
+            return list;
 
         }
 
@@ -99,10 +100,10 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(roomTypes, translations, InfoTableConstants.RoomTypeTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(roomTypes, translations, InfoTableConstants.RoomTypeTabldeCode);
 
 
-            return await Task.FromResult(list);
+            return list;
         }
 
         public async Task<SelectList<int>> RolesSelect()
@@ -113,10 +114,10 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(roles, translations, InfoTableConstants.RoleTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(roles, translations, InfoTableConstants.RoleTabldeCode);
 
 
-            return await Task.FromResult(list);
+            return list;
         }
 
         public async Task<SelectList<int>> StatusSelect()
@@ -127,10 +128,10 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(statuses, translations, InfoTableConstants.StatusTableCode, languageCode);
+            var list = await BuildTranslatedSelectList(statuses, translations, InfoTableConstants.StatusTableCode);
 
 
-            return await Task.FromResult(list);
+            return list;
         }
 
         public async Task<SelectList<int>> StatesSelect()
@@ -163,7 +164,7 @@ namespace StudentLifeHelper.Service.Public.Manual
             
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(contentTypes, translations, InfoTableConstants.ContentTypeTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(contentTypes, translations, InfoTableConstants.ContentTypeTabldeCode);
 
 
             return list;
@@ -179,7 +180,7 @@ namespace StudentLifeHelper.Service.Public.Manual
 
             var translations = unitOfWork.TranslationRepository().GetAll();
 
-            var list = BuildTranslatedSelectList(roomPostTypes, translations, InfoTableConstants.RoomPostTypeTabldeCode, languageCode);
+            var list = await BuildTranslatedSelectList(roomPostTypes, translations, InfoTableConstants.RoomPostTypeTabldeCode);
 
 
             return list;
@@ -188,14 +189,15 @@ namespace StudentLifeHelper.Service.Public.Manual
 
 
 
-        private SelectList<int> BuildTranslatedSelectList<TEntity>(
+        private async Task<SelectList<int>> BuildTranslatedSelectList<TEntity>(
             IQueryable<TEntity> source,
             IQueryable<Translation> translations,
             int tableCode,
-            int languageCode,
             string columnName = "full_name"
             ) where TEntity : BaseInfoEntity
         {
+
+            var languageCode = await userHelper.GetUserLanguageCode();
             var query = from e in source
                         join t in translations
                         on e.Code equals t.RecordCode
