@@ -33,9 +33,9 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Info
 
         [HttpGet]
    
-        public async Task<IActionResult> GetTranslation(int tableCode, int recordCode, string columnName, int languageCode)
+        public async Task<IActionResult> GetTranslation(int tableCode, int recordCode, string columnName)
         {
-            var result = await _translationInfoService.GetTranslation (tableCode, recordCode, columnName, languageCode);
+            var result = await _translationInfoService.GetTranslation (tableCode, recordCode, columnName);
 
             if (service.IsValid)
                 return Ok(result);
