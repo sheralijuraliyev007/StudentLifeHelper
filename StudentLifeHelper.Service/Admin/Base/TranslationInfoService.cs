@@ -23,8 +23,10 @@ namespace StudentLifeHelper.Service.Admin.Base
             return entities.MapToDtos<Translation, InfoTranslationDto>();
         }
 
-        public async Task<string?> GetTranslation(int tableCode, int recordCode, string columnName, int languageCode)
+        public async Task<string?> GetTranslation(int tableCode, int recordCode, string columnName)
         {
+
+            var languageCode = await _userHelper.GetUserLanguageCode();
             var entity = await _baseRepository.GetAll().Where(t => t.TableCode == tableCode 
             && t.RecordCode == recordCode && t.ColumnName == columnName 
             && t.LanguageCode == languageCode && t.StateCode == StateConstants.Active)

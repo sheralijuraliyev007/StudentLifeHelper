@@ -12,7 +12,7 @@ namespace StudentLifeHelper.Service.Admin.Base.Interfaces
     public interface ITranslationInfoService : IBaseInfoService<Translation>
     {
         Task<List<InfoTranslationDto>> GetRecordTranslations(int tableCode, int recordCode);
-        Task<string?> GetTranslation(int tableCode, int recordCode, string columnName, int languageCode);
+        Task<string?> GetTranslation(int tableCode, int recordCode, string columnName);
     }
 }
 
