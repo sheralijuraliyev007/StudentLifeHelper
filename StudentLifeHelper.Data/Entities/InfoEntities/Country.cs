@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using StudentLifeHelper.Data.Entities.MainEntities;
-using System.ComponentModel.DataAnnotations.Schema;
-namespace StudentLifeHelper.Data.Entities.InfoEntities
+﻿namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
 
     [Table("info_country",Schema =  "info")]

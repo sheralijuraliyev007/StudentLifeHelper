@@ -1,12 +1,4 @@
-﻿using StatusGeneric;
-using StudentLifeHelper.Common.MinIO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Service.Infrastructure.Interfaces
+﻿namespace StudentLifeHelper.Service.Infrastructure.Interfaces
 {
     public interface IMinioService : IStatusGeneric
     {

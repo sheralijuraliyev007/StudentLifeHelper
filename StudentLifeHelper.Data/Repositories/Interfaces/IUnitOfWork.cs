@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using StudentLifeHelper.Data.Entities.MainEntities;
-
-namespace StudentLifeHelper.Data.Repositories.Interfaces
+﻿namespace StudentLifeHelper.Data.Repositories.Interfaces
 {
     public interface IUnitOfWork
     {

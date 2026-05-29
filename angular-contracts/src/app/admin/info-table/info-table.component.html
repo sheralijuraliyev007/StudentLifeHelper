@@ -1,0 +1,136 @@
+<section class="page">
+  <div class="table-card">
+    <div class="header">
+      <div>
+        <h2 class="title">{{ tableName || 'Info Table' }}</h2>
+        <p class="subtitle">Manage {{ tableName || 'records' }} data</p>
+      </div>
+      <button class="btn btn-primary" type="button" (click)="openCreateModal()" [disabled]="isLoading">
+        Create New
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>State</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="!items.length && !isLoading">
+            <td class="empty" colspan="5">No records found.</td>
+          </tr>
+          <tr *ngFor="let item of items; let i = index; trackBy: trackById" [class.striped]="i % 2 === 1">
+            <td>{{ item.id }}</td>
+            <td>{{ item.fullName }}</td>
+            <td>{{ item.code }}</td>
+            <td>
+              <span class="badge" [class.badge-active]="item.isActive" [class.badge-passive]="!item.isActive">
+                {{ item.isActive ? 'Active' : 'Passive' }}
+              </span>
+            </td>
+            <td class="actions">
+              <button
+                class="btn btn-edit"
+                type="button"
+                [disabled]="isLoading"
+                (click)="openEditModal(item)"
+              >
+                Edit
+              </button>
+
+              <ng-container *ngIf="!item.confirming; else deleteConfirm">
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  [disabled]="isLoading"
+                  (click)="toggleConfirming(item, true)"
+                >
+                  Delete
+                </button>
+              </ng-container>
+
+              <ng-template #deleteConfirm>
+                <div class="inline-confirm">
+                  <span>Confirm?</span>
+                  <button
+                    class="btn btn-confirm"
+                    type="button"
+                    [disabled]="isLoading"
+                    (click)="delete(item)"
+                  >
+                    Yes
+                  </button>
+                  <button
+                    class="btn btn-cancel"
+                    type="button"
+                    [disabled]="isLoading"
+                    (click)="toggleConfirming(item, false)"
+                  >
+                    No
+                  </button>
+                </div>
+              </ng-template>
+
+              <button
+                class="btn btn-toggle"
+                type="button"
+                [disabled]="isLoading"
+                (click)="toggleState(item)"
+              >
+                {{ item.isActive ? 'Make Passive' : 'Make Active' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="toast-stack">
+    <div
+      *ngFor="let toast of toasts"
+      class="toast"
+      [class.toast-success]="toast.success"
+      [class.toast-error]="!toast.success"
+    >
+      {{ toast.text }}
+    </div>
+  </div>
+
+  <div
+    *ngIf="isModalVisible"
+    class="modal-backdrop"
+    [class.open]="isModalOpen"
+    (click)="closeModal()"
+  >
+    <div class="modal" [class.open]="isModalOpen" (click)="$event.stopPropagation()">
+      <h3>{{ editingId === null ? 'Create Record' : 'Edit Record' }}</h3>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <label for="name">Name</label>
+        <input id="name" type="text" formControlName="name" />
+
+        <label for="code">Code</label>
+        <input id="code" type="number" formControlName="code" />
+
+        <div class="modal-actions">
+          <button class="btn btn-secondary" type="button" [disabled]="isLoading" (click)="closeModal()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" type="submit" [disabled]="isLoading || form.invalid">
+            {{ editingId === null ? 'Create' : 'Update' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

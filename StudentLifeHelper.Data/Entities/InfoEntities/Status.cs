@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using StudentLifeHelper.Data.Entities.MainEntities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Resources;
-
-namespace StudentLifeHelper.Data.Entities.InfoEntities
+﻿namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
     [Table("info_status", Schema = "info")]
     [Index(nameof(StateCode), Name = "ix_info_status_state_code")]
@@ -24,10 +17,6 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 
         [InverseProperty(nameof(RoomPost.Status))]
         public virtual List<RoomPost>? RoomPosts { get; set; }
-
-
-        [InverseProperty(nameof(RoomPostContent.Status))]
-        public virtual List<RoomPostContent>? RoomPostContents { get; set; }
 
         [InverseProperty(nameof(UserChat.Status))]
         public virtual List<UserChat>? UserChats { get; set; }

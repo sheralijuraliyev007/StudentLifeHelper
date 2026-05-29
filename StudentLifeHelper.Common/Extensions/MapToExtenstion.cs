@@ -1,12 +1,4 @@
-﻿using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Common.Extensions
+﻿namespace StudentLifeHelper.Common.Extensions
 {
     public static class MapToExtenstion
     {
@@ -65,6 +57,15 @@ namespace StudentLifeHelper.Common.Extensions
                 return new();
 
             return entities.Select(e => e.MapToDto<TEntity, TDto>()).ToList();
+        }
+
+        public static IQueryable<TDto> MapToDtos<TEntity, TDto>(
+            this IQueryable<TEntity> queryable, 
+            TypeAdapterConfig? config = null)
+        {
+            return config == null
+                ? queryable.ProjectToType<TDto>()                 // use default global config
+                : queryable.ProjectToType<TDto>(config);          // use custom config
         }
     }
 }

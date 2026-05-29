@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using StudentLifeHelper.Api.Controllers.Public.Base;
-using StudentLifeHelper.Common.Dtos.Auth;
-using StudentLifeHelper.Common.Dtos.User;
-using StudentLifeHelper.Common.Models.Auth;
-using StudentLifeHelper.Service.Auth.Interfaces;
+﻿using StudentLifeHelper.Api.Filters;
+using StudentLifeHelper.Common.Dtos.SqlLog;
+using StudentLifeHelper.Common.Models.User;
+using StudentLifeHelper.Service.Admin.Users;
 
 namespace StudentLifeHelper.Api.Controllers.Public
 {
-    public class AuthController(IAuthService service) : BasePublicController
+    public class AuthController(IAuthService service, SqlQueryStore sqlQueryStore) : BasePublicController
     {
+        private readonly SqlQueryStore _sqlQueryStore = sqlQueryStore;
         [HttpPost]
         public async Task<ActionResult<UserDto>> Register([FromForm] RegisterModel registerModel)
         {
@@ -22,7 +19,11 @@ namespace StudentLifeHelper.Api.Controllers.Public
             if (result is null)
                 return BadRequest("Registration failed.");
 
-            return Ok(result);
+            return Ok(new ApiResponse<UserDto?>
+            {
+                Data = result,
+                Queries = _sqlQueryStore.GetAll().ToList()
+            });
         }
 
         [HttpPost]
@@ -36,7 +37,11 @@ namespace StudentLifeHelper.Api.Controllers.Public
             if (result is null)
                 return BadRequest("Login failed.");
 
-            return Ok(result);
+            return Ok(new ApiResponse<TokenDto?>
+            {
+                Data = result,
+                Queries = _sqlQueryStore.GetAll().ToList()
+            });
         }
 
         [HttpGet]
@@ -46,7 +51,11 @@ namespace StudentLifeHelper.Api.Controllers.Public
             var result = await service.GetProfile();
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<UserDto?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -57,9 +66,63 @@ namespace StudentLifeHelper.Api.Controllers.Public
             var result = await service.RefreshTokenAsync(tokenDto);
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<TokenDto?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<UserDto>> UpdateProfile(UpdateUserModel updateUserModel)
+        {
+            var result = await service.UpdateProfileAsync(updateUserModel);
+            if (service.IsValid)
+            {
+                return Ok(new ApiResponse<string?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
+            }
+            return BadRequest();
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UpdateUsername(string newUsername)
+        {
+            var result = await service.UpdateUsernameAsync(newUsername);
+            if (service.IsValid)
+            {
+                return Ok(new ApiResponse<string?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
+            }
+            return BadRequest();
+
+        }
+
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserImage(IFormFile img)
+        {
+            var result = await service.UpdateUserImage(img);
+            if (service.IsValid) return Ok(new ApiResponse<string?>
+            {
+                Data = result,
+                Queries = _sqlQueryStore.GetAll().ToList()
+            });
+            return BadRequest(service.Errors);
+
+
         }
     }
 }

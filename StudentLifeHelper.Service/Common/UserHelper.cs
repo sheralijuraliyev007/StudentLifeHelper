@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Common.Interfaces;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-
+﻿
 namespace StudentLifeHelper.Service.Common
 {
 
     public class UserHelper(IHttpContextAccessor httpContextAccessor, IUnitOfWork unitOfWork) : IUserHelper
     {
-        public Guid GetUserId() => Guid.Parse((httpContextAccessor.HttpContext!.User.FindFirst(ClaimTypes.NameIdentifier)!.Value) );
+        public Guid? GetUserId() => Guid.TryParse(
+            httpContextAccessor.HttpContext?.User?
+            .FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id
+            )
+            ? id : null;
 
         //public async Task<int> GetUserLanguageCode()
         //{
@@ -22,7 +20,14 @@ namespace StudentLifeHelper.Service.Common
 
         //}
 
-        public async Task<int> GetUserLanguageCode() => (await unitOfWork.UserRepository().GetById(GetUserId()))!.LanguageCode;
+        public async Task<int> GetUserLanguageCode()
+        {
+            if(GetUserId() == null)
+            {
+                return 1; 
+            }
+            return (await unitOfWork.UserRepository().GetById(GetUserId()!.Value))!.LanguageCode;
+        }
 
         public string GetUsername() => httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)!.Value;
 

@@ -1,0 +1,148 @@
+<section class="page">
+  <header class="page-header">
+    <h1>Your profile</h1>
+    <p class="lead">Account details from the server.</p>
+  </header>
+
+  <div *ngIf="isLoading" class="card state-card">
+    <div class="spinner" aria-hidden="true"></div>
+    <span>Loading profile…</span>
+  </div>
+
+  <p *ngIf="!isLoading && errorMessage" class="error-banner">{{ errorMessage }}</p>
+
+  <div *ngIf="!isLoading && profile && !errorMessage" class="card profile-card">
+    <div class="avatar-row">
+      <div class="avatar has-image">
+        <img [src]="avatarSrc" alt="" (error)="onAvatarImgError()" />
+      </div>
+      <div class="identity">
+        <h2 class="display-name">{{ displayName }}</h2>
+        <p class="username">{{ '@' + profile.username }}</p>
+        <span class="pill">{{ profile.role }}</span>
+      </div>
+    </div>
+
+    <section class="listings-callout" aria-labelledby="listings-heading">
+      <h3 id="listings-heading">Room posts</h3>
+      <p class="listings-lead">Browse what others posted, or add your own and upload photos (first image becomes cover).</p>
+      <div class="listings-actions">
+        <a routerLink="/admin/room-posts" class="btn-secondary">Browse</a>
+        <a routerLink="/admin/room-posts/mine" class="btn-secondary">My posts</a>
+        <a routerLink="/admin/room-posts/create" class="btn-primary">New post</a>
+      </div>
+    </section>
+
+    <dl class="fields">
+      <div class="field">
+        <dt>First name</dt>
+        <dd>{{ profile.firstName || '—' }}</dd>
+      </div>
+      <div class="field">
+        <dt>Last name</dt>
+        <dd>{{ profile.lastName || '—' }}</dd>
+      </div>
+      <div class="field" *ngIf="profile.middleName">
+        <dt>Middle name</dt>
+        <dd>{{ profile.middleName }}</dd>
+      </div>
+      <div class="field">
+        <dt>Birth date</dt>
+        <dd>{{ profile.birthDate || '—' }}</dd>
+      </div>
+      <div class="field">
+        <dt>State</dt>
+        <dd>{{ profile.state }}</dd>
+      </div>
+      <div class="field">
+        <dt>Gender</dt>
+        <dd>{{ profile.gender }}</dd>
+      </div>
+      <div class="field">
+        <dt>Birth country</dt>
+        <dd>{{ profile.birthCountry }}</dd>
+      </div>
+      <div class="field">
+        <dt>Residence country</dt>
+        <dd>{{ profile.residenceCountry }}</dd>
+      </div>
+      <div class="field">
+        <dt>Region</dt>
+        <dd>{{ profile.region }}</dd>
+      </div>
+    </dl>
+
+    <section class="edit-section">
+      <h3>Update Profile Image</h3>
+      <div class="edit-form username-form">
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <button class="btn-primary" type="button" [disabled]="savingImage" (click)="updateImage($event)">
+          Update Image
+        </button>
+      </div>
+      <p class="msg success" *ngIf="imageActionMessage">{{ imageActionMessage }}</p>
+      <p class="msg error" *ngIf="imageActionError">{{ imageActionError }}</p>
+    </section>
+
+    <section class="edit-section">
+      <h3>Update Profile</h3>
+      <form class="edit-form" [formGroup]="profileForm" (ngSubmit)="submitProfileUpdate()">
+        <div class="grid">
+          <input type="text" placeholder="First name" formControlName="firstName" />
+          <input type="text" placeholder="Last name" formControlName="lastName" />
+          <input type="text" placeholder="Middle name (optional)" formControlName="middleName" />
+          <input type="date" formControlName="birthDate" />
+          <select formControlName="genderCode">
+            <option [ngValue]="null">Select gender (optional)</option>
+            <option *ngFor="let g of genders" [ngValue]="g.orderCode">{{ g.text }}</option>
+          </select>
+          <select formControlName="birthCountryCode">
+            <option [ngValue]="null">Select birth country (optional)</option>
+            <option *ngFor="let c of countries" [ngValue]="c.orderCode">{{ c.text }}</option>
+          </select>
+          <select formControlName="residenceCountryCode">
+            <option [ngValue]="null">Select residence country (optional)</option>
+            <option *ngFor="let c of countries" [ngValue]="c.orderCode">{{ c.text }}</option>
+          </select>
+        </div>
+        <button class="btn-primary" type="submit" [disabled]="savingProfile">Save Profile</button>
+      </form>
+      <p class="msg success" *ngIf="profileActionMessage">{{ profileActionMessage }}</p>
+      <p class="msg error" *ngIf="profileActionError">{{ profileActionError }}</p>
+    </section>
+
+    <section class="edit-section">
+      <h3>Update Username</h3>
+      <form class="edit-form username-form" [formGroup]="usernameForm" (ngSubmit)="submitUsernameUpdate()">
+        <input type="text" placeholder="New username" formControlName="newUsername" />
+        <button class="btn-primary" type="submit" [disabled]="savingUsername">Update Username</button>
+      </form>
+      <p class="msg error" *ngIf="usernameForm.controls.newUsername.touched && usernameForm.controls.newUsername.invalid">
+        Username must be 5-50 characters.
+      </p>
+      <p class="msg success" *ngIf="usernameActionMessage">{{ usernameActionMessage }}</p>
+      <p class="msg error" *ngIf="usernameActionError">{{ usernameActionError }}</p>
+    </section>
+
+    <section class="edit-section">
+      <h3>Language</h3>
+      <p class="hint">Manage language code in a separate action.</p>
+      <button class="btn-primary" type="button" (click)="openLanguageModal()">Update Language Code</button>
+      <p class="msg success" *ngIf="languageActionMessage">{{ languageActionMessage }}</p>
+      <p class="msg error" *ngIf="languageActionError">{{ languageActionError }}</p>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="languageModalOpen" (click)="closeLanguageModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Update Language Code</h3>
+      <form class="edit-form username-form" [formGroup]="languageForm" (ngSubmit)="submitLanguageUpdate()">
+        <input type="number" placeholder="Language code" formControlName="languageCode" />
+        <button class="btn-primary" type="submit" [disabled]="savingLanguage">Save</button>
+      </form>
+      <div class="modal-actions">
+        <button class="btn-primary ghost" type="button" (click)="closeLanguageModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</section>

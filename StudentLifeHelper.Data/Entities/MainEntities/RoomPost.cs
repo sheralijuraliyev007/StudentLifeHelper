@@ -1,14 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace StudentLifeHelper.Data.Entities.MainEntities
+﻿namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("room_posts")]
-    [Index(nameof(CreatedDateTime),Name = "ix_room_posts_active_feed")]
+    
     [Index(nameof(StatusCode),nameof(RegionCode),nameof(RoomTypeCode),Name = "ix_room_posts_search")]
     [Index(nameof(RoomTypeCode),Name = "ix_room_posts_room_type_code")]
     [Index(nameof(StatusCode),Name = "ix_room_posts_status_code")]
@@ -19,9 +12,6 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
     [Index(nameof(CurrencyCode),Name = "ix_room_posts_currency_code")]
     [Index(nameof(RoomTypeCode),nameof(ForGenderCode),Name = "ix_room_posts_type_gender")]
     [Index(nameof(StatusCode),nameof(RoomTypeCode),Name = "ix_room_posts_status_type")]
-    [Index(nameof(CreatedDateTime),Name = "ix_room_posts_created_date_time")]
-
-
 
     public class RoomPost : BaseCommonEntity
     {
@@ -66,17 +56,21 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         [Column("description")]
         public string Description { get; set; } = string.Empty!;
 
+        
         [Required]
+        [Column("room_capacity_count")]
+        public int RoomCapacityCount { get; set; }
+        
+        
         [Column("for_gender_code")]
-        public int ForGenderCode { get; set; }
-
+        public int? ForGenderCode { get; set; }
 
         [ForeignKey(nameof(ForGenderCode))]
-        public virtual Gender? Gender { get; set; }
+        public virtual Gender? ForGender { get; set; }
 
 
         [Required]
-        [Column("monthly_rent_fee")]
+        [Column("monthly_rent_fee", TypeName = "numeric(18,2)")]
         public decimal MonthlyRentFee { get; set; }
 
 
@@ -89,9 +83,13 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public virtual CurrencyType? CurrencyType { get; set; }
 
 
+        
+        [Column("deposit_amount", TypeName = "numeric(18,2)")]
+        public decimal? DepositAmount { get; set; }
+
         [Required]
-        [Column("deposit_amount")]
-        public decimal DepositAmount { get; set; }
+        [Column("deposit_exists")]
+        public bool DepositExists { get; set; }
 
         [Required]
         [Column("status_code")]

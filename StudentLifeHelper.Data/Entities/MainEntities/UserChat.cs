@@ -1,14 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Data.Entities.MainEntities
+﻿namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("user_chats")]
@@ -17,7 +7,7 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
     [Index(nameof(ChatId),Name = "ix_user_chats_chat_id")]
     [Index(nameof(UserId),nameof(StatusCode),Name = "ix_user_chats_user_status")]
 
-    public class UserChat
+    public class UserChat : BaseCommonEntity
     {
         [Key]
         [Required]

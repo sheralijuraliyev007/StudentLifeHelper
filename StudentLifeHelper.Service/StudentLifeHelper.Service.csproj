@@ -11,16 +11,22 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.3.9" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.9" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.2.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.25" />
     <PackageReference Include="Minio" Version="7.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.17.0" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.7.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\StudentLifeHelper.Common\StudentLifeHelper.Common.csproj" />
     <ProjectReference Include="..\StudentLifeHelper.Data\StudentLifeHelper.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Public\Base\" />
   </ItemGroup>
 
 </Project>

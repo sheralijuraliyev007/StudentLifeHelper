@@ -1,11 +1,4 @@
-﻿using StatusGeneric;
-using StudentLifeHelper.Common.Constants;
-using StudentLifeHelper.Common.Extensions;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Common.Interfaces;
-
-namespace StudentLifeHelper.Service.Admin.Base
+﻿namespace StudentLifeHelper.Service.Admin.Base
 {
     public class BaseInfoService<TEntity>: StatusGenericHandler, IBaseInfoService<TEntity>
         where TEntity : class, IHasState, IHasCommonAttributes
@@ -23,8 +16,8 @@ namespace StudentLifeHelper.Service.Admin.Base
         public async Task<string> Create<TModel>(TModel model)
         {
             var entity = model.MapToEntity<TEntity, TModel>();
+            entity.CreatedUserId = _userHelper.GetUserId()!.Value;
             entity.StateCode = StateConstants.Active;
-            entity.CreatedUserId = _userHelper.GetUserId();
 
             await _baseRepository.Add(entity);
 
@@ -41,6 +34,7 @@ namespace StudentLifeHelper.Service.Admin.Base
             }
             entity!.StateCode = StateConstants.Passive;
             entity.ModifiedUserId = _userHelper.GetUserId();
+            entity.ModifiedDateTime = DateTime.UtcNow;
 
             await _baseRepository.Update(entity);
             await _baseRepository.SaveChanges();
@@ -58,6 +52,7 @@ namespace StudentLifeHelper.Service.Admin.Base
             }
             entity!.StateCode = StateConstants.Active;
             entity.ModifiedUserId = _userHelper.GetUserId();
+            entity.ModifiedDateTime = DateTime.UtcNow;
             await _baseRepository.Update(entity);
             await _baseRepository.SaveChanges();
             return "Activated successfully";
@@ -78,7 +73,7 @@ namespace StudentLifeHelper.Service.Admin.Base
 
         public async Task<List<TDto>> GetAll<TDto>()
         {
-            var entities = _baseRepository.GetAll().Where(e => e.StateCode == StateConstants.Active).ToList();
+            var entities = _baseRepository.GetAll().ToList();
             return entities.MapToDtos<TEntity, TDto>();
         }
 

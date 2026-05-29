@@ -1,19 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.VisualBasic;
-using StudentLifeHelper.Common.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Service.Auth.Handlers
+﻿namespace StudentLifeHelper.Service.Auth.Handlers
 {
     public class BasicAuthenticationHandler(
         IOptionsMonitor<AuthenticationSchemeOptions> options,

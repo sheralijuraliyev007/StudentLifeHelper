@@ -1,0 +1,52 @@
+﻿global using StudentLifeHelper.Common.Constants;
+global using StudentLifeHelper.Common.Dtos.Auth;
+global using StudentLifeHelper.Common.Dtos.User;
+global using StudentLifeHelper.Common.Extensions;
+global using StudentLifeHelper.Common.MinIO;
+global using StudentLifeHelper.Service.Infrastructure.Interfaces;
+global using StudentLifeHelper.Service.Public.Content.Interfaces;
+global using StudentLifeHelper.Common.Settings.MioIO;
+global using StudentLifeHelper.Data.Entities.MainEntities;
+global using StudentLifeHelper.Service.Common.Interfaces;
+global using StudentLifeHelper.Service.Public.Manual.Extensions;
+global using StudentLifeHelper.Service.Public.Manual.Interfaces;
+global using StudentLifeHelper.Common.Models.Manual;
+global using StudentLifeHelper.Data.Entities.BaseEntities;
+global using StudentLifeHelper.Data.Entities.InfoEntities;
+global using StudentLifeHelper.Data.Repositories.Interfaces;
+global using StudentLifeHelper.Common.Models.Auth;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Identity;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using Microsoft.Extensions.Options;
+global using StatusGeneric;
+global using Mapster;
+global using Minio;
+global using Minio.DataModel.Args;
+global using Minio.Exceptions;
+global using System.Security.Claims;
+global using StudentLifeHelper.Common.Dtos.Info;
+global using StudentLifeHelper.Service.Admin.Base.Interfaces;
+global using Microsoft.AspNetCore.Authentication;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.Logging;
+global using System.Net.Http.Headers;
+global using System.Text;
+global using System.Text.Encodings.Web;
+global using StudentLifeHelper.Common.FilterOptions;
+global using StudentLifeHelper.Common.Models.Shared;
+global using StudentLifeHelper.Common.Models.User;
+global using StudentLifeHelper.Service.Auth.Interfaces;
+global using Microsoft.IdentityModel.Tokens;
+global using StudentLifeHelper.Common.Settings.Jwt;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Cryptography;
+
+global using StudentLifeHelper.Common.Dtos.MainPage;
+
+global using StudentLifeHelper.Common.Models.MainPage.CurrencyPost;
+
+global using StudentLifeHelper.Service.MainPage.Base.Interface;
+global using StudentLifeHelper.Service.MainPage.QueryObjects;
+

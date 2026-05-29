@@ -1,0 +1,153 @@
+.sql-panel {
+  position: fixed;
+  bottom: 0;
+  left: 280px;
+  right: 0;
+  background: #0f172a;
+  border-top: 1px solid #1e293b;
+  z-index: 9999;
+  font-family: system-ui, sans-serif;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.panel-icon { color: #818cf8; font-size: 16px; }
+.panel-title { color: #e2e8f0; font-size: 13px; font-weight: 600; }
+
+.badge-count {
+  background: #4f46e5;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.badge-time {
+  background: #0f4c81;
+  color: #93c5fd;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.header-actions { margin-left: auto; }
+
+.btn-sm {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  &:hover { border-color: #6366f1; color: #fff; }
+}
+
+.chevron {
+  color: #94a3b8;
+  font-size: 14px;
+  transition: transform 0.2s;
+  &.open { transform: rotate(180deg); }
+}
+
+
+.query-item { border-bottom: 1px solid #1e293b; }
+
+.query-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  &:hover { background: rgba(255,255,255,0.03); }
+}
+
+.query-index {
+  background: #1e293b;
+  color: #818cf8;
+  font-size: 11px;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.query-preview {
+  color: #94a3b8;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.query-duration {
+  color: #34d399;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.query-body {
+  padding: 12px 20px 16px;
+  background: #080f1c;
+}
+
+.sql-block {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #cbd5e1;
+  margin: 0;
+
+  ::ng-deep .kw { color: #818cf8; font-weight: 600; }
+  ::ng-deep .tbl { color: #34d399; }
+  ::ng-deep .param { color: #fbbf24; }
+}
+
+.resize-handle {
+  height: 6px;
+  background: #1e293b;
+  cursor: ns-resize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+
+  &:hover {
+    background: #4f46e5;
+  }
+}
+
+.resize-dots {
+  color: #475569;
+  font-size: 14px;
+  letter-spacing: 2px;
+  user-select: none;
+  pointer-events: none;
+}
+
+// Update panel-body to use fixed height instead of max-height
+.panel-body {
+  overflow-y: auto;
+  border-top: 1px solid #1e293b;
+  // remove max-height: 320px from existing rule
+}
+.sql-panel.resizing {
+  user-select: none;
+}

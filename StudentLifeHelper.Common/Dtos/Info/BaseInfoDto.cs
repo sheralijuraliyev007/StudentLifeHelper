@@ -15,5 +15,7 @@ namespace StudentLifeHelper.Common.Dtos.Info
         public string ShortName { get; set; } 
 
         public string FullName { get; set; }
+
+        public int StateCode { get; set; }
     }
 }

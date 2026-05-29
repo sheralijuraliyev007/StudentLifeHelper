@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using StudentLifeHelper.Common.Models.Auth;
-
 public class LoginModelValidator : AbstractValidator<LoginModel>
 {
     public LoginModelValidator()

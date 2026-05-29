@@ -1,17 +1,4 @@
 ﻿
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using StudentLifeHelper.Common.Dtos.Auth;
-using StudentLifeHelper.Common.Dtos.User;
-using StudentLifeHelper.Common.Settings.Jwt;
-using StudentLifeHelper.Data.Entities.MainEntities;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-
 namespace StudentLifeHelper.Service.Auth
 {
     public class JwtService(IConfiguration configuration) 

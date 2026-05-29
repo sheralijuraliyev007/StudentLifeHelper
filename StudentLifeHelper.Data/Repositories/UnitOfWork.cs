@@ -1,15 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using StudentLifeHelper.Data.Context;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using StudentLifeHelper.Data.Entities.MainEntities;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Data.Repositories
+﻿namespace StudentLifeHelper.Data.Repositories
 {
     public class UnitOfWork(
         AppDbContext context,

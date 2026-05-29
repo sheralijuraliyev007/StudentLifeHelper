@@ -3,6 +3,7 @@ namespace StudentLifeHelper.Common.Dtos.User
 {
     public class UserDtoForAdmin : UserDto
     {
+
         public int RoleId { get; set; }
 
         public int StateId { get; set; }
@@ -19,8 +20,8 @@ namespace StudentLifeHelper.Common.Dtos.User
 
         public DateTimeOffset RefreshTokenExpireTime { get; set; }
 
-        public bool CanActivate { get; set; }
+        //public bool CanActivate { get; set; }
 
-        public bool CanDeactivate { get; set; }
+        //public bool CanDeactivate { get; set; }
     }
 }

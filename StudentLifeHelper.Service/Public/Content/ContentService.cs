@@ -1,16 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-
-using StatusGeneric;
-using StudentLifeHelper.Common.Constants;
-using StudentLifeHelper.Common.MinIO;
-
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Infrastructure.Interfaces;
-using StudentLifeHelper.Service.Public.Content.Interfaces;
-
-
-namespace StudentLifeHelper.Service.Public.Content
+﻿namespace StudentLifeHelper.Service.Public.Content
 {
     public class ContentService(IMinioService minioService, IUnitOfWork unitOfWork) : StatusGenericHandler, IContentService
     {
@@ -31,7 +19,7 @@ namespace StudentLifeHelper.Service.Public.Content
 
             try
             {
-                var content = new StudentLifeHelper.Data.Entities.MainEntities.Content
+                var content = new Data.Entities.MainEntities.Content
                 {
                     Name = $"{uploadFileModel.FileName}{Path.GetExtension(file.FileName)}",
                     FileId = uploadFileModel.FileName,
@@ -55,7 +43,7 @@ namespace StudentLifeHelper.Service.Public.Content
 
 
         }
-        
+
         //public Task<(Stream? data, string? type, string? name)?> DownloadFile(Guid fileId)
         //{
         //    throw new NotImplementedException();
@@ -66,35 +54,45 @@ namespace StudentLifeHelper.Service.Public.Content
             try
             {
                 bool isValid = ValidateFile(file);
-                if (!isValid) return null;
+
+                if (!isValid)
+                    return null;
 
                 var content = await unitOfWork.ContentRepository().GetById(id);
 
+                
+
                 if (content == null)
                 {
-                    AddError($"Image not found with id :{id}");
+                    AddError($"Image not found with id: {id}");
                     return null;
                 }
 
-                await minioService.RemoveFileAsync(content.Folder, content.FileId);
+                var oldFileId = content.FileId;
 
                 var result = await ProcessFileAsync(file, content.Folder);
-                if (result is null) return null;
+
+                if (result is null)
+                    return null;
 
                 var (uploadFileModel, contentTypeCode) = result.Value;
+
                 content.Name = file!.FileName;
                 content.FileId = uploadFileModel.FileName;
                 content.ContentTypeCode = contentTypeCode;
+
                 await unitOfWork.ContentRepository().Update(content);
                 await unitOfWork.SaveChanges();
+
+                await minioService.RemoveFileAsync(content.Folder, oldFileId);
+
                 return content.Id;
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 AddError(ex.Message);
                 return null;
-                
             }
-
         }
 
 
@@ -181,18 +179,17 @@ namespace StudentLifeHelper.Service.Public.Content
             var (isExist, content) = await GetContent(fileId);
             if (!isExist)
                 return new(null, null, null);
-            var fileType = content!.ContentType!.TypeName;
 
-            var model = await minioService.GetFileAsync(content.Folder, content.FileId);
+            var model = await minioService.GetFileAsync(content!.Folder, content.FileId);
             CombineStatuses(minioService);
 
-            if(HasErrors) return null;
-
-            Console.WriteLine($"[DownloadFile] File from Minio -> Length : {model?.Data.Length}, Name:{content.Name}");
+            if (HasErrors) return null;
 
             model!.Data.Position = 0;
-            return new(model.Data, fileType, content.Name);
-            }
+
+            // Use content type from MinIO metadata, not TypeName from DB
+            return new(model.Data, model.ContentType, content.Name);
+        }
 
         private async Task<Tuple<bool,StudentLifeHelper.Data.Entities.MainEntities.Content?>> GetContent(Guid fileId)
         {
@@ -207,6 +204,34 @@ namespace StudentLifeHelper.Service.Public.Content
 
             return new(true, content);
 
+        }
+
+        public async Task<bool> DeleteContentForImage(long id)
+        {
+            try
+            {
+                var content = await unitOfWork.ContentRepository().GetById(id);
+
+                if (content == null)
+                {
+                    AddError($"Image not found with id :{id}");
+                    return false;
+                }
+
+                await minioService.RemoveFileAsync(content.Folder, content.FileId);
+                CombineStatuses(minioService);
+
+                if (HasErrors) return false;
+
+                await unitOfWork.ContentRepository().Delete(content);
+                await unitOfWork.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex) { 
+                AddError(ex.Message);
+                return false;
+            }
         }
     }
 }

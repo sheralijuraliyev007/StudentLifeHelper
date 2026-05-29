@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-using Microsoft.AspNetCore.Mvc;
-
-using StudentLifeHelper.Service.Admin;
-
-namespace StudentLifeHelper.Api.Controllers.Admin.Base
+﻿namespace StudentLifeHelper.Api.Controllers.Admin.Base
 {
     public abstract class BaseInfoController<TEntity, TCreateModel, TUpdateModel, TDto, TId>  : BaseAdminController
         where TEntity : class
     {
 
         protected readonly IBaseInfoService<TEntity> service;
+        private readonly SqlQueryStore _sqlQueryStore;
 
-        protected BaseInfoController(IBaseInfoService<TEntity> service)
+        protected BaseInfoController(IBaseInfoService<TEntity> service, SqlQueryStore sqlQueryStore)
         {
             this.service = service;
+            _sqlQueryStore = sqlQueryStore;
         }
 
 
@@ -25,7 +21,11 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             var result = await service.GetAll<TDto>();
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<IEnumerable<TDto>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -37,7 +37,11 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             var result = await service.GetById<TDto, TId>(id);
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<TDto?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -49,7 +53,11 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             var result = await service.Create(model);
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<string?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -61,7 +69,11 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             var result = await service.Update(id, model);
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<string?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
 
@@ -74,7 +86,11 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             var result = await service.DeleteById(id);
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<string?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
 
@@ -87,7 +103,11 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             var result = await service.MakePassiveById(id);
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<string?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -99,7 +119,11 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Base
             var result = await service.MakeActiveById(id);
             if (service.IsValid)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<string?>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }

@@ -1,14 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Minio;
-using Minio.DataModel.Args;
-using Minio.Exceptions;
-using StatusGeneric;
-using StudentLifeHelper.Common.MinIO;
-using StudentLifeHelper.Common.Settings.MioIO;
-using StudentLifeHelper.Service.Infrastructure.Interfaces;
-
-
-namespace StudentLifeHelper.Service.Infrastructure
+﻿namespace StudentLifeHelper.Service.Infrastructure
 {
     public class MinIOService : StatusGenericHandler, IMinioService
     {
@@ -35,12 +25,19 @@ namespace StudentLifeHelper.Service.Infrastructure
             try
             {
                 var objectName = string.IsNullOrWhiteSpace(folderName)
-                    ? fileName.ToString() : $"{folderName.TrimEnd('/')}/{fileName.ToString()}";
+                    ? fileName.ToString()
+                    : $"{folderName.TrimEnd('/')}/{fileName}";
 
                 var memoryStream = new MemoryStream();
 
-                var contentType = "application/octet-stream";
+                // 1. Get real content type from MinIO object metadata
+                var stat = await _minioClient.StatObjectAsync(new StatObjectArgs()
+                    .WithBucket(_bucketName)
+                    .WithObject(objectName));
 
+                var contentType = stat.ContentType; // e.g. "image/jpeg", "image/png"
+
+                // 2. Download the file stream
                 await _minioClient.GetObjectAsync(new GetObjectArgs()
                     .WithBucket(_bucketName)
                     .WithObject(objectName)
@@ -56,8 +53,8 @@ namespace StudentLifeHelper.Service.Infrastructure
                 AddError($"File not found. FileId : {fileName}");
                 return null;
             }
-
-            catch (MinioException ex) {
+            catch (MinioException ex)
+            {
                 throw new MinioException($"[MinIO Error]: {ex.Message}");
             }
         }
@@ -67,30 +64,21 @@ namespace StudentLifeHelper.Service.Infrastructure
             try
             {
                 var objectName = string.IsNullOrWhiteSpace(folderName)
-                    ? fileName.ToString() : $"{folderName.TrimEnd('/')}/{fileName.ToString()}";
+                    ? fileName.ToString()
+                    : $"{folderName.TrimEnd('/')}/{fileName}";
 
-                var memoryStream = new MemoryStream();
-                await _minioClient.GetObjectAsync(new GetObjectArgs()
-                    .WithBucket(_bucketName)
-                    .WithObject(objectName)
-                    .WithCallbackStream(stream =>
-                    {
-                        stream.CopyTo(memoryStream);
-                    }));
-
+                // Remove directly — no need to download first
                 await _minioClient.RemoveObjectAsync(new RemoveObjectArgs()
                     .WithBucket(_bucketName)
                     .WithObject(objectName));
 
                 Message = $"File '{fileName}' removed successfully";
             }
-            catch (ObjectNotFoundException){
-            }
-            
-            catch (Exception e) {
-
+            catch (ObjectNotFoundException) { }
+            catch (Exception e)
+            {
                 throw new Exception($"[MinIO Remove Error for {fileName}]: {e.Message}");
-            } 
+            }
         }
 
         public async Task UploadFileAsync(string folderName, UploadFileModel file)

@@ -1,21 +1,4 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using StatusGeneric;
-using StudentLifeHelper.Common.Constants;
-using StudentLifeHelper.Common.Dtos.Auth;
-using StudentLifeHelper.Common.Dtos.User;
-using StudentLifeHelper.Common.Extensions;
-using StudentLifeHelper.Common.Models.Auth;
-using StudentLifeHelper.Data.Entities.MainEntities;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Auth.Interfaces;
-using StudentLifeHelper.Service.Common.Interfaces;
-using StudentLifeHelper.Service.Public.Content.Interfaces;
-
-
-namespace StudentLifeHelper.Service.Auth
+﻿namespace StudentLifeHelper.Service.Auth
 {
     public class AuthService(IUnitOfWork unitOfWork, IContentService contentService, JwtService jwtService, IUserHelper userHelper) :
         StatusGenericHandler, IAuthService
@@ -80,6 +63,7 @@ namespace StudentLifeHelper.Service.Auth
                 .Map(dest => dest.Role, src => src.Role!.FullName)
                 .Map(dest => dest.Region, src => src.Region!.FullName)
                 .Map(dest => dest.Gender, src => src.Gender!.FullName)
+                .Map(dest => dest.LanguageCode, src => src.LanguageCode)
                 .Map(dest => dest.BirthCountry, src => src.BirthCountry!.FullName)
                 .Map(dest => dest.State, src => src.State!.FullName)
                 .Map(dest => dest.ResidenceCountry, src => src.ResidenceCountry!.FullName)
@@ -103,10 +87,10 @@ namespace StudentLifeHelper.Service.Auth
             var user = (unitOfWork.UserRepository().GetAll(u => u.Role!)
                 .FirstOrDefault(u => u.Username == username && u.StateCode == StateConstants.Active));
 
-            bool isValid = user is null || user.RefreshToken != tokenDto.RefreshToken
-                || user.RefreshTokenExpireTime <= DateTime.UtcNow;
-
-            if (!isValid) { 
+            bool isInvalid = user is null || user.RefreshToken != tokenDto.RefreshToken
+    ||          user.RefreshTokenExpireTime <= DateTime.UtcNow;
+            if (isInvalid)
+            {
                 AddError("Refresh token is invalid or expired.");
                 return null;
             }
@@ -142,7 +126,7 @@ namespace StudentLifeHelper.Service.Auth
                     FirstName = registerModel.FirstName,
                     LastName = registerModel.LastName,
                     MiddleName = registerModel.MiddleName,
-                    BirthDate = registerModel.BirthDate,
+                    BirthDate = registerModel.BirthDate.HasValue ? DateTime.SpecifyKind(registerModel.BirthDate.Value, DateTimeKind.Utc) : null,
                     Username = registerModel.Username,
                     BirthCountryCode = registerModel.BirthCountryCode,
                     ResidenceCountryCode = registerModel.ResidenceCountryCode,
@@ -152,7 +136,8 @@ namespace StudentLifeHelper.Service.Auth
                     RegionCode = registerModel.RegionCode,
                     RoleCode = RoleConstants.UserRoleCode,
                     RefreshTokenExpireTime = DateTime.UtcNow.AddHours(1),
-                    CreatedUserId = userId
+                    CreatedUserId = userId,
+                    LanguageCode = 1
                 };
                 newUser.PasswordHash = HashPasword(newUser, registerModel.Password);
 
@@ -161,13 +146,23 @@ namespace StudentLifeHelper.Service.Auth
                 await unitOfWork.SaveChanges();
 
                 var user = await (unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img!, u => u.ResidenceCountry!, u => u
-                .Gender!, u => u.Region!, u => u.BirthCountry!, u=>u.State!)).FirstOrDefaultAsync(u => u.Id == newUser.Id);
+                .Gender!, u => u.Region!, u => u.BirthCountry!, u=> u.Language!,u=>u.State!)).FirstOrDefaultAsync(u => u.Id == newUser.Id);
 
 
                 await transaction.CommitAsync();
 
-                if(user is null)
+                if (user is null)
                 {
+                    // Try loading without joins to confirm user was saved
+                    var rawUser = await unitOfWork.UserRepository().GetAll()
+                        .FirstOrDefaultAsync(u => u.Id == newUser.Id);
+
+                    Console.WriteLine($"Raw user exists: {rawUser != null}");
+                    Console.WriteLine($"RegionCode: {newUser.RegionCode}");
+                    Console.WriteLine($"GenderCode: {newUser.GenderCode}");
+                    Console.WriteLine($"BirthCountryCode: {newUser.BirthCountryCode}");
+                    Console.WriteLine($"ResidenceCountryCode: {newUser.ResidenceCountryCode}");
+
                     AddError("User created but not loaded.");
                     return null;
                 }
@@ -180,30 +175,11 @@ namespace StudentLifeHelper.Service.Auth
                     .Map(dest => dest.Gender, src => src.Gender!.FullName)
                     .Map(dest => dest.BirthCountry, src => src.BirthCountry!.FullName)
                     .Map(dest => dest.ResidenceCountry, src => src.ResidenceCountry!.FullName)
+                    .Map(dest => dest.Language, src => src.Language!.FullName)
                     .Map(dest => dest.State, src => src.State!.FullName)
                     .Map(dest => dest.ImgUrl, src => src.ImgId != null && src.Img != null 
                        ? src.Img.FileId.GetFileUrl() : null);
 
-                //        var dto = new UserDto
-                //        {
-                //            Id = user.Id,
-                //            FirstName = user.FirstName,
-                //            LastName = user.LastName,
-                //            MiddleName = user.MiddleName,
-                //            Username = user.Username,
-                //            BirthDate = user.BirthDate,
-                //            Role = user.Role?.FullName,
-                //            State = user.State?.FullName,
-                //            Gender = user.Gender?.FullName,
-                //            BirthCountry = user.BirthCountry?.FullName,
-                //            ResidenceCountry = user.ResidenceCountry?.FullName,
-                //            Region = user.Region?.FullName,
-                //            ImgUrl = user.ImgId != null && user.Img != null
-                //? user.Img.FileId.GetFileUrl()
-                //: null
-                //        };
-
-                //return user.Adapt<UserDto>(config);
                 return user.MapToDto<User, UserDto>(config);
 
             }
@@ -216,11 +192,76 @@ namespace StudentLifeHelper.Service.Auth
             }
         }
 
-            
+
+
+        public async Task<string?> UpdateProfileAsync(UpdateUserModel updateProfileModel)
+        {
+            var userId = userHelper.GetUserId();
+            if(userId == null)
+            {
+                return null; 
+            }
+
+            var (user, isExist) = await GetUserById(userId.Value);
+
+            if (!isExist)
+            {
+                return null;
+            }
+
+
+            var userUpdate = updateProfileModel.MapForUpdate(user);
+
+            userUpdate!.ModifiedDateTime = DateTime.UtcNow;
+            userUpdate.ModifiedUserId = userId.Value;
+            await unitOfWork.UserRepository().Update(userUpdate!);
+            await unitOfWork.SaveChanges();
+
+            return "User updated successfully.";
+
+        }
+
+        public async Task<string?> UpdateUsernameAsync(string newUsername)
+        {
+            var userId = userHelper.GetUserId();
+
+            if (!userId.HasValue)
+            {
+                AddError("User not found");
+                return null;
+            }
+
+            var (user, isExist) = await GetUserById(userId.Value);
+
+            if (!isExist || user == null)
+            {
+                AddError("User not found");
+                return null;
+            }
+
+            var userNameExists = await UserNameExists(newUsername);
+
+            if (userNameExists)
+            {
+                AddError("Username already exists");
+                return null;
+            }
+
+            user.Username = newUsername;
+
+            await unitOfWork.UserRepository().Update(user);
+            await unitOfWork.SaveChanges();
+
+            return "Username updated successfully";
+        }
+
+        
+
+
         private async Task<User?> GetUserByUsername(string username)
         {
             var user = await unitOfWork.UserRepository().GetAll(u => u.Role!, u => u.Img, u => u.ResidenceCountry!, u => u.ResidenceCountry!, u=> u.Gender!,u => u.Region!, u=>u.State!)
-                .Where(x => x.Username.Equals(username) && x.StateCode == StateConstants.Active).FirstOrDefaultAsync();
+                .Where(x => x.Username.Trim() == username.Trim() ).FirstOrDefaultAsync();
 
             return user;
         }
@@ -248,5 +289,66 @@ namespace StudentLifeHelper.Service.Auth
             return _hasher.HashPassword(null!, password);
         }
 
+        public async Task<string?> UpdateUserImage(IFormFile img)
+        {
+            var userId = userHelper.GetUserId();
+
+            if (!userId.HasValue)
+            {
+                AddError("User not found");
+                return null;
+            }
+
+            var (user, isExist) = await GetUserById(userId.Value);
+
+            if (!isExist || user == null)
+            {
+                AddError("User not found");
+                return null;
+            }
+
+            long? contentId = user.ImgId;
+
+            // FIRST IMAGE UPLOAD
+            if (!contentId.HasValue)
+            {
+                user.ImgId = await contentService.CreateContentForImage(
+                    img,
+                    "profile"
+                );
+            }
+            else
+            {
+                user.ImgId = await contentService.UpdateContentForImage(
+                    contentId.Value,
+                    img
+                );
+            }
+
+            if (user.ImgId == null)
+            {
+                AddError("Image upload failed");
+                return null;
+            }
+
+            user.ModifiedUserId = userId.Value;
+            user.ModifiedDateTime = DateTime.UtcNow;
+
+            await unitOfWork.UserRepository().Update(user);
+            await unitOfWork.SaveChanges();
+
+            return "User image updated successfully.";
+        }
+
+        private async Task<(User? user, bool isExist)> GetUserById(Guid userId)
+        {
+            var user = await unitOfWork.UserRepository().GetById(userId);
+
+            if (user is null)
+            {
+                return new(null, false);
+            }
+            return new(user, true);
+        }
     }
 }

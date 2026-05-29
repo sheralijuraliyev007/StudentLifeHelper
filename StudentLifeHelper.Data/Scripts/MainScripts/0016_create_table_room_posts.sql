@@ -5,10 +5,10 @@ create table room_posts(
 	user_id					uuid not null references users(id),
 	title					varchar(200) not null,
 	description				varchar(4000) not null,
-	for_gender_code			integer not null references info.info_gender(code),
+	for_gender_code			integer null references info.info_gender(code),
 	monthly_rent_fee		numeric(18,2) not null,
 	currency_code			integer not null references info.info_currency_type(code),
-	deposit_amount			numeric(18,2) not null,
+	deposit_amount			numeric(18,2) null,
 	deposit_exists			boolean not null,
 	room_capacity_count		integer not null,
 	status_code				integer not null references info.info_status(code),
@@ -25,11 +25,11 @@ create table room_posts(
 CHECK (deposit_amount >= 0),
 CHECK (room_capacity_count > 0),
 
-CHECK (
-    (deposit_exists = true AND deposit_amount > 0)
-    OR
-    (deposit_exists = false AND deposit_amount = 0)
-)
+    CHECK (
+        (deposit_exists = true AND deposit_amount > 0)
+            OR
+        (deposit_exists = false AND (deposit_amount IS NULL OR deposit_amount = 0))
+        )
 );
 
 

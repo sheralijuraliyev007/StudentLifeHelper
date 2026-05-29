@@ -1,12 +1,4 @@
-﻿
-
-
-using StatusGeneric;
-using StudentLifeHelper.Common.Dtos.Auth;
-using StudentLifeHelper.Common.Dtos.User;
-using StudentLifeHelper.Common.Models.Auth;
-
-namespace StudentLifeHelper.Service.Auth.Interfaces
+﻿namespace StudentLifeHelper.Service.Auth.Interfaces
 {
     public interface IAuthService : IStatusGeneric
     {
@@ -15,5 +7,12 @@ namespace StudentLifeHelper.Service.Auth.Interfaces
         Task<UserDto?> GetProfile();
 
         Task<TokenDto?> RefreshTokenAsync(TokenDto tokenDto);
+
+        Task<string?> UpdateProfileAsync(UpdateUserModel updateProfileModel);
+
+        Task<string?> UpdateUsernameAsync(string newUsername);
+
+
+        Task<string?> UpdateUserImage( IFormFile img);
     }
 }

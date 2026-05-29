@@ -1,22 +1,16 @@
-﻿using Npgsql.Replication.PgOutput.Messages;
-using StatusGeneric;
-using StudentLifeHelper.Common.Constants;
-using StudentLifeHelper.Common.Models.Manual;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Common.Interfaces;
-using StudentLifeHelper.Service.Public.Manual.Extensions;
-using StudentLifeHelper.Service.Public.Manual.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Service.Public.Manual
+﻿namespace StudentLifeHelper.Service.Public.Manual
 {
-    public class ManualService(IUnitOfWork unitOfWork, IUserHelper userHelper) : StatusGenericHandler,IManualService
+    public class ManualService : StatusGenericHandler, IManualService
     {
+        private readonly IUnitOfWork unitOfWork;
+        private readonly IUserHelper userHelper;
 
-        
+        public ManualService(IUnitOfWork unitOfWork, IUserHelper userHelper)
+        {
+            this.unitOfWork = unitOfWork;
+            this.userHelper = userHelper;
+        }
+
 
         public async Task<SelectList<int>> GenderSelect()
         {
@@ -46,7 +40,7 @@ namespace StudentLifeHelper.Service.Public.Manual
 
         public async Task<SelectList<int>> CountriesSelect()
         {
-            
+
 
             var languageCode = await userHelper.GetUserLanguageCode();
             var countries = unitOfWork.CountryRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
@@ -108,6 +102,15 @@ namespace StudentLifeHelper.Service.Public.Manual
 
         public async Task<SelectList<int>> RolesSelect()
         {
+            var userRoleId  = userHelper.GetUserRoleId();
+
+            if(userRoleId != RoleConstants.AdminRoleId)
+            {
+                return new SelectList<int>();
+            }
+
+            
+
             var roles = unitOfWork.RoleRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
             var languageCode = await userHelper.GetUserLanguageCode();
@@ -136,6 +139,14 @@ namespace StudentLifeHelper.Service.Public.Manual
 
         public async Task<SelectList<int>> StatesSelect()
         {
+
+            var userRoleId = userHelper.GetUserRoleId();
+
+            if (userRoleId != RoleConstants.AdminRoleId)
+            {
+                return new SelectList<int>();
+            }
+
             var states = unitOfWork.StateRepository().GetAll();
 
 
@@ -147,8 +158,16 @@ namespace StudentLifeHelper.Service.Public.Manual
         public async Task<SelectList<int>> InfoTablesSelect()
         {
 
+
+            var userRoleId = userHelper.GetUserRoleId();
+
+            if (userRoleId != RoleConstants.AdminRoleId)
+            {
+                return new SelectList<int>();
+            }
+
             var infoTables = unitOfWork.InfoTableRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
-            
+
             var list = infoTables.AssSelectList();
 
             return list;
@@ -157,11 +176,11 @@ namespace StudentLifeHelper.Service.Public.Manual
 
         public async Task<SelectList<int>> ContentTypesSelect()
         {
-            
+
             var contentTypes = unitOfWork.ContentTypeRepository().GetAll().Where(g => g.StateCode == StateConstants.Active);
 
             var languageCode = await userHelper.GetUserLanguageCode();
-            
+
             var translations = unitOfWork.TranslationRepository().GetAll();
 
             var list = await BuildTranslatedSelectList(contentTypes, translations, InfoTableConstants.ContentTypeTabldeCode);

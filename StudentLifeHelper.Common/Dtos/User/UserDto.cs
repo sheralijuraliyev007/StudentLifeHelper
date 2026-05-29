@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Common.Dtos.User
+﻿namespace StudentLifeHelper.Common.Dtos.User
 {
     
 
@@ -33,6 +27,10 @@ namespace StudentLifeHelper.Common.Dtos.User
         public string ResidenceCountry { get; set; } = string.Empty;
 
         public string Region { get; set; } = string.Empty;
+
+        public  int LanguageCode { get; set; }
+
+        public string Language { get; set; } = string.Empty;
 
         public string? ImgUrl { get; set; }
     }

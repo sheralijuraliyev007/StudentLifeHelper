@@ -1,27 +1,10 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Minio.Helper;
-using StudentLifeHelper.Common.Settings.Jwt;
-using StudentLifeHelper.Common.Settings.MioIO;
-using StudentLifeHelper.Data.Context;
-using StudentLifeHelper.Data.Repositories;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Admin;
-using StudentLifeHelper.Service.Admin.Base;
-using StudentLifeHelper.Service.Admin.Base.Interfaces;
-using StudentLifeHelper.Service.Auth;
-using StudentLifeHelper.Service.Auth.Interfaces;
-using StudentLifeHelper.Service.Common;
-using StudentLifeHelper.Service.Common.Interfaces;
-using StudentLifeHelper.Service.Infrastructure;
-using StudentLifeHelper.Service.Infrastructure.Interfaces;
-using StudentLifeHelper.Service.Public.Content;
-using StudentLifeHelper.Service.Public.Content.Interfaces;
-using StudentLifeHelper.Service.Public.Manual;
-using StudentLifeHelper.Service.Public.Manual.Interfaces;
-using System.Text;
+
+using StudentLifeHelper.Api.Hubs;
+using StudentLifeHelper.Common.Dtos.SqlLog;
+using StudentLifeHelper.Data.Interceptors;
+using StudentLifeHelper.Service.Chat;
+using StudentLifeHelper.Service.Chat.Interfaces;
+using StudentLifeHelper.Service.MainPage.Base.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,7 +66,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
             if (string.IsNullOrEmpty(token))
             {
-                token = context.Request.Query["token"];
+                // SignalR sends token as "access_token" in query string
+                token = context.Request.Query["access_token"];
 
                 if (!string.IsNullOrEmpty(token))
                 {
@@ -112,19 +96,31 @@ builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IBaseInfoService<>), typeof(BaseInfoService<>));
 builder.Services.AddScoped<IMinioService, MinIOService>();
 builder.Services.AddScoped<IContentService, ContentService>();
-
+builder.Services.AddScoped<RoomPostService>();
+builder.Services.AddScoped<IRoomPostService,RoomPostService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ITranslationInfoService, TranslationInfoService>();
+builder.Services.AddScoped<IAdminUserService, AdminUserService>();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IManualService, ManualService>();
-
+builder.Services.AddScoped<CurrencyPostService>();
+builder.Services.AddScoped<ICurrencyPostService,CurrencyPostService>();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IUserChatService, UserChatService>();
+builder.Services.AddScoped<IChatNotificationService, ChatNotificationService>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IUserHelper, UserHelper>();
-builder.Services.AddDbContext<AppDbContext>(options =>
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);
+builder.Services.AddScoped<SqlQueryStore>();
+builder.Services.AddScoped<SqlQueryInterceptor>();
+
+builder.Services.AddDbContext<AppDbContext>((sp, options) =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.AddInterceptors(sp.GetRequiredService<SqlQueryInterceptor>());
 });
 
 
@@ -132,17 +128,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("vue", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:4200")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
 
 
 var app = builder.Build();
-
-
 
 
 app.UseCors("vue");
@@ -155,11 +150,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+app.MapHub<ChatHub>("/hubs/chat");
 
 
 app.Run();

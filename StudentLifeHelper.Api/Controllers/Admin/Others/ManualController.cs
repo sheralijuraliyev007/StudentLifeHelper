@@ -1,15 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using StudentLifeHelper.Api.Controllers.Admin.Base;
-using StudentLifeHelper.Common.Constants;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using StudentLifeHelper.Service.Public.Manual.Interfaces;
-
-namespace StudentLifeHelper.Api.Controllers.Admin.Others
+﻿namespace StudentLifeHelper.Api.Controllers.Admin.Others
 {
-    public class ManualController(IManualService manualService) : BaseAdminController
+    public class ManualController(IManualService manualService, SqlQueryStore sqlQueryStore) : BaseAdminController
     {
+
+        private readonly SqlQueryStore _sqlQueryStore = sqlQueryStore;
         [HttpGet]
         [Authorize(Roles =RoleConstants.AdminRoleFullName )]
         public async Task<IActionResult> GetGenderSelect()
@@ -17,9 +11,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.GenderSelect();
              
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -32,9 +30,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.RolesSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -47,9 +49,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.CountriesSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -62,9 +68,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.InfoTablesSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -77,9 +87,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.RoomTypesSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -92,9 +106,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.ContentTypesSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -106,9 +124,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.CurrenciesSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -120,9 +142,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.RoomPostTypesSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -134,9 +160,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.StatusSelect();
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }
@@ -148,9 +178,13 @@ namespace StudentLifeHelper.Api.Controllers.Admin.Others
             var result = await manualService.RegionsSelect(countryCode);
 
 
-            if (manualService.IsValid)
+            if (result != null)
             {
-                return Ok(result);
+                return Ok(new ApiResponse<SelectList<int>>
+                {
+                    Data = result,
+                    Queries = _sqlQueryStore.GetAll().ToList()
+                });
             }
             return BadRequest();
         }

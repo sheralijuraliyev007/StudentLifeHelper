@@ -1,14 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Context;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Data.Repositories
+﻿namespace StudentLifeHelper.Data.Repositories
 {
     public class BaseRepository<T>(AppDbContext context)
         : IBaseRepository<T> where T : class
@@ -25,9 +15,9 @@ namespace StudentLifeHelper.Data.Repositories
             await context.Set<T>().AddAsync(entity);
         }
 
-        public Task AddRangeAsync(List<T> entities)
+        public void AddRange(List<T> entities)
         {
-            return context.Set<T>().AddRangeAsync(entities);
+            context.Set<T>().AddRange(entities);
         }
 
         public async Task Delete(T entity)

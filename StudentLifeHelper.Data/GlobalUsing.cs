@@ -1,0 +1,10 @@
+﻿global using Microsoft.EntityFrameworkCore;
+global using StudentLifeHelper.Data.Entities.BaseEntities;
+global using StudentLifeHelper.Data.Entities.InfoEntities;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using StudentLifeHelper.Data.Context;
+global using StudentLifeHelper.Data.Repositories.Interfaces;
+global using System.Linq.Expressions;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using StudentLifeHelper.Data.Entities.MainEntities;

@@ -24,5 +24,5 @@ on contents(state_code,content_type_code);
 
 
 CREATE UNIQUE INDEX ui_contents_folder_name_active_ci
-ON contents(folder, lower(name))
+ON contents(folder, lower(contents(name)))
 WHERE state_code = 1;

@@ -16,7 +16,7 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
         [InverseProperty(nameof(User.Gender))]
         public virtual List<User>? Users { get; set; }
 
-        [InverseProperty(nameof(RoomPost.Gender))]
+        [InverseProperty(nameof(RoomPost.ForGender))]
         public virtual List<RoomPost>? ForGenderRoomPosts { get; set; }
 
     }

@@ -38,6 +38,11 @@ namespace StudentLifeHelper.Data.Entities.MainEntities
         public virtual Chat? Chat { get; set; }
 
 
+        [Column("read_at")]
+        public DateTime? ReadAt { get; set; }
+
+
+
         [Required]
         [Column("status_code")]
         public int StatusCode { get; set; }

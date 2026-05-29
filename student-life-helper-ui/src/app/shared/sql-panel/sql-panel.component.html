@@ -1,0 +1,29 @@
+<div class="sql-panel" *ngIf="queries.length > 0" [class.resizing]="isResizing" #panel>
+  <div class="resize-handle" (mousedown)="onResizeStart($event)">
+    <span class="resize-dots">⋯</span>
+  </div>
+
+  <div class="panel-header" (click)="togglePanel()">
+    <span class="panel-icon">⬡</span>
+    <span class="panel-title">SQL queries</span>
+    <span class="badge-count">{{ queries.length }} {{ queries.length === 1 ? 'query' : 'queries' }}</span>
+    <span class="badge-time">{{ getTotalDuration() }}</span>
+    <div class="header-actions">
+      <button class="btn-sm" (click)="$event.stopPropagation(); clear()">Clear</button>
+    </div>
+    <span class="chevron" [class.open]="isExpanded">▲</span>
+  </div>
+
+  <div class="panel-body" *ngIf="isExpanded" [style.height.px]="panelHeight">
+    <div class="query-item" *ngFor="let query of queries; let i = index">
+      <div class="query-header" (click)="toggleQuery(i)">
+        <span class="query-index">{{ i + 1 }}</span>
+        <span class="query-preview">{{ getPreview(query.sql) }}</span>
+        <span class="query-duration">{{ formatDuration(query.duration) }}</span>
+      </div>
+      <div class="query-body" *ngIf="expandedIndex === i">
+        <pre class="sql-block" [innerHTML]="highlightSql(query.sql)"></pre>
+      </div>
+    </div>
+  </div>
+</div>

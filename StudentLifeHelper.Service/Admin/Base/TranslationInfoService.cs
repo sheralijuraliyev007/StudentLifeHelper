@@ -1,15 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StatusGeneric;
-using StudentLifeHelper.Common.Constants;
-using StudentLifeHelper.Common.Dtos.Info;
-using StudentLifeHelper.Common.Extensions;
-using StudentLifeHelper.Common.Models.Info.Translation;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using StudentLifeHelper.Data.Repositories.Interfaces;
-using StudentLifeHelper.Service.Admin.Base.Interfaces;
-using StudentLifeHelper.Service.Common.Interfaces;
-
-namespace StudentLifeHelper.Service.Admin.Base
+﻿namespace StudentLifeHelper.Service.Admin.Base
 {
     public class TranslationInfoService : BaseInfoService<Translation>, ITranslationInfoService
     {

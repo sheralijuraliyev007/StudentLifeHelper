@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Data.Repositories.Interfaces
+﻿namespace StudentLifeHelper.Data.Repositories.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
@@ -23,7 +15,7 @@ namespace StudentLifeHelper.Data.Repositories.Interfaces
 
         Task Delete(T entity);
 
-        Task AddRangeAsync(List<T> entities);
+        void AddRange(List<T> entities);
         void UpdateRange(List<T> entities);
 
         void DeleteRange(List<T> entities);
