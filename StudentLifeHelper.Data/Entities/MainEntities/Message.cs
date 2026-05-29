@@ -1,9 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-namespace StudentLifeHelper.Data.Entities.MainEntities
+﻿namespace StudentLifeHelper.Data.Entities.MainEntities
 {
 
     [Table("messages")]

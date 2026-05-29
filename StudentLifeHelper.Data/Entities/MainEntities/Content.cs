@@ -1,15 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace StudentLifeHelper.Data.Entities.MainEntities
+﻿namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("contents")]
     [Index(nameof(StateCode), Name = "ix_contents_state_code")]

@@ -1,9 +1,4 @@
-﻿using StudentLifeHelper.Data.Entities.InfoEntities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-
-namespace StudentLifeHelper.Data.Entities.BaseEntities
+﻿namespace StudentLifeHelper.Data.Entities.BaseEntities
 {
     public class BaseInfoEntity : BaseCommonEntity, IHasState, IHasCommonAttributes 
     {

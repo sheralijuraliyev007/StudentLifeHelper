@@ -1,9 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace StudentLifeHelper.Data.Entities.InfoEntities
+﻿namespace StudentLifeHelper.Data.Entities.InfoEntities
 {
     [Table("info_state",Schema =  "info")]
     [Index(nameof(Code), IsUnique =true)]
@@ -24,7 +19,7 @@ namespace StudentLifeHelper.Data.Entities.InfoEntities
 
         [Column("full_name")]
         [Required]
-        [MaxLength(15)]
+        [MaxLength(200)]
         public string FullName { get; set; } = string.Empty!;
 
 

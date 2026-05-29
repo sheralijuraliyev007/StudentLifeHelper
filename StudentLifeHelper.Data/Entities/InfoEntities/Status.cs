@@ -21,7 +21,6 @@
         [InverseProperty(nameof(UserChat.Status))]
         public virtual List<UserChat>? UserChats { get; set; }
 
-
     }
 
 }

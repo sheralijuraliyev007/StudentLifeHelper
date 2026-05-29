@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentLifeHelper.Data.Entities.BaseEntities;
-using StudentLifeHelper.Data.Entities.InfoEntities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace StudentLifeHelper.Data.Entities.MainEntities
+﻿namespace StudentLifeHelper.Data.Entities.MainEntities
 {
     [Table("users")]
     [Index(nameof(BirthCountryCode), Name = "ix_users_birth_country_code")]

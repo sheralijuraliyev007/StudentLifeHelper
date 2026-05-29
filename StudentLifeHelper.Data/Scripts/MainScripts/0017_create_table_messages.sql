@@ -1,6 +1,7 @@
 create table messages(
 	id						bigserial not null primary key,
 	chat_id					uuid not null references chats(id),
+    read_at                 TIMESTAMPTZ null,
 	from_user_id			uuid not null references users(id),
 	status_code				integer not null references info.info_status(code),
 	message_text			varchar(4000) not null,

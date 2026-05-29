@@ -5,6 +5,7 @@ create table users(
                       middle_name                     varchar(50) null,
                       birth_country_code              integer not null references info.info_country(code),
                       residence_country_code          integer not null references info.info_country(code),
+                    language_code                      integer not null  references  info.info_language(code),
 
                       birth_date                      date null,
                       password_hash                   varchar(255) not null,
