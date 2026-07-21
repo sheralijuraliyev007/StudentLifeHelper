@@ -14,9 +14,6 @@ namespace StudentLifeHelper.Service.Admin.Users
         public async Task<string?> DeactivateAsync(Guid userId) =>
             await UpdateStateAsync(userId, StateConstants.Passive, "User deactivated successfully.");
 
-
-
-
         public async Task<string?> DeleteAsync(Guid userId)
         {
             var (user, isExist) = GetUserById(userId).Result;
@@ -27,10 +24,7 @@ namespace StudentLifeHelper.Service.Admin.Users
             await unitOfWork.UserRepository().Delete(user!);
             await unitOfWork.SaveChanges();
             return "User deleted successfully.";
-
         }
-
-
         public async Task<UserDtoForAdmin?> GetByUsernameAsync(string userName)
         {
 
@@ -45,7 +39,6 @@ namespace StudentLifeHelper.Service.Admin.Users
                u => u.Img!,
                u => u.Language!
            ).AsNoTracking();
-
             var user = await query.Where(u => u.Username == userName).FirstOrDefaultAsync();
 
             if (user is null)
@@ -58,8 +51,6 @@ namespace StudentLifeHelper.Service.Admin.Users
             var config = GetCustomConfig();
 
             return user.MapToDto<Data.Entities.MainEntities.User, UserDtoForAdmin>(config);
-
-
         }
 
         public async Task<PaginationModel<UserDtoForAdmin>> GetAllAsync(AdminUserFilterOptions filterOptions)
@@ -101,7 +92,6 @@ namespace StudentLifeHelper.Service.Admin.Users
             await unitOfWork.SaveChanges();
 
             return "User updated successfully.";
-
         }
 
         public async Task<string?> UpdateUserImage(Guid userId, IFormFile img)

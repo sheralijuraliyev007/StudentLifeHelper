@@ -13,6 +13,8 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authorizedRequest = req.clone({
     setHeaders: {
       Authorization: `Bearer ${accessToken}`,
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      Pragma: 'no-cache',
     },
   });
 

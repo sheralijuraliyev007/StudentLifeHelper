@@ -13,6 +13,6 @@
         Task<string?> UpdateUsernameAsync(string newUsername);
 
 
-        Task<string?> UpdateUserImage( IFormFile img);
+        Task<string?> UpdateUserImage(IFormFile img);
     }
 }

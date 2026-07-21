@@ -68,3 +68,4 @@ export function normalizeRoomPostDto(post: RoomPostDto): RoomPostDto {
     addressLink: typeof post.addressLink === 'string' ? post.addressLink : String(r['AddressLink'] ?? ''),
   };
 }
+

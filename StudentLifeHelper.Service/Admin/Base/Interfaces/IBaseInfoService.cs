@@ -1,7 +1,4 @@
-﻿
-using StatusGeneric;
-
-namespace StudentLifeHelper.Service.Admin;
+﻿namespace StudentLifeHelper.Service.Admin;
 
 public interface IBaseInfoService<TEntity> : IStatusGeneric
 {

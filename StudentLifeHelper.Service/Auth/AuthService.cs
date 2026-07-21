@@ -268,7 +268,7 @@
 
         private async Task<bool> UserNameExists(string username)
         {
-                       return await unitOfWork.UserRepository().GetAll()
+return await unitOfWork.UserRepository().GetAll()
                 .AnyAsync(u => u.Username.Equals(username));
         }
 

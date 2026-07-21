@@ -128,10 +128,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("vue", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:4200")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:4200",
+                "https://studentlifehelper.com",
+                "https://www.studentlifehelper.com"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 

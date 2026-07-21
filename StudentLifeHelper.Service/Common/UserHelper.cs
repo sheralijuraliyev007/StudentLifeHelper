@@ -10,16 +10,6 @@ namespace StudentLifeHelper.Service.Common
             )
             ? id : null;
 
-        //public async Task<int> GetUserLanguageCode()
-        //{
-        //    var userId = GetUserId();
-
-        //    var user = await unitOfWork.UserRepository().GetById(userId);
-
-        //    return user!.LanguageCode;
-
-        //}
-
         public async Task<int> GetUserLanguageCode()
         {
             if(GetUserId() == null)

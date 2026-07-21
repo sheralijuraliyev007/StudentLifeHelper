@@ -146,6 +146,9 @@ private normalizeItems(payload: unknown): SelectListItem<number>[] {
     .map((raw) => this.normalizeItem(raw))
     .filter((item): item is SelectListItem<number> => item !== null);
 }
+  clearRegionCache(): void {
+    this.regionCache.clear();
+  }
 
   private normalizeItem(raw: unknown): SelectListItem<number> | null {
     if (!raw || typeof raw !== 'object') {
@@ -164,5 +167,10 @@ private normalizeItems(payload: unknown): SelectListItem<number>[] {
       text: textRaw,
       orderCode: typeof orderRaw === 'number' ? orderRaw : Number(orderRaw ?? 0),
     };
+
+    
   }
+  
 }
+
+

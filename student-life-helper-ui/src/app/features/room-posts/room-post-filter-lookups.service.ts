@@ -26,5 +26,9 @@ export class RoomPostFilterLookupsService {
 
   load(): Observable<RoomPostFilterLookups> {
     return this.bundle$;
+  
   }
+  
 }
+
+

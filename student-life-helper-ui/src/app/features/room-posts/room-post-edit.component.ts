@@ -369,52 +369,56 @@ export class RoomPostEditComponent implements OnInit {
       });
   }
 
-  submit(): void {
-    if (this.form.invalid || this.submitting) {
-      this.form.markAllAsTouched();
-      return;
-    }
-    const raw = this.form.getRawValue();
-    const body: UpdateRoomPostModel = {
-      roomPostTypeCode: raw.roomPostTypeCode ?? undefined,
-      roomTypeCode: raw.roomTypeCode ?? undefined,
-      title: (raw.title ?? '').trim(),
-      description: (raw.description ?? '').trim(),
-      monthlyRentFee: raw.monthlyRentFee ?? undefined,
-      currencyCode: raw.currencyCode ?? undefined,
-      regionCode: raw.regionCode ?? undefined,
-      addressLink: (raw.addressLink ?? '').trim(),
-      depositAmount: raw.depositAmount != null ? Number(raw.depositAmount) : null,
-    };
-    if (raw.forGenderCode != null) {
-      body.forGenderCode = raw.forGenderCode;
-    }
-
-    this.submitting = true;
-    this.errorMessage = '';
-    this.roomPosts
-      .updateRoomPost(this.postId, body)
-      .pipe(
-        take(1),
-        finalize(() => {
-          this.submitting = false;
-        }),
-      )
-      .subscribe({
-        next: () => {
-          void this.router.navigate(['/admin/room-posts/mine']);
-        },
-        error: (e) => {
-          this.errorMessage = this.formatError(e);
-        },
-      });
+submit(): void {
+  if (this.form.invalid || this.submitting) {
+    this.form.markAllAsTouched();
+    return;
   }
+  const raw = this.form.getRawValue();
+  const body: UpdateRoomPostModel = {
+    roomPostTypeCode: raw.roomPostTypeCode ?? undefined,
+    roomTypeCode: raw.roomTypeCode ?? undefined,
+    title: (raw.title ?? '').trim(),
+    description: (raw.description ?? '').trim(),
+    monthlyRentFee: raw.monthlyRentFee ?? undefined,
+    currencyCode: raw.currencyCode ?? undefined,
+    regionCode: raw.regionCode ?? undefined,
+    addressLink: (raw.addressLink ?? '').trim(),
+    depositAmount: raw.depositAmount != null ? Number(raw.depositAmount) : null,
+  };
+  if (raw.forGenderCode != null) {
+    body.forGenderCode = raw.forGenderCode;
+  }
+
+  this.submitting = true;
+  this.errorMessage = '';
+  this.roomPosts
+    .updateRoomPost(this.postId, body)
+    .pipe(
+      take(1),
+      finalize(() => {
+        this.submitting = false;
+      }),
+    )
+    .subscribe({
+      next: () => {
+        this.lookups.clearRegionCache(); // ← clears stale region cache
+        void this.router.navigate(['/admin/room-posts/mine']);
+      },
+      error: (e) => {
+        this.errorMessage = this.formatError(e);
+      },
+    });
+}
 
   canEditPhotos(): boolean {
     return roomPostCanEdit(this.postStatusCode);
   }
 
   private patchFromPost(post: RoomPostDto): void {
+
+    console.log('post.regionCode:', post.regionCode);
+    console.log('available regions:', this.regions.map(r => ({ value: r.value, orderCode: r.orderCode, text: r.text })));
     this.postStatusCode = post.statusCode;
     this.form.patchValue({
       regionCode: post.regionCode,

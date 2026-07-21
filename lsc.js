@@ -1,0 +1,1 @@
+console.log("All arguments", process.argv[2]);

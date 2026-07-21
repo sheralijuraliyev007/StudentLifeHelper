@@ -15,8 +15,8 @@ namespace StudentLifeHelper.Service.Admin.User.Interfaces
         Task<string?> UpdateAsync(Guid userId, UpdateUserModelForAdmin updateModel);
 
         Task<string?> UpdateUserImage(Guid userId, IFormFile img);
-        Task<string?> DeleteAsync(Guid userId);
 
+        Task<string?> DeleteAsync(Guid userId);
 
     }
 }

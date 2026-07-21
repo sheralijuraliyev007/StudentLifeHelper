@@ -2,7 +2,7 @@ create table info.info_translation(
                                    id				bigserial not null primary key,
                                    table_code		integer not null references  info.info_table(code),
                                    language_code	integer not null references  info.info_language(code),
-                                    record_code     integer not null,
+                                   record_code     integer not null,
                                    column_name		varchar(100) not null,
                                    state_code		integer not null references info.info_state(code),
                                    translated_text	text not null,
